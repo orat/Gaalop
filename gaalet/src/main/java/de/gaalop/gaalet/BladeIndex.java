@@ -45,7 +45,7 @@ public class BladeIndex {
 			blade = Integer.valueOf(hex,16);		
 		} else // it is not a hex
 		{
-			blade = new Integer(bladeIndex);
+			blade = Integer.valueOf(bladeIndex);
 		};
 	}
 	

@@ -85,16 +85,14 @@ public class GaaletBladeTable {
  */
 	
 	public static int numberToBlade(String number) {
-
 		int result;
 		if ((number.length()>1)&&(number.charAt(1) =='x')) {
 			number = number.substring(2);
-			result = Integer.valueOf(number,16);			
-		} else
-			result = new Integer(number);
+			result = Integer.parseInt(number,16);			
+		} else result = Integer.parseInt(number);
 
 		return result;
-	};
+	}
 	
 	
 	public static int gaalopToGaalet(int gaalop) {

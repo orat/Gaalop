@@ -75,7 +75,7 @@ public class GaaletMultiVector {
 	};
 	
 	public void addComponent(int GaalopBlade) {
-		gaalopBlades.put(new Integer(GaalopBlade),null);
+		gaalopBlades.put(GaalopBlade,null);
 	}
 	
 	@Override

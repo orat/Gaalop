@@ -572,7 +572,7 @@ public final class GraphBuilder {
 	}
 	
 	public MultivectorComponent blade(String name, String blade) {
-		int index = new Integer(blade);
+		int index = Integer.parseInt(blade);
 		String hashname = NameTable.getInstance().add(name);		
 		int gealgBlade = vectorSet.get(hashname).get(index);
 		

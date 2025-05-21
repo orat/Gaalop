@@ -31,7 +31,7 @@ public class AlgebraPC {
      * @return The parsed map
      */
     private HashMap<String, LinkedList<BladeStr>> parseMapStringListBladeStr(String str) {
-        HashMap<String, LinkedList<BladeStr>> result = new HashMap<String, LinkedList<BladeStr>>();
+        HashMap<String, LinkedList<BladeStr>> result = new HashMap<>();
         if (str == null) return result;
         str = str.trim();
         if (str.isEmpty()) {
