@@ -14,7 +14,7 @@ import java.util.HashSet;
  */
 public class VariablesCollector extends EmptyControlFlowVisitor {
 
-    private HashSet<String> variables = new HashSet<String>();
+    private HashSet<String> variables = new HashSet<>();
 
     public HashSet<String> getVariables() {
         return variables;

@@ -46,7 +46,7 @@ public class BladeIndex {
 		} else // it is not a hex
 		{
 			blade = Integer.valueOf(bladeIndex);
-		};
+		}
 	}
 	
 	public Integer get() {

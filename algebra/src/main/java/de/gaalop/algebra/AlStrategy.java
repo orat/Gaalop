@@ -81,6 +81,7 @@ public class AlStrategy implements AlgebraStrategy {
                     ? new InputStreamReader(getClass().getResourceAsStream(baseDir+"macros.clu"))
                     : new FileReader(new File(baseDir+"macros.clu"));
 
+            //WORKAROUND use clucalc Plugin to parse the macros
             ControlFlowGraph macrosGraph = new de.gaalop.clucalc.input.Plugin().createCodeParser().parseFile(inputStreamToInputFile(reader, "macros", null));
             reader.close();
             HashMap<StringIntContainer, Macro> macros = MacrosVisitor.getAllMacros(macrosGraph);

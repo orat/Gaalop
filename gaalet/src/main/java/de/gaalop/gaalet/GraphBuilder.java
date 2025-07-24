@@ -8,8 +8,6 @@ import de.gaalop.dfg.Expression;
 import de.gaalop.dfg.MacroCall;
 import de.gaalop.dfg.MultivectorComponent;
 import de.gaalop.dfg.Variable;
-import de.gaalop.dfg.MathFunction;
-import de.gaalop.dfg.MathFunctionCall;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,7 +18,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * This is a utility class used by the CluCalcTransformer to build a control flow graph while parsing the CluCalc AST.
+ * This is a utility class used by the CluCalcTransformer to build a control flow 
+ * graph while parsing the CluCalc AST.
  */
 public final class GraphBuilder {
 	private class SetLocalAndInputVariables implements ControlFlowVisitor {
@@ -572,11 +571,10 @@ public final class GraphBuilder {
 	}
 	
 	public MultivectorComponent blade(String name, String blade) {
-		int index = Integer.parseInt(blade);
-		String hashname = NameTable.getInstance().add(name);		
-		int gealgBlade = vectorSet.get(hashname).get(index);
-		
-		return new MultivectorComponent(hashname, gealgBlade);
+            int index = Integer.parseInt(blade);
+            String hashname = NameTable.getInstance().add(name);		
+            int gealgBlade = vectorSet.get(hashname).get(index);
+            return new MultivectorComponent(hashname, gealgBlade);
 	}
 	
 	/**

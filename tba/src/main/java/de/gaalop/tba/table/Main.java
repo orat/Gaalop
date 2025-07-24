@@ -22,6 +22,18 @@ import javax.swing.JFileChooser;
 
 /**
  * Creates a product table of an algebra, given by its definition file.
+ * 
+ * Creation of table for default ccga algebra can run into memory overflow, even 
+ * this algebra is excluded from the list of default algebras.
+ * 
+ * All algebra definitions found as directory are processed independed if they are
+ * listed in the definedAlgebras.txt or not.
+ * 
+ * The output is written in the correct algebra subfolders.
+ * 
+ * TODO
+ * - Use definedAlgebras.txt file.
+ * 
  * @author Christian Steinmetz
  */
 public class Main {
@@ -67,9 +79,9 @@ public class Main {
     
     private static void gui(String[] args) throws FileNotFoundException, IOException {
         File dir = null;
-
         if (args.length == 0) {
-            JFileChooser jFC = new JFileChooser("D:\\BscMsc\\Gaalop\\algebra\\src\\main\\resources\\de\\gaalop\\algebra\\algebra");
+            //JFileChooser jFC = new JFileChooser("D:\\BscMsc\\Gaalop\\algebra\\src\\main\\resources\\de\\gaalop\\algebra\\algebra");
+            JFileChooser jFC = new JFileChooser(determineAlgebrasFolder().getAbsolutePath());
             jFC.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             if (jFC.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                 dir = jFC.getSelectedFile();
@@ -82,15 +94,19 @@ public class Main {
             dir = new File(args[0]);
     }
     
+    private static File determineAlgebrasFolder(){
+        File gaalopSRCFolder = (new File(Main.class.getProtectionDomain().getCodeSource().
+                getLocation().getPath())).getParentFile().getParentFile().getParentFile();
+        return new File(gaalopSRCFolder.getAbsolutePath(), "/algebra/src/main/resources/de/gaalop/algebra/algebra");
+    }
     private static void createAll() throws FileNotFoundException, IOException {
-        File directory = new File("D:\\BscMsc\\Gaalop\\algebra\\src\\main\\resources\\de\\gaalop\\algebra\\algebra");
-        File[] dirs = directory.listFiles(new FileFilter() {
-
-                               @Override
-                               public boolean accept(File pathname) {
-                                   return pathname.isDirectory();
-                               }
-                           });
+        //System.out.println("algebras folder is "+algebrasFolder.getAbsolutePath());
+        File[] dirs = determineAlgebrasFolder().listFiles(new FileFilter() {
+                        @Override
+                        public boolean accept(File pathname) {
+                            return pathname.isDirectory();
+                        }
+                    });
         Arrays.sort(dirs);
         for (File dir: dirs)
             createFromDir(dir,TableFormat.TABLE_COMPRESSED_MAX);
@@ -128,5 +144,4 @@ public class Main {
         
         return v1.isEmpty();
     }
-    
 }

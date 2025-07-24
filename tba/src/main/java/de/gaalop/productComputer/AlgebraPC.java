@@ -34,9 +34,7 @@ public class AlgebraPC {
         HashMap<String, LinkedList<BladeStr>> result = new HashMap<>();
         if (str == null) return result;
         str = str.trim();
-        if (str.isEmpty()) {
-            return result;
-        }
+        if (str.isEmpty()) return result;
         String[] parts = str.split(",");
         for (String part : parts) {
             String[] parts2 = part.split("=");

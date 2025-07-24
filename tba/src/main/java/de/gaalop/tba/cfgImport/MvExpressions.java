@@ -21,7 +21,7 @@ public class MvExpressions {
     public MvExpressions(String nameMv, int bladeCount) {
         this.nameMv = nameMv;
         this.bladeCount = bladeCount;
-        bladeExpressions = new TreeMap<Integer, Expression>();
+        bladeExpressions = new TreeMap<>();
     }
 
     /**

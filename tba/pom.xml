@@ -33,16 +33,6 @@
     </build>
     <dependencies>
         <dependency>
-            <groupId>de.gaalop</groupId>
-            <artifactId>api</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>de.gaalop</groupId>
-            <artifactId>algebra</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>antlr4-runtime</artifactId>
             <version>4.9.3</version>
@@ -59,6 +49,21 @@
             <artifactId>antlr4-annotations</artifactId>
             <version>4.3</version>
             <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>de.gaalop</groupId>
+            <artifactId>api</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>de.gaalop</groupId>
+            <artifactId>clucalc</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>de.gaalop</groupId>
+            <artifactId>algebra</artifactId>
+            <version>1.0.0</version>
         </dependency>
     </dependencies>
 </project>

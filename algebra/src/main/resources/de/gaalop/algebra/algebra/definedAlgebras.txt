@@ -1,5 +1,6 @@
 2d;imaginary numbers
 3d;euclidean geometric algebra
+6d;G6 for screw axis in robotics
 2dpga;2D projective geometric algebra
 3dpga;3D projective geometric algebra
 cra;compass ruler algebra

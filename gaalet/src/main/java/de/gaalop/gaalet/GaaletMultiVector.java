@@ -26,7 +26,7 @@ public class GaaletMultiVector {
 	
 	public GaaletMultiVector(String name) {
 		this.name = name;
-		gaalopBlades = new LinkedHashMap<Integer,Expression>();
+		gaalopBlades = new LinkedHashMap<>();
 	}
 	
 	public String getDefinition() {
@@ -94,15 +94,9 @@ public class GaaletMultiVector {
 		Map<Integer,Expression> GaaletList = getUnsortedGaaletBlades();
 			
 		List list = new LinkedList(GaaletList.entrySet());
-		Collections.sort(list, new Comparator<Map.Entry<Integer,Expression>>() {
-			@Override
-			public int compare(final Entry<Integer, Expression> o1,
-					final Entry<Integer, Expression> o2) {
-				return o1.getKey().compareTo(o2.getKey());
-			}
-		});
+		Collections.sort(list, (final Entry<Integer, Expression> o1, final Entry<Integer, Expression> o2) -> o1.getKey().compareTo(o2.getKey()));
 		
-		Map<Integer,Expression> sorted = new LinkedHashMap<Integer, Expression>();
+		Map<Integer,Expression> sorted = new LinkedHashMap<>();
 		
 		for (Iterator it = list.iterator(); it.hasNext(); ) {
 			Map.Entry <Integer,Expression> entry = (Map.Entry <Integer,Expression>)it.next();
@@ -118,7 +112,7 @@ public class GaaletMultiVector {
 	}
 	
 	private Map<Integer,Expression> getUnsortedGaaletBlades(){
-		LinkedHashMap<Integer, Expression>  GaaletList = new LinkedHashMap<Integer,Expression>();
+		LinkedHashMap<Integer, Expression>  GaaletList = new LinkedHashMap<>();
 		
 		for (Entry<Integer, Expression> newBlade : gaalopBlades.entrySet() ) {
 			GaaletList.put(GaaletBladeTable.gaalopToGaalet(newBlade.getKey()),newBlade.getValue());
