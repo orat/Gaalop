@@ -117,7 +117,7 @@ public class ProductComputer {
         initializeMap(algebraPC.base, algebraPC.base2, algebraPC.mapToZeroInf, mapPMToZI);
 
         //initialize blade list in zero inf base
-        LinkedList<SumOfBlades> bladeListZI = new LinkedList<SumOfBlades>();
+        LinkedList<SumOfBlades> bladeListZI = new LinkedList<>();
         SumOfBlades s1 = new SumOfBlades();
         s1.add(new SignedBlade(bitCount));
         bladeListZI.add(s1);
@@ -128,11 +128,11 @@ public class ProductComputer {
 
         //fill indices map and convert blade list to plus minus base
         bladeListPM = new SumOfBlades[bladeListZI.size()];
-        mapBladeToIndex = new HashMap<Blade, Integer>();
+        mapBladeToIndex = new HashMap<>();
         int i=0;
         for (SumOfBlades s: bladeListZI) {
             SignedBlade sb = s.getFirst();
-            mapBladeToIndex.put(new Blade(bitCount, sb), new Integer(i));
+            mapBladeToIndex.put(new Blade(bitCount, sb), i);
             bladeListPM[i] = BaseTransformation.transform(s, mapZIToPM, bitCount);
             i++;
         }

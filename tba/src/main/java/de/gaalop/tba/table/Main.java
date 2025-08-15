@@ -109,7 +109,7 @@ public class Main {
                     });
         Arrays.sort(dirs);
         for (File dir: dirs)
-            createFromDir(dir,TableFormat.TABLE_COMPRESSED_MAX);
+            createFromDir(dir,TableFormat.TABLE_HUMAN_READABLE/*TABLE_COMPRESSED_MAX*/);
     }
     
     /**
