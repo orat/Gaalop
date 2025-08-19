@@ -44,14 +44,14 @@ public class MaximaDifferentiater implements Differentiater {
             MaximaOutput output = connection.optimizeWithMaxima(input);
 
             //connect in and output
-            LinkedList<String> connected = new LinkedList<String>();
+            LinkedList<String> connected = new LinkedList<>();
             MaximaRoutines.groupMaximaInAndOutputs(connected, output);
 
             connected.removeFirst(); // remove display2d
             connected.removeFirst(); // remove ratsimp
             connected.removeFirst(); // remove keepfloat
             
-            LinkedList<AssignmentNode> result = new LinkedList<AssignmentNode>();
+            LinkedList<AssignmentNode> result = new LinkedList<>();
             ListIterator<AssignmentNode> listIterator = toDerive.listIterator();
             for (String io : connected) {
                 AssignmentNode node = listIterator.next();

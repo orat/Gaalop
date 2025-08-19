@@ -150,7 +150,7 @@ public class NewDrawSettingsCodeGen extends DrawSettings implements CodeGenerato
         });
        
         //Add ZeroFinding methods
-        LinkedList<ZeroFinder> zerofinderList = new LinkedList<ZeroFinder>();
+        LinkedList<ZeroFinder> zerofinderList = new LinkedList<>();
         ZeroFinder defaultZeroFinder = new GradientMethod();
         zerofinderList.add(defaultZeroFinder);
         zerofinderList.add(new RayMethod());
@@ -175,7 +175,7 @@ public class NewDrawSettingsCodeGen extends DrawSettings implements CodeGenerato
         colors = ColorEvaluater.getColors(in);
         
         //Determine all input variables
-        LinkedList<String> inputs = new LinkedList<String>();
+        LinkedList<String> inputs = new LinkedList<>();
         for (Variable inputVar: in.getInputVariables()) 
             if (!isPositionVariable(inputVar.getName()))
                 inputs.add(inputVar.getName());
@@ -204,7 +204,7 @@ public class NewDrawSettingsCodeGen extends DrawSettings implements CodeGenerato
         jLabel_Info.repaint();
         
         //fill global values from sliders
-        final HashMap<MultivectorComponent, Double> globalValues = new HashMap<MultivectorComponent, Double>();
+        final HashMap<MultivectorComponent, Double> globalValues = new HashMap<>();
         HashMap<String, Double> inputValues = inputsPanel.getValues();
         for (String variable: inputValues.keySet()) 
             globalValues.put(new MultivectorComponent(variable, 0), inputValues.get(variable));
@@ -216,7 +216,7 @@ public class NewDrawSettingsCodeGen extends DrawSettings implements CodeGenerato
                 long start = System.currentTimeMillis();
                 
                 //Copy List
-                LinkedList<AssignmentNode> list = new LinkedList<AssignmentNode>();
+                LinkedList<AssignmentNode> list = new LinkedList<>();
                 for (AssignmentNode node: graphAssignmentNodes) 
                     list.add(node.copyElements());
                 
@@ -238,7 +238,7 @@ public class NewDrawSettingsCodeGen extends DrawSettings implements CodeGenerato
     
     private String getDisplayEquationsAsString() {
         //Copy List
-        LinkedList<AssignmentNode> list = new LinkedList<AssignmentNode>();
+        LinkedList<AssignmentNode> list = new LinkedList<>();
         for (AssignmentNode node: graphAssignmentNodes) 
             list.add(node.copyElements());
                 
@@ -304,18 +304,18 @@ public class NewDrawSettingsCodeGen extends DrawSettings implements CodeGenerato
      * @return The new list of assignment nodes
      */
     private LinkedList<AssignmentNode> createSumOfSquares(LinkedList<AssignmentNode> nodes) {
-        HashMap<String, LinkedList<AssignmentNode>> collect = new HashMap<String, LinkedList<AssignmentNode>>();
+        HashMap<String, LinkedList<AssignmentNode>> collect = new HashMap<>();
         
         for (AssignmentNode node: nodes) {
             MultivectorComponent m = (MultivectorComponent) node.getVariable();
             String name = m.getName();
             if (!collect.containsKey(name)) 
-                collect.put(name, new LinkedList<AssignmentNode>());
+                collect.put(name, new LinkedList<>());
 
             collect.get(name).add(node);
         }
         
-        LinkedList<AssignmentNode> myNodes = new LinkedList<AssignmentNode>();
+        LinkedList<AssignmentNode> myNodes = new LinkedList<>();
         for (String s: collect.keySet()) 
             if (s.startsWith("_V_PRODUCT")) {
                 Expression sumOfSquares = null; 
@@ -353,7 +353,7 @@ public class NewDrawSettingsCodeGen extends DrawSettings implements CodeGenerato
      * @param before The suceeding element
      */
     protected static void listInsertBefore(LinkedList<AssignmentNode> list, AssignmentNode toInsert, AssignmentNode before) {
-        LinkedList<AssignmentNode> listCopy = new LinkedList<AssignmentNode>(list);
+        LinkedList<AssignmentNode> listCopy = new LinkedList<>(list);
         list.clear();
         for (AssignmentNode node: listCopy) {
             if (node == before)
@@ -410,9 +410,7 @@ public class NewDrawSettingsCodeGen extends DrawSettings implements CodeGenerato
     public boolean isPositionVariable(String name) {
         if (name.equals("_V_X")) return true;
         if (name.equals("_V_Y")) return true;
-        if (name.equals("_V_Z")) return true;
-        
-        return false;
+        return name.equals("_V_Z");
     }
     
 }

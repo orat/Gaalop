@@ -14,7 +14,7 @@ import java.util.HashMap;
  */
 public class ColorEvaluater extends EmptyControlFlowVisitor {
 
-    private HashMap<String, Color> colors = new HashMap<String, Color>();
+    private HashMap<String, Color> colors = new HashMap<>();
 
     private Color currentColor = Color.white;
 

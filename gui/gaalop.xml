@@ -4,13 +4,13 @@
 <comment>Gaalop Configuration File</comment>
 <entry key="de.gaalop.csharp.Plugin.useDouble">false</entry>
 <entry key="de.gaalop.tba.Plugin.optGCSE">true</entry>
-<entry key="lastUsedAlgebra">QRA12</entry>
+<entry key="lastUsedAlgebra">cga</entry>
 <entry key="de.gaalop.tba.Plugin.optOneExpressionRemoval">true</entry>
 <entry key="de.gaalop.csharp.Plugin.standalone">true</entry>
 <entry key="lastUsedOptimization">de.gaalop.tba.Plugin</entry>
-<entry key="de.gaalop.ganja.Plugin.outputMode">standalone_page</entry>
+<entry key="de.gaalop.ganja.Plugin.outputMode">coffeeshop</entry>
 <entry key="de.gaalop.julia.Plugin.forGrassmann">false</entry>
-<entry key="lastUsedVisualCodeInserter">de.gaalop.visualCodeInserter2d.Plugin</entry>
+<entry key="lastUsedVisualCodeInserter">de.gaalop.visualCodeInserter.Plugin</entry>
 <entry key="de.gaalop.python.Plugin.useDouble">true</entry>
 <entry key="de.gaalop.algebra.Plugin.userMacroFilePath"></entry>
 <entry key="de.gaalop.algebra.Plugin.usePrecalulatedTables">false</entry>
@@ -21,7 +21,7 @@
 <entry key="de.gaalop.csharp.Plugin.saveFileDirectory"></entry>
 <entry key="de.gaalop.python.Plugin.saveFileDirectory"></entry>
 <entry key="de.gaalop.python.Plugin.optimizeOnSave">true</entry>
-<entry key="lastUsedGenerator">de.gaalop.matlab.Plugin</entry>
+<entry key="lastUsedGenerator">de.gaalop.visualizer.Plugin</entry>
 <entry key="de.gaalop.csharp.Plugin.useArrays">false</entry>
 <entry key="de.gaalop.globalSettings.Plugin.guiFontSize">12</entry>
 <entry key="de.gaalop.globalSettings.Plugin.editorFontSize">12</entry>
@@ -44,5 +44,5 @@
 <entry key="de.gaalop.algebra.Plugin.additionalBaseDirectory">/home/oliver/algebras</entry>
 <entry key="de.gaalop.tba.Plugin.doRoundingAfterOptimization">false</entry>
 <entry key="de.gaalop.compressed.Plugin.standalone">false</entry>
-<entry key="lastUsedAlgebraRessource">false</entry>
+<entry key="lastUsedAlgebraRessource">true</entry>
 </properties>

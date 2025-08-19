@@ -15,7 +15,7 @@ public class CFGDifferentiater implements Differentiater {
 
     @Override
     public LinkedList<AssignmentNode> differentiate(LinkedList<AssignmentNode> toDerive, MultivectorComponent variable) {
-        LinkedList<AssignmentNode> result = new LinkedList<AssignmentNode>();
+        LinkedList<AssignmentNode> result = new LinkedList<>();
         for (AssignmentNode node : toDerive) {
             Expression differentiated = DFGDifferentiater.differentiate(node.getValue(), variable);
             ConstantFolding cF = new ConstantFolding();
