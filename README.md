@@ -10,10 +10,8 @@ Gaalop (Geometic Algebra Algorithms Optimizer) is a software to compile and opti
 - Additional Wiki pages
   
 # What is Geometric Algebra?
-This is probably best explained in this article:
-https://slehar.wordpress.com/2014/03/18/clifford-algebra-a-visual-introduction/
-or this book:
-http://www.amazon.de/Foundations-Geometric-Algebra-Computing-Geometry/dp/3642317936
+A good explaination can be found [here](https://slehar.wordpress.com/2014/03/18/clifford-algebra-a-visual-introduction/) in the Web
+or look into this [book](http://www.amazon.de/Foundations-Geometric-Algebra-Computing-Geometry/dp/3642317936).
 
 # Gaalop Precompiler (GPC)
 Note that this repository also contains Gaalop Precompiler (GPC)
