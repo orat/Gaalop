@@ -40,14 +40,27 @@ public class MultivectorCell {
     }
     
     public String toString(String[] basisBladeNames){
+        // representation corresponding to the human readable file type for the tables (E0, E1, ...)
+        //return m.print(); 
+        
+        // use gaalop
         StringBuilder sb = new StringBuilder();
-        for (BladeRef blade: m.getBlades()){
-            sb.append(algebra.getBlade(blade.getIndex()).toString());
-            if (isNegative()){
-                sb.insert(0, "-");
+        boolean firstBlade = true;
+        List<BladeRef> blades = m.getBlades();
+        if (blades.isEmpty()){
+            return "0";
+        } else {
+            // Scalar seems not to be includes as a blade
+            for (BladeRef blade: blades){
+                if (isNegative()){
+                    sb.append("-");
+                } else if (!firstBlade){
+                    sb.append("+");
+                }
+                sb.append(algebra.getBlade(blade.getIndex()).toString());
+                firstBlade = false;
             }
             return sb.toString();
         }
-        return "";
     }
 }

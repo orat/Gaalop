@@ -253,5 +253,4 @@ public class UseAlgebra {
                 out.println();
             }
     }
-
 }
