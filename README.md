@@ -29,5 +29,5 @@ Contributions are welcome.
 Please fork and create a pull request.
 
 # How to compile?
-Please visit the [wiki](https://github.com/CallForSanity/Gaalop/wiki) on this repository. 
+Please visit the [wiki](https://github.com/orat/Gaalop/wiki) on this repository. 
 You will find manuals for compiling GAALOP and GAALOP Precompiler.
