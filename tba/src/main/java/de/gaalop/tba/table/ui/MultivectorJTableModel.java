@@ -21,11 +21,12 @@ import javax.swing.table.AbstractTableModel;
  */
 public class MultivectorJTableModel extends AbstractTableModel {
 
-    private final int dim;
     private final IMultTable tbl;
     private AlgebraPC algebraPC;
     private Algebra algebra;
+    
     private final int n;
+    private final int dim;
     
     public MultivectorJTableModel(File algebraDir, Products product){
     
@@ -49,9 +50,8 @@ public class MultivectorJTableModel extends AbstractTableModel {
         AlStrategy.createBlades(alFile);
         algebra = new Algebra(alFile);
         
-        n = alFile.getSignature().getDimension(); // alFile.base2.length-1;;
-        
-        dim = (int) Math.pow(2, algebraPC.base.length/*-1*/);
+        n = alFile.getSignature().getDimension();
+        dim = (int) Math.pow(2, n);
     }
     
     private static AlgebraDefinitionFile loadAlgebraDefinitionFile(File algebraDir){

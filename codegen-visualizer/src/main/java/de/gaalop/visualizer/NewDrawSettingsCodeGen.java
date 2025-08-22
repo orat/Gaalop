@@ -188,7 +188,7 @@ public class NewDrawSettingsCodeGen extends DrawSettings implements CodeGenerato
         setSize(getSize().width+1, getSize().height);
         setSize(getSize().width-1, getSize().height);
 
-        return new HashSet<OutputFile>(); 
+        return new HashSet<>(); 
     }
     
     /**
