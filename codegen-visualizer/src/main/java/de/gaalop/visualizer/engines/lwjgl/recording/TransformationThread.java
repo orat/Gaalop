@@ -1,9 +1,10 @@
 package de.gaalop.visualizer.engines.lwjgl.recording;
 
+import de.gaalop.visualizer.engines.lwjgl.SimpleLwJglRenderingEngine;
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
 import java.util.LinkedList;
-import org.lwjgl.opengl.Display;
+//import org.lwjgl.opengl.Display;
 
 /**
  * Implements a thread that transforms a bytebuffer to an image.
@@ -63,8 +64,8 @@ public class TransformationThread extends Thread {
      */
     private BufferedImage transformPixelsRGBBuffer2ARGB_ByHand(
 			ByteBuffer pixelsRGB) {
-            int width = Display.getDisplayMode().getWidth();
-            int height = Display.getDisplayMode().getHeight();
+            int width = SimpleLwJglRenderingEngine.getMaximumWidth(); //Display.getDisplayMode().getWidth();
+            int height = SimpleLwJglRenderingEngine.getMaximumHeight(); //Display.getDisplayMode().getHeight();
 
             // Transform the ByteBuffer and get it as pixeldata.
 

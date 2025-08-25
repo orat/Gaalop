@@ -1,8 +1,9 @@
 package de.gaalop.visualizer.engines.lwjgl.recording;
 
+import de.gaalop.visualizer.engines.lwjgl.SimpleLwJglRenderingEngine;
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
-import org.lwjgl.opengl.Display;
+//import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
 /**
@@ -25,13 +26,15 @@ public abstract class Recorder {
     public void makeScreenshot() {
         curTime = System.currentTimeMillis();
        
-        ByteBuffer screenBuffer = ByteBuffer.allocateDirect(Display.getDisplayMode().getWidth() * Display.getDisplayMode().getHeight() * 3);
+        ByteBuffer screenBuffer = ByteBuffer.allocateDirect(/*Display.getDisplayMode().
+                getWidth()*/ SimpleLwJglRenderingEngine.getMaximumWidth() * /*Display.getDisplayMode().getHeight()*/
+                SimpleLwJglRenderingEngine.getMaximumHeight() * 3);
         
         try {
                 GL11.glReadBuffer(GL11.GL_BACK);
                 GL11.glPixelStorei(GL11.GL_PACK_ALIGNMENT, 1);
-                GL11.glReadPixels(0, 0, Display.getDisplayMode().getWidth(),
-                                Display.getDisplayMode().getHeight(), GL11.GL_RGB,
+                GL11.glReadPixels(0, 0, /*Display.getDisplayMode().getWidth()*/SimpleLwJglRenderingEngine.getMaximumWidth(),
+                                /*Display.getDisplayMode().getHeight()*/SimpleLwJglRenderingEngine.getMaximumHeight(), GL11.GL_RGB,
                                 GL11.GL_UNSIGNED_BYTE, screenBuffer);
                 
                 long delay = (lastTime == -1) ? 0: curTime-lastTime;

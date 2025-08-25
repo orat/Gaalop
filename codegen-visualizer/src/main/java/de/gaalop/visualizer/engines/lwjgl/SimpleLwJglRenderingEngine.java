@@ -7,11 +7,22 @@ import de.gaalop.visualizer.Rendering;
 import java.util.HashMap;
 import java.util.HashSet;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.glu.Sphere;
+import static org.lwjgl.opengl.GL11.GL_POINTS;
+import static org.lwjgl.opengl.GL11.glDrawArrays;
+import static org.lwjgl.opengl.GL11.glPointSize;
+//import org.lwjgl.util.glu.Sphere;
 
 /**
- * Implements a simple drawing of the points
+ * Implements a simple drawing of the points of a point cloud.
  * @author Christian Steinmetz
+ * 
+ * example:
+ * https://stackoverflow.com/questions/29113631/lwjgl-3-wont-draw-a-line
+ * rendering of lines
+ * 
+ * https://gamedev.stackexchange.com/questions/100860/drawing-fonts-with-lwjgl3-with-opengl
+ * rendering fonts
+ * 
  */
 public class SimpleLwJglRenderingEngine extends LwJglRenderingEngine {
     
@@ -38,8 +49,7 @@ public class SimpleLwJglRenderingEngine extends LwJglRenderingEngine {
             GL11.glEnd();
             
             for (String cloud: clouds.keySet()) 
-                if (visibleObjects.contains(cloud))
-                {
+                if (visibleObjects.contains(cloud)){
                      paintPointCloud(clouds.get(cloud));
                 }
             
@@ -49,14 +59,26 @@ public class SimpleLwJglRenderingEngine extends LwJglRenderingEngine {
     }
 
     private void paintPointCloud(PointCloud pointCloud) {
-        Sphere s = new Sphere();
+        //Sphere s = new Sphere();
+        
+        // TODO test
+        //SphereMesh s = new SphereMesh();
+        
         //Use the color
-        GL11.glColor4d(pointCloud.color.getRed()/255.0d, pointCloud.color.getGreen()/255.0d, pointCloud.color.getBlue()/255.0d, pointCloud.color.getAlpha()/255.0d);
+        GL11.glColor4d(pointCloud.color.getRed()/255.0d, pointCloud.color.getGreen()/255.0d, 
+                       pointCloud.color.getBlue()/255.0d, pointCloud.color.getAlpha()/255.0d);
 
+        //
+        glPointSize(0.04f);
+         
         for (Point3d p: pointCloud.points) {
             GL11.glPushMatrix();
             GL11.glTranslated(p.x,p.y,p.z);
-            s.draw(0.04f, 3, 3);
+            
+            //
+            glDrawArrays(GL_POINTS, 0, 1);
+ 
+            //s.draw(0.04f, 3, 3);
             GL11.glPopMatrix();
         }
     }

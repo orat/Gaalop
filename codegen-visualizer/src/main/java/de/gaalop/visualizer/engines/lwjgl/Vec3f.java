@@ -1,6 +1,9 @@
 package de.gaalop.visualizer.engines.lwjgl;
 
 /**
+ * FIXME 
+ * use JOML class instead?
+ * 
  * Represents a 3-vector in float precision
  * @author Christian Steinmetz
  */
