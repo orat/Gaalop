@@ -250,7 +250,7 @@ public abstract class LwJgl3RenderingEngine extends RenderingEngine {
 
             //Create the window with the specified title.
             window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, 
-                        "Gaalop 3D Visualization Window V2", monitor, 0);       
+                        "Gaalop 3D Visualization Window V2", 0, 0);       
             // Display.setTitle("Gaalop 3D Visualization Window");
             // Display.setDisplayMode(new DisplayMode(width, height));
             if(window == 0) {
