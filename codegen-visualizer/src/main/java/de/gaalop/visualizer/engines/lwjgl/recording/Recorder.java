@@ -1,9 +1,8 @@
 package de.gaalop.visualizer.engines.lwjgl.recording;
 
-import de.gaalop.visualizer.engines.lwjgl.SimpleLwJglRenderingEngine;
+import de.gaalop.visualizer.engines.lwjgl.RenderingEngine;
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
-//import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
 /**
@@ -18,6 +17,18 @@ public abstract class Recorder {
     private long curTime = -1;
 
     private TransformationThread thread;
+    private RenderingEngine renderingEngine;
+    
+    public Recorder(RenderingEngine renderingEngine){
+        this.renderingEngine = renderingEngine;
+    }
+    
+    public int getWidth(){
+        return renderingEngine.getWidth();
+    }
+    public int getHeight(){
+        return renderingEngine.getHeight();
+    }
     
     /**
      * Make a screenshot from the current LWJGL Display
@@ -27,14 +38,14 @@ public abstract class Recorder {
         curTime = System.currentTimeMillis();
        
         ByteBuffer screenBuffer = ByteBuffer.allocateDirect(/*Display.getDisplayMode().
-                getWidth()*/ SimpleLwJglRenderingEngine.getMaximumWidth() * /*Display.getDisplayMode().getHeight()*/
-                SimpleLwJglRenderingEngine.getMaximumHeight() * 3);
+                getWidth()*/ renderingEngine.getWidth() * /*Display.getDisplayMode().getHeight()*/
+                renderingEngine.getHeight() * 3);
         
         try {
                 GL11.glReadBuffer(GL11.GL_BACK);
                 GL11.glPixelStorei(GL11.GL_PACK_ALIGNMENT, 1);
-                GL11.glReadPixels(0, 0, /*Display.getDisplayMode().getWidth()*/SimpleLwJglRenderingEngine.getMaximumWidth(),
-                                /*Display.getDisplayMode().getHeight()*/SimpleLwJglRenderingEngine.getMaximumHeight(), GL11.GL_RGB,
+                GL11.glReadPixels(0, 0, /*Display.getDisplayMode().getWidth()*/renderingEngine.getWidth(),
+                                /*Display.getDisplayMode().getHeight()*/renderingEngine.getHeight(), GL11.GL_RGB,
                                 GL11.GL_UNSIGNED_BYTE, screenBuffer);
                 
                 long delay = (lastTime == -1) ? 0: curTime-lastTime;

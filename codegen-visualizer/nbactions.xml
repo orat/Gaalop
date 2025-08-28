@@ -8,8 +8,11 @@
             </goals>
             <properties>
                 <exec.classpathScope>runtime</exec.classpathScope>
-                <exec.args>-classpath %classpath de.gaalop.visualizer.VisualizerCodeGenerator</exec.args>
+                <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
                 <exec.executable>java</exec.executable>
+                <exec.vmArgs>--enable-native-access=ALL-UNNAMED</exec.vmArgs>
+                <exec.appArgs></exec.appArgs>
+                <exec.mainClass>de.gaalop.visualizer.VisualizerCodeGenerator</exec.mainClass>
             </properties>
         </action>
         <action>
@@ -20,9 +23,12 @@
             </goals>
             <properties>
                 <exec.classpathScope>runtime</exec.classpathScope>
-                <exec.args>-Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address} -classpath %classpath de.gaalop.visualizer.VisualizerCodeGenerator</exec.args>
+                <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
                 <jpda.listen>true</jpda.listen>
                 <exec.executable>java</exec.executable>
+                <exec.vmArgs>--enable-native-access=ALL-UNNAMED -agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address}</exec.vmArgs>
+                <exec.appArgs></exec.appArgs>
+                <exec.mainClass>de.gaalop.visualizer.VisualizerCodeGenerator</exec.mainClass>
             </properties>
         </action>
         <action>
@@ -32,9 +38,12 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.1.1:exec</goal>
             </goals>
             <properties>
-                <exec.args>${profiler.args} -classpath %classpath de.gaalop.visualizer.VisualizerCodeGenerator</exec.args>
+                <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
                 <profiler.action>profile</profiler.action>
                 <exec.executable>${profiler.java}</exec.executable>
+                <exec.vmArgs>--enable-native-access=ALL-UNNAMED</exec.vmArgs>
+                <exec.appArgs></exec.appArgs>
+                <exec.mainClass>de.gaalop.visualizer.VisualizerCodeGenerator</exec.mainClass>
             </properties>
         </action>
     </actions>

@@ -1,6 +1,7 @@
 package de.gaalop.visualizer.engines.lwjgl.recording;
 
-import de.gaalop.visualizer.engines.lwjgl.LwJglRenderingEngine;
+import de.gaalop.visualizer.engines.lwjgl.LwJgl3RenderingEngine;
+import de.gaalop.visualizer.engines.lwjgl.RenderingEngine;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,6 +19,10 @@ public class GIFRecorder extends Recorder {
     
     private AnimatedGifEncoder encoder;
 
+    public GIFRecorder(RenderingEngine renderingEngine){
+        super(renderingEngine);
+    }
+    
     @Override
     public void _addFrame(BufferedImage image, long delay) {
         encoder.setDelay((int) delay);
@@ -58,7 +63,7 @@ public class GIFRecorder extends Recorder {
             }
             
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(LwJglRenderingEngine.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LwJgl3RenderingEngine.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

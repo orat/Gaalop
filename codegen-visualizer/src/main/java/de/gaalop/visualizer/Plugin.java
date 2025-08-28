@@ -18,8 +18,8 @@ import org.apache.commons.logging.LogFactory;
  */
 public class Plugin extends Observable implements CodeGeneratorPlugin {
 
-    @ConfigurationProperty(type = Type.DIRPATH)
-    public String lwJglNativePath = "/usr/lib/jni/";
+    //@ConfigurationProperty(type = Type.DIRPATH)
+    //public String lwJglNativePath = "/usr/lib/jni/";
 
     private Log log = LogFactory.getLog(Plugin.class);
 
@@ -40,7 +40,7 @@ public class Plugin extends Observable implements CodeGeneratorPlugin {
 
     @Override
     public CodeGenerator createCodeGenerator() {
-        return new NewDrawSettingsCodeGen(lwJglNativePath);
+        return new NewDrawSettingsCodeGen(/*lwJglNativePath*/);
     }
 
     @Override
@@ -63,12 +63,12 @@ public class Plugin extends Observable implements CodeGeneratorPlugin {
     	notifyObservers(new Notifications.Error(error));
     }
 
-    public String getLwJglNativePath() {
+    /*public String getLwJglNativePath() {
         return lwJglNativePath;
     }
 
     public void setLwJglNativePath(String lwJglNativePath) {
         this.lwJglNativePath = lwJglNativePath;
-    }
+    }*/
     
 }

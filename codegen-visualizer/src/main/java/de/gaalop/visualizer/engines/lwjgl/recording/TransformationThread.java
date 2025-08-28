@@ -13,7 +13,7 @@ import java.util.LinkedList;
  */
 public class TransformationThread extends Thread {
     
-    private final LinkedList<RecByteBufferAndTime> list = new LinkedList<RecByteBufferAndTime>();
+    private final LinkedList<RecByteBufferAndTime> list = new LinkedList<>();
     
     private boolean terminate = false;
     
@@ -64,8 +64,8 @@ public class TransformationThread extends Thread {
      */
     private BufferedImage transformPixelsRGBBuffer2ARGB_ByHand(
 			ByteBuffer pixelsRGB) {
-            int width = SimpleLwJglRenderingEngine.getMaximumWidth(); //Display.getDisplayMode().getWidth();
-            int height = SimpleLwJglRenderingEngine.getMaximumHeight(); //Display.getDisplayMode().getHeight();
+            int width = recorder.getWidth(); //Display.getDisplayMode().getWidth();
+            int height = recorder.getHeight(); //Display.getDisplayMode().getHeight();
 
             // Transform the ByteBuffer and get it as pixeldata.
 

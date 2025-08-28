@@ -50,7 +50,7 @@ import javax.swing.event.ChangeEvent;
  */
 public class NewDrawSettingsCodeGen extends DrawSettings implements CodeGenerator, Rendering {
     
-    private String lwJglNativePath;
+    //private String lwJglNativePath;
     
     private LinkedList<AssignmentNode> graphAssignmentNodes;
     private Differentiater differentiater;
@@ -69,8 +69,8 @@ public class NewDrawSettingsCodeGen extends DrawSettings implements CodeGenerato
     
     private boolean renderIn2d; //for cr4d
 
-    public NewDrawSettingsCodeGen(String lwJglNativePath) {
-        this.lwJglNativePath = lwJglNativePath;
+    public NewDrawSettingsCodeGen(/*String lwJglNativePath*/) {
+        //this.lwJglNativePath = lwJglNativePath;
         
         jButton_Repaint.addActionListener(new ActionListener() {
             @Override
@@ -162,7 +162,7 @@ public class NewDrawSettingsCodeGen extends DrawSettings implements CodeGenerato
     public Set<OutputFile> generate(ControlFlowGraph in) throws CodeGeneratorException {
         renderIn2d = ("cr4d".equals(in.algebraName));
         
-        renderingEngine = new SimpleLwJglRenderingEngine(lwJglNativePath, this);
+        renderingEngine = new SimpleLwJglRenderingEngine(/*lwJglNativePath, */this);
         renderingEngine.start();
         
         //extract informations from the graph

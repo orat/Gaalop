@@ -24,10 +24,10 @@ import static org.lwjgl.opengl.GL11.glPointSize;
  * rendering fonts
  * 
  */
-public class SimpleLwJglRenderingEngine extends LwJglRenderingEngine {
+public class SimpleLwJglRenderingEngine extends LwJgl3RenderingEngine {
     
-    public SimpleLwJglRenderingEngine(String lwJglNativePath, Rendering rendering) {
-        super(lwJglNativePath, rendering);
+    public SimpleLwJglRenderingEngine(/*String lwJglNativePath, */Rendering rendering) {
+        super(/*lwJglNativePath, */rendering);
     }
 
    @Override

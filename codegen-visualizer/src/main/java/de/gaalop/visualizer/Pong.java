@@ -143,6 +143,7 @@ public class Pong {
      * The time of the start of the last loop. Used for delta time calculation.
      */
     private double lastTime;
+    
     /**
      * Shaders.
      */
@@ -164,10 +165,12 @@ public class Pong {
             + "void main(void) {\n"
             + "    colourOut = vec4(vColour.rgb, 1);\n"
             + "}\n";
+    
     /**
      * OpenGL object handles.
      */
     private int program, vao, vbo;
+    
     /**
      * The location and a buffer representing the modelViewMatrix uniform.
      */
@@ -272,7 +275,7 @@ public class Pong {
 
         }));
         
-        //Setup the cursor pos callback.
+        //Setup the mouse button callback.
         glfwSetMouseButtonCallback(window, (mouseButtonCallback = new GLFWMouseButtonCallback() {
 
             @Override
@@ -306,7 +309,7 @@ public class Pong {
         int vertexId = glCreateShader(GL_VERTEX_SHADER);
         glShaderSource(vertexId, vertexSrc);
         glCompileShader(vertexId);
-        if(glGetShaderi(vertexId, GL_COMPILE_STATUS) != GL_TRUE) {
+        if (glGetShaderi(vertexId, GL_COMPILE_STATUS) != GL_TRUE) {
             System.out.println(glGetShaderInfoLog(vertexId, Integer.MAX_VALUE));
             throw new RuntimeException();
         }
@@ -696,6 +699,9 @@ public class Pong {
      * To be called when the game's framebuffer is resized. Updates the projection
      * matrix.
      * 
+     * FIXME 
+     * scheint mir die mit maus geänderte Camerapose nicht zu berücksichtigen
+     * 
      * @param framebufferWidth The width of the new framebuffer
      * @param framebufferHeight  The height of the new framebuffer
      */
@@ -969,7 +975,7 @@ public class Pong {
      * @throws java.io.IOException
      */
     public static void main(String[] args) throws IOException {
-        String[] natives = new String[] {
+        /*String[] natives = new String[] {
             "glfw.dll",
             "glfw32.dll",
             "jemalloc.dll",
@@ -998,7 +1004,7 @@ public class Pong {
                 }
             }
         }
-        System.setProperty("org.lwjgl.librarypath", tmpDir.getAbsolutePath());
+        System.setProperty("org.lwjgl.librarypath", tmpDir.getAbsolutePath());*/
         Pong p = new Pong();
         p.init();
         p.loop();
