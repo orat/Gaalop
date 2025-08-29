@@ -50,6 +50,7 @@
         <module>codegen-ganja</module>
         <module>codegen-matlab</module>
         <module>codegen-python</module>
+        <module>codegen-jsonexport</module>
         
 	<!-- interface -->
         <module>starter</module>

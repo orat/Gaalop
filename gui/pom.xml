@@ -177,5 +177,10 @@
             <artifactId>codegen-python</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>de.gaalop</groupId>
+            <artifactId>codegen-jsonexport</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 </project>
