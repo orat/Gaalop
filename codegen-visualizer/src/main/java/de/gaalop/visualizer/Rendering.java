@@ -2,6 +2,8 @@ package de.gaalop.visualizer;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -20,13 +22,13 @@ public interface Rendering {
      * Returns the point clouds to render
      * @return The point clouds
      */
-    public HashMap<String, PointCloud> getDataSet();
+    public Map<String, PointCloud> getDataSet();
     
     /**
      * Returns a set of all visible objects
      * @return The set of all visible objects
      */
-    public HashSet<String> getVisibleObjects();
+    public Set<String> getVisibleObjects();
     
     /**
      * Returns the loaded pointClouds

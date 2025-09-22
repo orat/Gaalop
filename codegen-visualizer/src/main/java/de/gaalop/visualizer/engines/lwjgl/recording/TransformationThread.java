@@ -1,6 +1,6 @@
 package de.gaalop.visualizer.engines.lwjgl.recording;
 
-import de.gaalop.visualizer.engines.lwjgl.SimpleLwJglRenderingEngine;
+import de.gaalop.visualizer.engines.lwjgl.LwJglPointCloudRenderingEngine;
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
 import java.util.LinkedList;

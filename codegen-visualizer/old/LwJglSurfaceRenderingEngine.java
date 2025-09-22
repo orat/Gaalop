@@ -4,8 +4,8 @@ import de.gaalop.visualizer.Point3d;
 import de.gaalop.visualizer.PointCloud;
 import de.gaalop.visualizer.PointClouds;
 import de.gaalop.visualizer.Rendering;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import org.lwjgl.opengl.GL11;
 import static org.lwjgl.opengl.GL11.GL_POINTS;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
@@ -24,18 +24,20 @@ import static org.lwjgl.opengl.GL11.glPointSize;
  * rendering fonts
  * 
  */
-public class SimpleLwJglRenderingEngine extends LwJgl3RenderingEngine {
+public class LwJglSurfaceRenderingEngine extends LwJgl3RenderingEngine {
     
-    public SimpleLwJglRenderingEngine(/*String lwJglNativePath, */Rendering rendering) {
+    public LwJglSurfaceRenderingEngine(/*String lwJglNativePath, */Rendering rendering) {
         super(/*lwJglNativePath, */rendering);
     }
 
    @Override
-   public void draw(HashMap<String, PointCloud> clouds, HashSet<String> visibleObjects, PointClouds loadedClouds) {
+   public void draw(Map<String, PointCloud> clouds, Set<String> visibleObjects, PointClouds loadedClouds) {
     
             if (clouds == null) return;
             
             //draw axes
+            //TODO
+            // code ist deprecated, neu schreiben
             GL11.glBegin(GL11.GL_LINES);
             GL11.glColor4d(1,0,0,0);//Red
             GL11.glVertex3d(0, 0, 0);

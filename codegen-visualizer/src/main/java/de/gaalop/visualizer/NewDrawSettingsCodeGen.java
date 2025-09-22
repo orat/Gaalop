@@ -17,7 +17,7 @@ import de.gaalop.dfg.MultivectorComponent;
 import de.gaalop.dfg.Variable;
 import de.gaalop.visitors.ReplaceVisitor;
 import de.gaalop.visualizer.engines.lwjgl.RenderingEngine;
-import de.gaalop.visualizer.engines.lwjgl.SimpleLwJglRenderingEngine;
+import de.gaalop.visualizer.engines.lwjgl.LwJglPointCloudRenderingEngine;
 import de.gaalop.visualizer.gui.DrawSettings;
 import de.gaalop.visualizer.gui.InputsPanel;
 import de.gaalop.visualizer.gui.SettingsPanel;
@@ -162,8 +162,9 @@ public class NewDrawSettingsCodeGen extends DrawSettings implements CodeGenerato
     public Set<OutputFile> generate(ControlFlowGraph in) throws CodeGeneratorException {
         renderIn2d = ("cr4d".equals(in.algebraName));
         
-        renderingEngine = new SimpleLwJglRenderingEngine(/*lwJglNativePath, */this);
+        renderingEngine = new LwJglPointCloudRenderingEngine(/*lwJglNativePath, */this);
         renderingEngine.start();
+        
         
         //extract informations from the graph
         AssignmentNodeCollector collector = new AssignmentNodeCollector();

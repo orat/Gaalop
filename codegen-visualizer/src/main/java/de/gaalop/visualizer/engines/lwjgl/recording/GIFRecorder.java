@@ -2,6 +2,7 @@ package de.gaalop.visualizer.engines.lwjgl.recording;
 
 import de.gaalop.visualizer.engines.lwjgl.LwJgl3RenderingEngine;
 import de.gaalop.visualizer.engines.lwjgl.RenderingEngine;
+import de.gaalop.visualizer.engines.lwjgl.scene.Window;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -19,8 +20,9 @@ public class GIFRecorder extends Recorder {
     
     private AnimatedGifEncoder encoder;
 
-    public GIFRecorder(RenderingEngine renderingEngine){
-        super(renderingEngine);
+    public GIFRecorder(Window window /*RenderingEngine renderingEngine*/){
+        //super(renderingEngine);
+        super(window);
     }
     
     @Override
