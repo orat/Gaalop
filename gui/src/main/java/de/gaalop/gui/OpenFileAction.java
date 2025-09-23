@@ -20,11 +20,11 @@ import java.io.IOException;
 public class OpenFileAction extends AbstractAction {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 8586884650535842171L;
+     * 
+     */
+    private static final long serialVersionUID = 8586884650535842171L;
 
-	private Log log = LogFactory.getLog(OpenFileAction.class);
+    private Log log = LogFactory.getLog(OpenFileAction.class);
 
     private CodeParserPlugin plugin;
 

@@ -34,6 +34,10 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class MainForm {
     private JPanel contentPane;
     private JButton optimizeButton;
+    
+    // WORKAROUND
+    private HeapView heapView;
+    
     private JButton configureButton;
     private JLabel logoIcon;
     private JTabbedPane tabbedPane;
@@ -459,6 +463,10 @@ public class MainForm {
         optimizeButton.setMnemonic('I');
         optimizeButton.setDisplayedMnemonicIndex(3);
         toolBar1.add(optimizeButton);
+        
+        //WORKAROUND added by hand
+        heapView = new HeapView();
+        toolBar1.add(heapView);
         tabbedPane = new JTabbedPane();
         tabbedPane.setFont(font);
         contentPane.add(tabbedPane, BorderLayout.CENTER);

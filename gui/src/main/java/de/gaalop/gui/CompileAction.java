@@ -20,7 +20,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.io.FilenameUtils;
+//import org.apache.commons.io.FilenameUtils;
 
 /**
  * This command object performs a compilation run.
@@ -31,7 +31,7 @@ public class CompileAction extends AbstractAction {
 
 	private Log log = LogFactory.getLog(CompileAction.class);
 
-    private final SourceFilePanel sourcePanel;
+        private final SourceFilePanel sourcePanel;
 
 	private final StatusBar statusBar;
         
@@ -96,19 +96,9 @@ public class CompileAction extends AbstractAction {
         try {
              Field field = algebra.getClass().getField("additionalBaseDirectory");
              algebraBaseDirectory = BeanUtils.getProperty(algebra, field.getName()).trim();
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(PanelPluginSelection.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvocationTargetException ex) {
-            Logger.getLogger(PanelPluginSelection.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NoSuchMethodException ex) {
-            Logger.getLogger(PanelPluginSelection.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NoSuchFieldException ex) {
-            Logger.getLogger(PanelPluginSelection.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SecurityException ex) {
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | NoSuchFieldException | SecurityException ex) {
             Logger.getLogger(PanelPluginSelection.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
         
         // create optimitzation strategy from plugin and add StatusBar as listener to be notified
         // when progress is made.
