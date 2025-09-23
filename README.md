@@ -6,7 +6,8 @@ Gaalop (Geometic Algebra Algorithms Optimizer) is a software to compile and opti
 
 # Whats new in this fork
 - UI to visualize product tables
-- Some bug fixes in the context of precalculation tables
+- Some bug fixes in the context of precalculation tables/algebra definition reader from file
+- UI to visualize heap-size, max heap-size  (textual/graphically) and an action to execute garbage collection
 - Additional Wiki pages
   
 # What is Geometric Algebra?
