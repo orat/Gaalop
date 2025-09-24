@@ -4,7 +4,7 @@
 <comment>Gaalop Configuration File</comment>
 <entry key="de.gaalop.csharp.Plugin.useDouble">false</entry>
 <entry key="de.gaalop.tba.Plugin.optGCSE">true</entry>
-<entry key="lastUsedAlgebra">QRA7</entry>
+<entry key="lastUsedAlgebra">QRA8</entry>
 <entry key="de.gaalop.tba.Plugin.optOneExpressionRemoval">true</entry>
 <entry key="de.gaalop.csharp.Plugin.standalone">true</entry>
 <entry key="lastUsedOptimization">de.gaalop.tba.Plugin</entry>
@@ -33,11 +33,11 @@
 <entry key="de.gaalop.tba.Plugin.numberOfRoundingDigits">6</entry>
 <entry key="de.gaalop.csharp.Plugin.optimizeOnSave">true</entry>
 <entry key="de.gaalop.globalSettings.Plugin.optMaxima">true</entry>
-<entry key="de.gaalop.cpp.Plugin.standalone">true</entry>
 <entry key="de.gaalop.clucalc.output.Plugin.suffix">_opt</entry>
+<entry key="de.gaalop.cpp.Plugin.standalone">true</entry>
 <entry key="de.gaalop.globalSettings.Plugin.outputToNormalBase">false</entry>
-<entry key="de.gaalop.cpp.Plugin.useDouble">false</entry>
 <entry key="de.gaalop.compressed.Plugin.useDouble">false</entry>
+<entry key="de.gaalop.cpp.Plugin.useDouble">false</entry>
 <entry key="de.gaalop.gapp.Plugin.useScalarFunctions">true</entry>
 <entry key="de.gaalop.tba.Plugin.optUnusedAssignments">true</entry>
 <entry key="de.gaalop.algebra.Plugin.additionalBaseDirectory">/home/oliver/algebras</entry>

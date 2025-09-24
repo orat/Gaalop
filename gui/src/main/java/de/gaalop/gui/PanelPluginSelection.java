@@ -212,7 +212,7 @@ public class PanelPluginSelection extends JPanel {
         errorMessage = "";
         errorPlugin1 = null;
         errorPlugin2 = null;
-        LinkedList<Plugin> plugins = new LinkedList<Plugin>();
+        LinkedList<Plugin> plugins = new LinkedList<>();
         plugins.add(getVisualizerStrategyPlugin());
         plugins.add(getAlgebraStrategyPlugin());
         plugins.add(getOptimizationStrategyPlugin());

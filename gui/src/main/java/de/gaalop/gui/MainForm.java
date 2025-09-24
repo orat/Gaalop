@@ -1,7 +1,7 @@
 package de.gaalop.gui;
 
 import de.gaalop.*;
-import java.awt.event.ItemEvent;
+//import java.awt.event.ItemEvent;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import java.io.IOException;
@@ -11,13 +11,13 @@ import java.util.Set;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+//import javax.swing.event.ChangeListener;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemListener;
+//import java.awt.event.ItemListener;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -62,107 +62,82 @@ public class MainForm {
         //contentPane.setPreferredSize(new Dimension(900, 480));
 
         // The optimize button shows a menu with available output formats
-        optimizeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent event) {
-                Optimize();
-            }
+        optimizeButton.addActionListener((ActionEvent event) -> {
+            Optimize();
         });
 
-        configureButton.addActionListener(new ActionListener() {
-
-          @Override
-          public void actionPerformed(ActionEvent e) {
+        configureButton.addActionListener((ActionEvent e) -> {
             new ConfigurationPanel(tabbedPane);
-          }
         });
 
         // New file shows a menu with available code parsers
-        newFileButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                List<CodeParserPlugin> plugins = new ArrayList<CodeParserPlugin>();
-                plugins.addAll(Plugins.getCodeParserPlugins());
-                Collections.sort(plugins, new PluginSorter());
-                if (plugins.size() == 1) {
-                    NewFileAction action = new NewFileAction(plugins.get(0), tabbedPane);
-                    action.actionPerformed(null);
-                } else {
-                    JPopupMenu menu = new JPopupMenu("New File");
-                    for (CodeParserPlugin plugin : plugins) {
-                        menu.add(new NewFileAction(plugin, tabbedPane));
-                    }
-                    menu.show(newFileButton, 0, newFileButton.getBounds().height);
+        newFileButton.addActionListener((ActionEvent e) -> {
+            List<CodeParserPlugin> plugins = new ArrayList<>();
+            plugins.addAll(Plugins.getCodeParserPlugins());
+            Collections.sort(plugins, new PluginSorter());
+            if (plugins.size() == 1) {
+                NewFileAction action = new NewFileAction(plugins.get(0), tabbedPane);
+                action.actionPerformed(null);
+            } else {
+                JPopupMenu menu = new JPopupMenu("New File");
+                for (CodeParserPlugin plugin : plugins) {
+                    menu.add(new NewFileAction(plugin, tabbedPane));
                 }
+                menu.show(newFileButton, 0, newFileButton.getBounds().height);
             }
         });
 
         // Save file opens up a save file dialog
-        saveFileButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-               Save(false);
-            }
+        saveFileButton.addActionListener((ActionEvent e) -> {
+            Save(false);
         });
 
         // The tabbed pane needs to enable/disable the save/optimize buttons based on the selected tab
         // The welcome tab cannot be saved and optimized
-        tabbedPane.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                if (tabbedPane.getSelectedComponent() instanceof SourceFilePanel) {
-                    saveFileButton.setEnabled(true);
-                    optimizeButton.setEnabled(true);
-                    closeButton.setEnabled(true);
-                } else if (tabbedPane.getSelectedComponent() instanceof ConfigurationPanel) {
-                	saveFileButton.setEnabled(false);
-                	optimizeButton.setEnabled(false);
-                	closeButton.setEnabled(true);
-                } else {
-                    saveFileButton.setEnabled(false);
-                    optimizeButton.setEnabled(false);
-                    closeButton.setEnabled(false);
-                }
+        tabbedPane.addChangeListener((ChangeEvent e) -> {
+            if (tabbedPane.getSelectedComponent() instanceof SourceFilePanel) {
+                saveFileButton.setEnabled(true);
+                optimizeButton.setEnabled(true);
+                closeButton.setEnabled(true);
+            } else if (tabbedPane.getSelectedComponent() instanceof ConfigurationPanel) {
+                saveFileButton.setEnabled(false);
+                optimizeButton.setEnabled(false);
+                closeButton.setEnabled(true);
+            } else {
+                saveFileButton.setEnabled(false);
+                optimizeButton.setEnabled(false);
+                closeButton.setEnabled(false);
             }
         });
 
         // The open file button should open a menu with available code parsers
-        openFileButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                List<CodeParserPlugin> plugins = new ArrayList<CodeParserPlugin>();
-                plugins.addAll(Plugins.getCodeParserPlugins());
-                Collections.sort(plugins, new PluginSorter());
-
-                if (plugins.size() == 1) {
-                    OpenFileAction action = new OpenFileAction(plugins.get(0), tabbedPane);
-                    action.actionPerformed(null);
-                } else {
-                    JPopupMenu menu = new JPopupMenu("Open File");
-                    for (CodeParserPlugin plugin : plugins) {
-                        menu.add(new OpenFileAction(plugin, tabbedPane));
-                    }
-                    menu.show(openFileButton, 0, openFileButton.getBounds().height);
+        openFileButton.addActionListener((ActionEvent e) -> {
+            List<CodeParserPlugin> plugins = new ArrayList<>();
+            plugins.addAll(Plugins.getCodeParserPlugins());
+            Collections.sort(plugins, new PluginSorter());
+            
+            if (plugins.size() == 1) {
+                OpenFileAction action = new OpenFileAction(plugins.get(0), tabbedPane);
+                action.actionPerformed(null);
+            } else {
+                JPopupMenu menu = new JPopupMenu("Open File");
+                for (CodeParserPlugin plugin : plugins) {
+                    menu.add(new OpenFileAction(plugin, tabbedPane));
                 }
+                menu.show(openFileButton, 0, openFileButton.getBounds().height);
             }
         });
 
         closeButton.setAction(new CloseAction(tabbedPane));
 
         // Make the welcome tab open hyperlinks in a new browser window
-        welcomeToGaalopWelcomeEditorPane.addHyperlinkListener(new HyperlinkListener() {
-            @Override
-            public void hyperlinkUpdate(HyperlinkEvent e) {
-                if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                    URL u = e.getURL();
-                    try {
-                        Desktop.getDesktop().browse(u.toURI());
-                    } catch (IOException e1) {
-                        log.error(e1);
-                    } catch (URISyntaxException e1) {
-                        log.error(e1);
-                    }
+        welcomeToGaalopWelcomeEditorPane.addHyperlinkListener((HyperlinkEvent e) -> {
+            if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                URL u = e.getURL();
+                try {
+                    Desktop.getDesktop().browse(u.toURI());
+                } catch (IOException | URISyntaxException e1) {
+                    log.error(e1);
                 }
             }
         });
@@ -284,11 +259,8 @@ public class MainForm {
     private void saveToFile(File toFile, SourceFilePanel sourceFilePanel) {
         // While saving from Gaalop, we dont wanna additionally optimize
         try {
-            PrintWriter printWriter = new PrintWriter(toFile);
-            try {
+            try (PrintWriter printWriter = new PrintWriter(toFile)) {
                 printWriter.print(sourceFilePanel.getInputFile().getContent());
-            } finally {
-                printWriter.close();
             }
 
             sourceFilePanel.setFile(toFile);
@@ -360,7 +332,7 @@ public class MainForm {
     }
 
     public void saveOpenedFiles() {
-        List<SourceFilePanel> panels = new ArrayList<SourceFilePanel>(tabbedPane.getTabCount());
+        List<SourceFilePanel> panels = new ArrayList<>(tabbedPane.getTabCount());
         for (int i = 0; i < tabbedPane.getTabCount(); ++i) {
             Component component = tabbedPane.getComponentAt(i);
             if (component instanceof SourceFilePanel) {
@@ -507,7 +479,7 @@ public class MainForm {
         Save(true);
     }
 
-    Set<String> watchedFilePaths = new HashSet<String>();
+    Set<String> watchedFilePaths = new HashSet<>();
 
     long lastOptimizationTimeMillis = System.currentTimeMillis();
 
@@ -558,7 +530,7 @@ public class MainForm {
                                             Thread.sleep(50);
                                             content = readFile(filePath);
 
-                                        } catch (Exception e) {
+                                        } catch (IOException | InterruptedException e) {
                                             System.out.println("Sleeping or reading failed.");
                                         }
 

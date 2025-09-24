@@ -21,7 +21,7 @@ package de.gaalop.gui;
 import java.awt.AWTEvent;
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Dimension;
+//import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -29,7 +29,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+//import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
@@ -37,8 +37,8 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.text.MessageFormat;
 import java.util.Arrays;
-import java.util.prefs.Preferences;
-import javax.swing.JCheckBoxMenuItem;
+//import java.util.prefs.Preferences;
+//import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -46,20 +46,30 @@ import javax.swing.UIManager;
 
 /**
  * Implements a widget to show the current heap size / max and to trigger a manual GC.
- * Appearance can be customized using the following properties in the LAF
  *
  * @author sky, radim, peter
  * 
- * Copy from openide.actions of Apache Netbeans. Only small changes to integrate
- * into gaalop.
+ * Copy from openide.actions of Apache Netbeans. Only small changes are made to 
+ * integrate into gaalop.<bf>
  * 
  * -XX:-AOTInvokeDynamicLinking -XX:ConcGCThreads=2 -XX:G1ConcRefinementThreads=8 
  * -XX:InitialHeapSize=256437312 -XX:MarkStackSize=4194304 -XX:MaxHeapSize=5368709120 
  * -XX:MinHeapSize=6815736 -XX:+PrintCommandLineFlags -XX:ReservedCodeCacheSize=251658240 
  * -XX:+SegmentedCodeCache -XX:-THPStackMitigation -XX:+UseCompressedOops -XX:+UseG1GC 
  * 
- * -Xmx5g  -verbose -XX:+PrintCommandLineFlags
+ * -Xmx5g -Xss3m -verbose -XX:+PrintCommandLineFlags
  *
+ * JEP 450 marks the introduction of Project Lilliput
+ * -XX:+UnlockExperimentalVMOptions -XX:+UseCompactObjectHeaders
+ * --> no effect found for high dimensional algebras
+ * 
+ * https://openjdk.org/jeps/489
+ * FloatVector
+ * 
+ * https://www.baeldung.com/jvm-configure-stack-sizes
+ * StackSize is default 1M should be set to 3M to avoid StackOverflowErrors 
+ * for high dimension geometric algebras
+ * 
  */
 class HeapView extends JComponent {
 
