@@ -25,7 +25,7 @@ public class TBAOptStrategy implements OptimizationStrategy {
     public void transform(ControlFlowGraph graph) throws OptimizationException {
         CFGImporterFacade importer = new CFGImporterFacade(plugin);
         importer.setProgressListeners(listeners);
-        importer.importGraph(graph);
+        importer.importGraph(graph); // hier drin wird zu viel StackMemory benötigt
         graph.tbaOptimized = true;
     }
     

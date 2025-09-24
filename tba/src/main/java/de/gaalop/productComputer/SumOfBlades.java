@@ -4,6 +4,7 @@ import de.gaalop.tba.BladeRef;
 import de.gaalop.tba.Multivector;
 import java.util.HashMap;
 import java.util.LinkedList;
+import org.eclipse.collections.impl.map.mutable.primitive.ObjectIntHashMap;
 
 /**
  * Represents a sum of weighted blades
@@ -17,7 +18,8 @@ public class SumOfBlades extends LinkedList<SignedBlade> {
      * @param bitCount The maximum number of bits
      * @return The resulting multivector
      */
-    public Multivector toMultivector(HashMap<Blade, Integer> map, int bitCount) {
+    public Multivector toMultivector(/*HashMap<Blade, Integer>*/
+            ObjectIntHashMap<Blade> map, int bitCount) {
         Multivector result = new Multivector();
         for (SignedBlade sb: this) {
             Blade b = new Blade(bitCount, sb);

@@ -16,7 +16,13 @@ import de.gaalop.visitors.CFGReplaceVisitor;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
+import org.eclipse.collections.api.block.procedure.primitive.IntProcedure;
+import org.eclipse.collections.api.list.primitive.ImmutableIntList;
+import org.eclipse.collections.api.list.primitive.MutableIntList;
 
+import org.eclipse.collections.impl.map.mutable.primitive.IntObjectHashMap;
+import org.eclipse.collections.api.map.primitive.MutableIntObjectMap;
+import org.eclipse.collections.api.set.primitive.MutableIntSet;
 /**
  * Implements a method to changeToNormalBase() convert output variables into the plus-minus-base
  * @author Christian Steinmetz
@@ -105,7 +111,9 @@ public class BaseChanger {
         BladeChanger bladeChanger = new BladeChanger(alPC, alFile);
         
         for (String varName: relevantNodes.keySet()) {
-            HashMap<Integer, Expression> bladeExpressionsPlusMinus = new HashMap<Integer, Expression>();  
+            //HashMap<Integer, Expression> bladeExpressionsPlusMinus = new HashMap<>();  
+            MutableIntObjectMap<Expression> bladeExpressionsPlusMinus = new IntObjectHashMap<Expression>();
+            
             LinkedList<AssignmentNode> nodes = relevantNodes.get(varName);
             
             // Do transformation of single variable
@@ -136,11 +144,17 @@ public class BaseChanger {
             
             
             // Sort to ascending indices
-            Integer[] indices = bladeExpressionsPlusMinus.keySet().toArray(new Integer[0]);
-            Arrays.sort(indices);
+            
+            //Integer[] indices = bladeExpressionsPlusMinus.keySet().toArray(new Integer[0]);
+            //Arrays.sort(indices);
 
-            // Create assignment nodes
-            for (Integer bladeIndex: indices) {
+            // MutableIntObjectMap
+            ImmutableIntList indices = bladeExpressionsPlusMinus.keySet().toSortedList().toImmutable(); // .asUnmodifiable()
+            //indices.forEach(new ConstantFoldingProcedure(last, varName, bladeExpressionsPlusMinus, graph));
+            
+            for (int bladeIndex: indices.toArray()){
+            // for (Integer index: indices){
+            
                 Expression value = bladeExpressionsPlusMinus.get(bladeIndex);
 
                 ConstantFolding constantFolding = new ConstantFolding();
@@ -156,4 +170,42 @@ public class BaseChanger {
             }
         }
     }
+        
+    /*private class ConstantFoldingProcedure implements IntProcedure {
+
+        private AssignmentNode last;
+        private final String varName;
+        private final MutableIntObjectMap<Expression> bladeExpressionsPlusMinus;
+        private final ControlFlowGraph graph;
+        
+        ConstantFoldingProcedure(AssignmentNode last, String varName, 
+                MutableIntObjectMap<Expression> bladeExpressionsPlusMinus,
+                ControlFlowGraph graph){
+            this.varName = varName;
+            this.last = last;
+            this.bladeExpressionsPlusMinus = bladeExpressionsPlusMinus;
+            this.graph = graph;
+        }
+        @Override
+        public void accept(int bladeIndex) {
+            Expression value = bladeExpressionsPlusMinus.get(bladeIndex);
+
+                ConstantFolding constantFolding = new ConstantFolding();
+                // do a constant folding on the value
+                value.accept(constantFolding);
+                if (constantFolding.isGraphModified()) {
+                    value = constantFolding.getResultExpr();
+                }
+
+                AssignmentNode newNode = new AssignmentNode(graph, new MultivectorComponent(varName, bladeIndex), value);
+                last.insertAfter(newNode);
+                last = newNode; 
+        }
+
+        //TODO unklar ob ich das überhaupt brauche
+        @Override
+        public void value(int i) {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+    }*/
 }

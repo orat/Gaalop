@@ -88,7 +88,7 @@ public class CFGImporterFacade {
         }
 
 
-
+        // needs much time in profile, also much memory needed?
         CFGImporter builder = new CFGImporter(usedAlgebra, plugin.isScalarFunctions(), graph.getAlgebraDefinitionFile());
         graph.accept(builder);
         

@@ -1,6 +1,7 @@
 package de.gaalop.productComputer;
 
 import java.util.HashMap;
+import org.eclipse.collections.api.map.primitive.MutableIntObjectMap;
 
 /**
  * Provides methods for transforming the base of a SumOfBlades instance
@@ -8,6 +9,7 @@ import java.util.HashMap;
  */
 public class BaseTransformation {
 
+    
     /**
      * Transforms the base of a SumOfBlades instance
      * @param s The SumOfBlades instance
@@ -15,7 +17,8 @@ public class BaseTransformation {
      * @param bitCount The maximum number of bits
      * @return The new transformed SumOfBlades instance
      */
-    public static SumOfBlades transform(SumOfBlades s, HashMap<Integer, SumOfBlades> map, int bitCount) {
+    public static SumOfBlades transform(SumOfBlades s, 
+            /*HashMap<Integer, SumOfBlades>*/ MutableIntObjectMap<SumOfBlades> map, int bitCount) {
         SumOfBlades result = new SumOfBlades();
         for (SignedBlade blade: s) {
             //create lengths array for permutation

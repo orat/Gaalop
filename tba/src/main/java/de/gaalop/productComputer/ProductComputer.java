@@ -4,6 +4,10 @@ import de.gaalop.tba.Multivector;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import org.eclipse.collections.api.map.primitive.MutableIntObjectMap;
+import org.eclipse.collections.impl.map.mutable.primitive.IntObjectHashMap;
+import org.eclipse.collections.impl.map.mutable.primitive.ObjectIntHashMap;
+
 /**
  * Computes the product of two blades
  * @author Christian Steinmetz
@@ -12,11 +16,14 @@ public class ProductComputer {
 
     private int bitCount;
     private byte[] squareMask;
-    private HashMap<Integer, SumOfBlades> mapZIToPM;
-    private HashMap<Integer, SumOfBlades> mapPMToZI;
+    
+    //FIXME
+    // mutable needed? 
+    private MutableIntObjectMap/*HashMap*/</*Integer, */SumOfBlades> mapZIToPM;
+    private MutableIntObjectMap/*HashMap*/</*Integer, */SumOfBlades> mapPMToZI;
 
     private SumOfBlades[] bladeListPM;
-    private HashMap<Blade, Integer> mapBladeToIndex;
+    private ObjectIntHashMap/*HashMap*/<Blade/*, Integer*/> mapBladeToIndex;
 
     // ============================ INITIALIZATION ============================
 
@@ -61,7 +68,9 @@ public class ProductComputer {
      * @param source The map of the algebra definition
      * @param dest The destination map
      */
-    private void initializeMap(String[] base, String[] base2, HashMap<String, LinkedList<BladeStr>> source, HashMap<Integer, SumOfBlades> dest) {
+    private void initializeMap(String[] base, String[] base2, HashMap<String, 
+            LinkedList<BladeStr>> source, /*HashMap<Integer, SumOfBlades>*/
+            MutableIntObjectMap<SumOfBlades> dest) {
         for (String baseElement: source.keySet()) {
             LinkedList<BladeStr> list = source.get(baseElement);
             SumOfBlades sumOfBlades = new SumOfBlades();
@@ -109,11 +118,11 @@ public class ProductComputer {
             squareMask[index] = algebraPC.baseSquaresStr.get(algebraPC.base2[index]);
         
         //initialise map Zeroinf to Plusminus
-        mapZIToPM = new HashMap<Integer, SumOfBlades>();
+        mapZIToPM = IntObjectHashMap.newMap(); // new HashMap<Integer, SumOfBlades>();
         initializeMap(algebraPC.base2, algebraPC.base, algebraPC.mapToPlusMinus, mapZIToPM);
 
         //initialise map Zeroinf to Plusminus
-        mapPMToZI = new HashMap<Integer, SumOfBlades>();
+        mapPMToZI = IntObjectHashMap.newMap(); //new HashMap<Integer, SumOfBlades>();
         initializeMap(algebraPC.base, algebraPC.base2, algebraPC.mapToZeroInf, mapPMToZI);
 
         //initialize blade list in zero inf base
@@ -128,7 +137,7 @@ public class ProductComputer {
 
         //fill indices map and convert blade list to plus minus base
         bladeListPM = new SumOfBlades[bladeListZI.size()];
-        mapBladeToIndex = new HashMap<>();
+        mapBladeToIndex = new ObjectIntHashMap<>(); //new HashMap<>();
         int i=0;
         for (SumOfBlades s: bladeListZI) {
             SignedBlade sb = s.getFirst();
