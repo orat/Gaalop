@@ -2,6 +2,8 @@ package de.gaalop.algebra;
 
 import java.util.Arrays;
 import java.util.LinkedList;
+import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.impl.list.mutable.FastList;
 
 /**
  * Provides methods for blade arrays
@@ -33,8 +35,11 @@ public class BladeArrayRoutines {
     }
 
     private String[] base;
-    private LinkedList<TCBlade> blades = new LinkedList<TCBlade>();
-
+    
+    //private TCBlade[] blades;
+    //private LinkedList<TCBlade> blades = new LinkedList<>();
+    private MutableList<TCBlade> blades = FastList.newListWith();
+    
     public BladeArrayRoutines(String[] base) {
         this.base = base;
     }
@@ -45,7 +50,7 @@ public class BladeArrayRoutines {
      */
     public TCBlade[] createBlades() {
         blades.clear();
-        blades.add(new TCBlade(new String[]{"1"}));
+        blades.add(new TCBlade("1"/*new String[]{"1"})*/));
         for (int k=1;k<=base.length;k++)
             createBladesHelp(new String[0],0,k);
         return blades.toArray(new TCBlade[0]);
