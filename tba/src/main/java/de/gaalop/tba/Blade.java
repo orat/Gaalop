@@ -6,8 +6,10 @@ import de.gaalop.dfg.Expression;
 import de.gaalop.dfg.ExpressionFactory;
 import de.gaalop.dfg.FloatConstant;
 import de.gaalop.visitors.DFGTraversalVisitor;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Vector;
 
 /**
@@ -16,10 +18,10 @@ import java.util.Vector;
  */
 public class Blade {
 
-    private Vector<String> bases;
+    private List/*Vector*/<String> bases;
 
     public Blade() {
-        bases = new Vector<>();
+        bases = new ArrayList/*Vector*/<>();
     }
 
     public Blade(String[] bases) {
@@ -29,18 +31,23 @@ public class Blade {
     public Blade(Vector<String> bases) {
         this.bases = bases;
     }
+    public Blade(List/*Vector*/<String> bases){
+        this.bases = bases;
+    }
 
     public Blade(TCBlade b) {
-        this.bases = new Vector<String>(Arrays.asList(b.getBase()));
+        this.bases = new ArrayList(b.getBase().castToList());
+        //this.bases = new ArrayList/*Vector*/<String>(Arrays.asList(b.getBase()));
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (String b : bases) {
-            sb.append("^" + b);
+            sb.append("^");
+            sb.append(b);
         }
-        if (bases.size() > 0) {
+        if (!bases.isEmpty()) {
             return sb.substring(1);
         } else {
             return "1.0";
@@ -54,8 +61,6 @@ public class Blade {
     public void addBasis(String toAdd) {
         bases.add(toAdd);
     }
-
-
 
     @Override
     public boolean equals(Object obj) {
@@ -73,7 +78,7 @@ public class Blade {
         return hash;
     }
 
-    public Vector<String> getBases() {
+    public List/*Vector*/<String> getBases() {
         return bases;
     }
 
@@ -82,7 +87,6 @@ public class Blade {
      * @return The expression
      */
     public Expression getExpression() {
-
         if (bases.size() >= 1) {
             Expression result = getBaseVector(bases.get(0));
             for (int i = 1; i < bases.size(); i++) {

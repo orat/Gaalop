@@ -242,7 +242,7 @@ public class AlStrategy implements AlgebraStrategy {
         }
 
         OuterProduct outerProduct = (OuterProduct) blade;
-        ArrayList<String> list = new ArrayList<String>();
+        ArrayList<String> list = new ArrayList<>();
         list.addAll(decomposeBlades(outerProduct.getLeft()));
         list.addAll(decomposeBlades(outerProduct.getRight()));
         return list;

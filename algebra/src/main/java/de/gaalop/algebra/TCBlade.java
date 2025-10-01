@@ -20,6 +20,11 @@ public class TCBlade {
     public TCBlade(ImmutableList<String>/*String[]*/ base) {
         this.base = base;
     }
+    
+    public TCBlade(String[] base) {
+       this.base = FastList.newListWith(base).toImmutableList();
+       //this.base = base;
+    }
 
     // neu
     public TCBlade(String base){

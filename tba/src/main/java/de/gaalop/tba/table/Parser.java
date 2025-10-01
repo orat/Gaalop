@@ -3,7 +3,9 @@ package de.gaalop.tba.table;
 import de.gaalop.tba.Blade;
 import de.gaalop.tba.BladeRef;
 import de.gaalop.tba.Multivector;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
+//import java.util.Vector;
 
 /**
  * Provides methods for parsing blades, blades references and multivectors
@@ -53,7 +55,7 @@ public class Parser {
      * @return The parsed blade
      */
     public static Blade parseBlade(String parse) {
-        Vector<String> bases = new Vector<String>();
+        List/*Vector*/<String> bases = new ArrayList/*Vector*/<>();
         String[] parts = parse.split("\\^");
         for (String part : parts) {
             bases.add(part.trim());

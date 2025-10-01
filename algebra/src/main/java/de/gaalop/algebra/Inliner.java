@@ -160,7 +160,7 @@ public class Inliner extends EmptyControlFlowVisitor {
                 delete = true;
                 graph.unknownMacros.add(new UnknownMacroCall(macroExpr, currentColorNode));
                 //make all non-variable arguments to variables
-                ArrayList<Expression> newArgs = new ArrayList<Expression>(macroExpr.getArguments().size());
+                ArrayList<Expression> newArgs = new ArrayList<>(macroExpr.getArguments().size());
                 for (Expression arg: macroExpr.getArguments()) {
                     if (!((arg instanceof Variable) || (arg instanceof FloatConstant))) {
                         Variable newVariable = createNewVariable(macroCallName, "arg");

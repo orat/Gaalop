@@ -16,8 +16,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Vector;
+import java.util.List;
+//import java.util.Vector;
 import javax.swing.JFileChooser;
 
 /**
@@ -131,8 +133,8 @@ public class Main {
     }
 
     private static boolean testEqual(Multivector m1, Multivector m2) {
-        Vector<BladeRef> v1 = new Vector<BladeRef>(m1.getBlades());
-        Vector<BladeRef> v2 = new Vector<BladeRef>(m2.getBlades());
+        /*Vector*/List<BladeRef> v1 = new ArrayList/*Vector*/<>(m1.getBlades());
+        /*Vector*/List<BladeRef> v2 = new ArrayList/*Vector*/<>(m2.getBlades());
         
         if (v1.size() != v2.size())
             return false;

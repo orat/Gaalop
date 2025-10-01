@@ -1,8 +1,10 @@
 package de.gaalop.tba;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.TreeMap;
-import java.util.Vector;
+//import java.util.Vector;
 import org.eclipse.collections.api.list.primitive.MutableIntList;
 import org.eclipse.collections.impl.list.mutable.primitive.IntArrayList;
 
@@ -12,10 +14,10 @@ import org.eclipse.collections.impl.list.mutable.primitive.IntArrayList;
  */
 public class Multivector {
 
-    private Vector<BladeRef> blades;
+    private List/*Vector*/<BladeRef> blades;
 
     public Multivector() {
-        blades = new Vector<BladeRef>();
+        blades = new ArrayList/*Vector*/<>();
     }
 
     /**
@@ -56,7 +58,7 @@ public class Multivector {
         return blades.toString();
     }
 
-    public Vector<BladeRef> getBlades() {
+    public List/*Vector*/<BladeRef> getBlades() {
         return blades;
     }
 
@@ -66,12 +68,14 @@ public class Multivector {
 
             switch (ref.getPrefactor()) {
                 case -1:
-                    sb.append("-E"+ref.getIndex());
+                    sb.append("-E");
+                    sb.append(ref.getIndex());
                     break;
                 case 0:
                     break;
                 case 1:
-                    sb.append("+E"+ref.getIndex());
+                    sb.append("+E");
+                    sb.append(ref.getIndex());
                     break;
                 default:
                     System.err.println("Only -1,0,1 allowed as prefactors in multivectors");

@@ -35,7 +35,7 @@ public class MacroVariablesDFGReplacer extends ReplaceVisitor {
 
     @Override
     public void visit(MacroCall node) {
-        ArrayList<Expression> newArgs = new ArrayList<Expression>(node.getArguments().size());
+        ArrayList<Expression> newArgs = new ArrayList<>(node.getArguments().size());
 
         for (Expression arg: node.getArguments()) {
             arg.accept(this);
