@@ -42,7 +42,12 @@
         <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
-            <version>1.9.4</version>
+            <!--version>1.9.4</version-->
+            <!-- upgraded because of One or more dependencies were identified 
+                 with known vulnerabilities in Gaalop Distribution:
+                 commons-beanutils-1.9.4.jar (pkg:maven/commons-beanutils/commons-beanutils@1.9.4, 
+                 cpe:2.3:a:apache:commons_beanutils:1.9.4:*:*:*:*:*:*:*) : CVE-2025-48734-->
+            <version>1.11.0</version>
         </dependency>
         
         

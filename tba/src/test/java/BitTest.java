@@ -61,7 +61,6 @@ public class BitTest {
     
     public void dummy() throws IOException {
         fillList();
-        
         AbsBitWriter writer = new MaxWriter();
         File tFile = File.createTempFile("BitWriter", ".txt");
         tFile.deleteOnExit();
@@ -79,8 +78,6 @@ public class BitTest {
             assertEquals(i+"",r.data,reader.read(r.bitCount));
             i++;
         }
-        
-        
     }
     
     private void fillList() {

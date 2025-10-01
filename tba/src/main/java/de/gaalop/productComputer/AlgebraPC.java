@@ -109,7 +109,7 @@ public class AlgebraPC {
             str = str.substring(1);
             negated = true;
         }
-        return new BladeStr((negated ? -1 : 1),new String[]{str});
+        return new BladeStr((negated ? -1 : 1),str/*new String[]{str}*/);
     }
 
     /**

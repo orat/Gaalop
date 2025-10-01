@@ -11,6 +11,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.api.list.primitive.ImmutableIntList;
+import org.eclipse.collections.api.list.primitive.MutableIntList;
+import org.eclipse.collections.api.map.primitive.MutableIntObjectMap;
+import org.eclipse.collections.impl.list.mutable.FastList;
+import org.eclipse.collections.impl.list.mutable.primitive.IntArrayList;
+import org.eclipse.collections.impl.map.mutable.primitive.IntObjectHashMap;
 
 /**
  * Implements methods to change one blade of the zero-inf-base to the plus-minus-base
@@ -43,6 +51,16 @@ public class BladeChanger {
         }
         return false;
     }
+    private static boolean duplicates(final ImmutableList<String> array) {
+        HashSet<String> set = new HashSet<>();
+        for (String i : array) {
+            if (set.contains(i)) {
+                return true;
+            }
+            set.add(i);
+        }
+        return false;
+    }
     
     /**
      * Computes the cartesian product of the elements of a given list.
@@ -54,7 +72,7 @@ public class BladeChanger {
             return list.getFirst();
         else {
             //complex case
-            LinkedList<BladeStr> result = new LinkedList<BladeStr>();
+            LinkedList<BladeStr> result = new LinkedList<>();
 
             // recursive call on sublist case
             LinkedList<LinkedList<BladeStr>> subList = new LinkedList<>(list);
@@ -65,12 +83,19 @@ public class BladeChanger {
             for (BladeStr comp: thisElement) {
                 for (BladeStr subResultComp: subResult) {
                     //concatenate arrays
-                    LinkedList<String> both = new LinkedList<String>();
-                    Collections.addAll(both, comp.getBaseVectors());
-                    Collections.addAll(both, subResultComp.getBaseVectors());
+                    //LinkedList<String> both = new LinkedList<>();
+                    MutableList<String> both = new FastList<>();
+                    //Collections.addAll(both, comp.getBaseVectors());
+                    both.addAll(comp.getBaseVectors().castToCollection());
+                    //Collections.addAll(both, subResultComp.getBaseVectors());
+                    both.addAll(subResultComp.getBaseVectors().castToCollection());
                     
-                    BladeStr b = new BladeStr(comp.getPrefactor()*subResultComp.getPrefactor(), both.toArray(new String[both.size()]));
+                            
+                    BladeStr b = new BladeStr(comp.getPrefactor()*subResultComp.getPrefactor(), 
+                            both.toImmutable()/*.toArray(new String[both.size()])*/);
                     
+                    //FIXME was für duplicates kann b überhaupt enthalten?
+                    // 
                     //Look if the bladeStr is not zero (two equal base components in one blade results in zero)
                     if (!duplicates(b.getBaseVectors()))
                         result.add(b);
@@ -88,7 +113,7 @@ public class BladeChanger {
      */
     public LinkedList<PrefactoredBladeIndex> transform(int fromIndex) {
         if (fromIndex == 0) {
-            LinkedList<PrefactoredBladeIndex> result = new LinkedList<PrefactoredBladeIndex>();
+            LinkedList<PrefactoredBladeIndex> result = new LinkedList<>();
             result.add(new PrefactoredBladeIndex(1, 0));
             return result;
         }
@@ -113,17 +138,22 @@ public class BladeChanger {
         
         // Transform each blade into its canonical order
         for (BladeStr b: cartesianResult) {
-            Integer[] arr = baseVectorArrToIntArr(b.getBaseVectors());
+            //Integer[] arr = baseVectorArrToIntArr(b.getBaseVectors());
+            MutableIntList arr = baseVectorToMutableIntList(b.getBaseVectors());
+            // numExchanges is not available with arr.sortThis(), thats why own implementation is needed
             int numExchanges = BubbleSort.doBubbleSort(arr);
             if (numExchanges % 2 == 1)
                 b.setPrefactor(-b.getPrefactor());  // Change sign because of odd number of exchanges
-            Arrays.sort(arr);
+            //FIXME warum wird hier erneut sortiert?
+            //Arrays.sort(arr);
+            arr.sortThis();
             b.setBaseVectors(intArrToBaseVectorArr(arr));
         }
         
         
         // Transform
-        HashMap<Integer, PrefactoredBladeIndex> result = new HashMap<Integer, PrefactoredBladeIndex>();
+        //HashMap<Integer, PrefactoredBladeIndex> result = new HashMap<Integer, PrefactoredBladeIndex>();
+        MutableIntObjectMap<PrefactoredBladeIndex> result = new IntObjectHashMap<>();
         for (BladeStr b: cartesianResult) {
             Integer index = baseVectorArrToIndex(new TCBlade(b.getBaseVectors()));
             
@@ -146,11 +176,25 @@ public class BladeChanger {
      * @param baseVectorArr The array of base vectors
      * @return The array of indices
      */
-    private Integer[] baseVectorArrToIntArr(String[] baseVectorArr) {
-        LinkedList<Integer> result = new LinkedList<>();
+    /*private Integer[] baseVectorArrToIntArr(String[] baseVectorArr) {
+        //LinkedList<Integer> result = new LinkedList<>();
+        MutableIntList result = new IntArrayList();
         for (String baseVector: baseVectorArr)
             result.add(getIndexInArray(baseVector, algebraPC.base2));
         return result.toArray(new Integer[0]);
+    }*/
+    /*private MutableIntList baseVectorArrToMutableIntList(String[] baseVectorArr) {
+        MutableIntList result = new IntArrayList();
+        for (String baseVector: baseVectorArr)
+            result.add(getIndexInArray(baseVector, algebraPC.base2));
+        return result;
+    }*/
+    private MutableIntList baseVectorToMutableIntList(/*String[]*/ ImmutableList<String> baseVectorArr) {
+        MutableIntList result = new IntArrayList();
+        //for (String baseVector: baseVectorArr)
+        //    result.add(getIndexInArray(baseVector, algebraPC.base2));
+        baseVectorArr.forEach(baseVector -> result.add(getIndexInArray(baseVector, algebraPC.base2)));
+        return result;
     }
     
     /**
@@ -158,11 +202,16 @@ public class BladeChanger {
      * @param intArr The array of indices
      * @return The array of base vectors
      */
-    private String[] intArrToBaseVectorArr(Integer[] intArr) {
+    /*private String[] intArrToBaseVectorArr(Integer[] intArr) {
         LinkedList<String> result = new LinkedList<>();
         for (Integer i: intArr)
             result.add(algebraPC.base2[i]);
         return result.toArray(new String[0]);
+    }*/
+    private ImmutableList<String> intArrToBaseVectorArr(MutableIntList intArr) {
+        MutableList<String> result = new FastList<>();
+        intArr.forEach(index -> result.add(algebraPC.base2[index]));
+        return result.toImmutableList();
     }
     
     /**
@@ -185,7 +234,8 @@ public class BladeChanger {
      */
     private Integer baseVectorArrToIndex(TCBlade blade) {
         for (int i=0;i<blades.length;i++)
-            if (Arrays.equals(blade.getBase(), blades[i].getBase())) 
+            //if (Arrays.equals(blade.getBase(), blades[i].getBase())) 
+            if (blade.getBase().equals(blades[i].getBase())) 
                 return i;
         return null;
     }

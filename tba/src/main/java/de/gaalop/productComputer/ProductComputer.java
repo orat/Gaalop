@@ -48,7 +48,7 @@ public class ProductComputer {
      */
     private SignedBlade bladeStrToSignedBlade(BladeStr bladeStr, String[] base) {
         SignedBlade sBlade = new SignedBlade(bitCount, bladeStr.getPrefactor());
-        Integer[] arr = new Integer[bladeStr.getBaseVectors().length];
+        Integer[] arr = new Integer[bladeStr.getBaseVectors().size()/*.length*/];
         int i=0;
         for (String baseVector: bladeStr.getBaseVectors()) {
             int index = getIndex(baseVector, base);

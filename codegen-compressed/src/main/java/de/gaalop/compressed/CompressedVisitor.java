@@ -4,6 +4,8 @@ import de.gaalop.StringList;
 import de.gaalop.cfg.*;
 import de.gaalop.dfg.*;
 import java.util.*;
+import org.eclipse.collections.api.map.primitive.MutableIntIntMap;
+import org.eclipse.collections.impl.map.mutable.primitive.IntIntHashMap;
 
 /**
  * This visitor traverses the control and data flow graphs and generates C/C++ code.
@@ -11,7 +13,9 @@ import java.util.*;
 public class CompressedVisitor extends de.gaalop.cpp.CppVisitor {
 
     protected Map<String,Integer> mvSizes;
-    protected Map<String,Map<Integer,Integer>> mvBladeMap = new HashMap<String,Map<Integer,Integer>>();
+    //protected Map<String,Map<Integer,Integer>> mvBladeMap = new HashMap<String,Map<Integer,Integer>>();
+    protected Map<String,MutableIntIntMap> mvBladeMap = new HashMap<>();
+    
     protected boolean gpcMetaInfo = true;
 
     public CompressedVisitor(Map<String,Integer> mvSizes, boolean standalone, boolean useDouble) {
@@ -124,9 +128,9 @@ public class CompressedVisitor extends de.gaalop.cpp.CppVisitor {
             
             // get blade pos in array
             final String name = component.getName();
-            Map<Integer,Integer> bladeMap = mvBladeMap.get(component.getName());
+            MutableIntIntMap/*Map<Integer,Integer>*/ bladeMap = mvBladeMap.get(component.getName());
             if(bladeMap == null)
-                bladeMap = new HashMap<Integer, Integer>();
+                bladeMap = new IntIntHashMap(); //new HashMap<Integer, Integer>();
             final int pos = bladeMap.size();
             
             // determine component name

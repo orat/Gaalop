@@ -1,5 +1,8 @@
 package de.gaalop.productComputer;
 
+import org.eclipse.collections.api.list.primitive.ImmutableIntList;
+import org.eclipse.collections.api.list.primitive.MutableIntList;
+
 /**
  * This class provides the BubbleSort algorithm using a comparator
  * @author Christian Steinmetz
@@ -30,6 +33,25 @@ public class BubbleSort {
         }
         return count;
 
+    }
+    
+    //FIXME test schreiben
+    public static int doBubbleSort(MutableIntList arr){
+        boolean swapped = true;
+        int count = 0;
+        for(int i = arr.size()/*length*/ - 1; i > 0 && swapped; i--) {
+            swapped = false;
+            for (int j = 0; j < i; j++) {
+                if (arr.get(j) > arr.get(j+1)) {
+                    int temp = arr.get(j);
+                    arr.set(j, arr.get(j+1));
+                    arr.set(j+1,temp);
+                    swapped = true;
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 
 }

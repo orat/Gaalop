@@ -16,6 +16,7 @@ import de.gaalop.cfg.StoreResultNode;
 import de.gaalop.tba.UseAlgebra;
 import java.util.HashMap;
 import java.util.LinkedList;
+import org.eclipse.collections.api.list.primitive.MutableIntList;
 
 /**
  * Visitor to optimize a ControlFlowGraph via variable usage analysis.
@@ -26,11 +27,13 @@ public class CFGVisitorUsedVariables implements ControlFlowVisitor {
 
     private VariableUsage variableUsage = new VariableUsage();
     private DFGVisitorUsedVariables dfgVisitorusedVariables = new DFGVisitorUsedVariables();
-    private HashMap<String, LinkedList<Integer>> outputBlades;
+    //private HashMap<String, LinkedList<Integer>> outputBlades;
+    private HashMap<String, MutableIntList> outputBlades;
+    
     private UseAlgebra usedAlgebra;
-    private LinkedList<SequentialNode> nodeRemovals = new LinkedList<SequentialNode>();
+    private LinkedList<SequentialNode> nodeRemovals = new LinkedList<>();
 
-    public CFGVisitorUsedVariables(HashMap<String, LinkedList<Integer>> outputBlades, UseAlgebra usedAlgebra) {
+    public CFGVisitorUsedVariables(HashMap<String, MutableIntList> outputBlades, UseAlgebra usedAlgebra) {
         this.outputBlades = outputBlades;
         this.usedAlgebra = usedAlgebra;
     }
@@ -69,9 +72,12 @@ public class CFGVisitorUsedVariables implements ControlFlowVisitor {
         String name = node.getValue().getName();
         if (outputBlades.containsKey(name)) {
             // only special blades are outputted
-            for (Integer bladeIndex : outputBlades.get(name)) {
+            outputBlades.get(name).forEach(
+                    bladeIndex -> variableUsage.addUsage(new VariableComponent(name, 
+                                            bladeIndex, node.getValue())));
+            /*for (int bladeIndex : outputBlades.get(name)) {
                 variableUsage.addUsage(new VariableComponent(name, bladeIndex, node.getValue()));
-            }
+            }*/
         } else {
             // all blades are outputted
             int bladeCount = usedAlgebra.getBladeCount();

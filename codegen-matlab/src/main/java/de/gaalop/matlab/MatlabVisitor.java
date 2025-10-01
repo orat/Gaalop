@@ -5,7 +5,7 @@ import de.gaalop.cfg.*;
 import de.gaalop.dfg.*;
 
 /**
- * This visitor traverses the control and data flow graphs and generates C/C++
+ * This visitor traverses the control and data flow graphs and generates Matlab
  * code.
  */
 public class MatlabVisitor extends DefaultCodeGeneratorVisitor {

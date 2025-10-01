@@ -3,6 +3,8 @@ package de.gaalop.tba;
 import java.util.LinkedList;
 import java.util.TreeMap;
 import java.util.Vector;
+import org.eclipse.collections.api.list.primitive.MutableIntList;
+import org.eclipse.collections.impl.list.mutable.primitive.IntArrayList;
 
 /**
  * Represents a multivector, e.g. a vector of blades
@@ -35,14 +37,16 @@ public class Multivector {
         });
         
         // Remove 0 values
-        LinkedList<Integer> nullIndices = new LinkedList<>();
+        //LinkedList<Integer> nullIndices = new LinkedList<>();
+        MutableIntList nullIndices = new IntArrayList();
         result.entrySet().forEach(entry -> {
             if (entry.getValue() == 0) 
                 nullIndices.add(entry.getKey());
         });
         
-        for (Integer nullIndex: nullIndices)
-            result.remove(nullIndex);
+        nullIndices.forEach(nullIndex -> result.remove(nullIndex));
+        //for (Integer nullIndex: nullIndices)
+        //    result.remove(nullIndex);
 
         return result;
     }

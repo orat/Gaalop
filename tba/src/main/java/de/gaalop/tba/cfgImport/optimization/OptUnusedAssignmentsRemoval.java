@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import de.gaalop.LoggingListenerGroup;
+import org.eclipse.collections.api.list.primitive.MutableIntList;
+import org.eclipse.collections.impl.list.mutable.primitive.IntArrayList;
 
 /**
  * Facade class for the unused assignments optimization
@@ -24,15 +26,18 @@ public class OptUnusedAssignmentsRemoval implements OptimizationStrategyWithModi
         LinkedList<Node> nodeList = v.getNodeList();
 
         // list output blades
-        HashMap<String, LinkedList<Integer>> outputBlades = new HashMap<String, LinkedList<Integer>>();
+        //HashMap<String, LinkedList<Integer>> outputBlades = new HashMap<>();
+        HashMap<String, MutableIntList> outputBlades = new HashMap<>();
 
         for (String output : graph.getPragmaOutputVariables()) {
             String[] parts = output.split("\\$");
-            LinkedList<Integer> list;
+            MutableIntList list;
             if (outputBlades.containsKey(parts[0])) {
                 list = outputBlades.get(parts[0]);
             } else {
-                list = new LinkedList<Integer>();
+                //list = new LinkedList<Integer>();
+                list = new IntArrayList();
+                
                 outputBlades.put(parts[0], list);
             }
 

@@ -19,11 +19,11 @@ public class Blade {
     private Vector<String> bases;
 
     public Blade() {
-        bases = new Vector<String>();
+        bases = new Vector<>();
     }
 
     public Blade(String[] bases) {
-        this.bases = new Vector<String>(Arrays.asList(bases));
+        this.bases = new Vector<>(Arrays.asList(bases));
     }
 
     public Blade(Vector<String> bases) {
