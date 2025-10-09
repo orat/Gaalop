@@ -232,14 +232,14 @@ public class ConstantFolding implements ExpressionVisitor, ControlFlowVisitor {
       // const ^ const => const
       FloatConstant leftc = (FloatConstant) left;
       FloatConstant rightc = (FloatConstant) right;
-      resultExpr = new FloatConstant(new Float(Math.pow(leftc.getValue(), rightc.getValue())));
+      resultExpr = new FloatConstant(Float.valueOf((float) Math.pow(leftc.getValue(), rightc.getValue())));
     } else if (left instanceof FloatConstant && ((FloatConstant)left).getValue() == 0.0) {
       // 0 ^ x => 0
       resultExpr = left;
     } else if (right instanceof FloatConstant) {
       // x ^ const
       FloatConstant rightc = (FloatConstant) right;
-      boolean isSqrt = rightc.getValue() - (double) new Double(rightc.getValue()).intValue() == 0.5;
+      boolean isSqrt = rightc.getValue() - (double) Double.valueOf(rightc.getValue()).intValue() == 0.5;
       if(isSqrt && rightc.getValue() != 0.5) {
           MathFunctionCall newsqrt = new MathFunctionCall(new Exponentiation(
                   left, new FloatConstant(rightc.getValue() - 0.5f)), MathFunction.SQRT);

@@ -132,7 +132,7 @@ public class ProductComputer {
         int i=0;
         for (SumOfBlades s: bladeListZI) {
             SignedBlade sb = s.getFirst();
-            mapBladeToIndex.put(new Blade(bitCount, sb), new Integer(i));
+            mapBladeToIndex.put(new Blade(bitCount, sb), Integer.valueOf(i));
             bladeListPM[i] = BaseTransformation.transform(s, mapZIToPM, bitCount);
             i++;
         }

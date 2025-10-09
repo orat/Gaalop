@@ -194,10 +194,10 @@
             <plugin>
               <groupId>org.owasp</groupId>
               <artifactId>dependency-check-maven</artifactId>
-              <version>6.5.0</version>
+              <version>12.1.6</version>
               <configuration>
                 <suppressionFiles>
-                    <suppressionFile>owasp-dependency-check-suppressions.xml</suppressionFile>
+                     <suppressionFile>owasp-dependency-check-suppressions.xml</suppressionFile> 
                 </suppressionFiles>
 				<!-- Disable the .NET AssemblyAnalyzer -->
                 <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>

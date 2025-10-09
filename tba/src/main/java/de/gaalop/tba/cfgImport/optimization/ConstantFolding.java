@@ -327,7 +327,7 @@ public class ConstantFolding implements ExpressionVisitor, ControlFlowVisitor {
             // const ^ const => const
             FloatConstant leftc = (FloatConstant) left;
             FloatConstant rightc = (FloatConstant) right;
-            resultExpr = new FloatConstant(new Float(Math.pow(leftc.getValue(), rightc.getValue())));
+            resultExpr = new FloatConstant(Double.valueOf(Math.pow(leftc.getValue(), rightc.getValue())));
             setGraphModified();
         } else if (isConstant(left) && doubleEquals(((FloatConstant) left).getValue(), 0.0f)) {
             // 0 ^ x => 0
@@ -336,7 +336,7 @@ public class ConstantFolding implements ExpressionVisitor, ControlFlowVisitor {
         } else if (isConstant(right)) {
             // x ^ const
             FloatConstant rightc = (FloatConstant) right;
-            boolean isSqrt = doubleEquals(rightc.getValue() - (double) new Double(rightc.getValue()).intValue(), 0.5f);
+            boolean isSqrt = doubleEquals(rightc.getValue() - (double) Double.valueOf(rightc.getValue()).intValue(), 0.5f);
             if (isSqrt && !doubleEquals(rightc.getValue(), 0.5f)) {
                 MathFunctionCall newsqrt = new MathFunctionCall(new Exponentiation(
                         left, new FloatConstant(rightc.getValue() - 0.5f)), MathFunction.SQRT);

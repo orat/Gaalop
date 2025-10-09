@@ -380,7 +380,7 @@ public class VerilogIRConverterVisitorCookies implements ExpressionVisitor,
 		else {
                     assert exnode.getRight() instanceof FloatConstant;
                     FloatConstant c = (FloatConstant)exnode.getRight();
-                    assert (c.getValue() - (double)(new Double(c.getValue())).intValue() == 0f);
+                    assert (c.getValue() - (double)(Double.valueOf(c.getValue())).intValue() == 0f);
                     int exponent = (int)c.getValue();
                     assert exponent >= 2 : "assert exponent >= 2 error: exponent="+exponent;
 
@@ -421,7 +421,7 @@ public class VerilogIRConverterVisitorCookies implements ExpressionVisitor,
 //		ConstantOperation co = new ConstantOperation(Float.toString(fcnode
 //				.getValue()));
                 FloatValue value = new FloatValue();
-                value.setValue(new Float(fcnode.getValue()).floatValue());
+                value.setValue(Float.valueOf((float) fcnode.getValue()).floatValue());
                 ConstantOperation co = new ConstantOperation(value, fcnode.toString());
 		co.setOutputBitsize(32);
 	

@@ -10,6 +10,6 @@ import java.util.Comparator;
 public class SortByNumber implements Comparator<Operation> {
 
     public int compare(Operation o1, Operation o2) {
-        return (new Integer(o1.getNumber())).compareTo(o2.getNumber());
+        return (Integer.valueOf(o1.getNumber())).compareTo(o2.getNumber());
     }
 }
