@@ -336,7 +336,7 @@ public class ConstantFolding implements ExpressionVisitor, ControlFlowVisitor {
         } else if (isConstant(right)) {
             // x ^ const
             FloatConstant rightc = (FloatConstant) right;
-            boolean isSqrt = doubleEquals(rightc.getValue() - (double) new Double(rightc.getValue()).intValue(), 0.5f);
+            boolean isSqrt = doubleEquals(rightc.getValue() - (double) Double.valueOf(rightc.getValue()).intValue(), 0.5f);
             if (isSqrt && !doubleEquals(rightc.getValue(), 0.5f)) {
                 MathFunctionCall newsqrt = new MathFunctionCall(new Exponentiation(
                         left, new FloatConstant(rightc.getValue() - 0.5f)), MathFunction.SQRT);

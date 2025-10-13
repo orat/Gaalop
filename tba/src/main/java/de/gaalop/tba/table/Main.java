@@ -26,7 +26,7 @@ import javax.swing.JFileChooser;
  * Creation of table for default ccga algebra can run into memory overflow, even 
  * this algebra is excluded from the list of default algebras.
  * 
- * All algebra definitions found as directory are processed independed if they are
+ * All algebra definitions found as directory are processed independedly if they are
  * listed in the definedAlgebras.txt or not.
  * 
  * The output is written in the correct algebra subfolders.

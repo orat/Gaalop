@@ -8,5 +8,5 @@ sta;space-time algebra
 cga;conformal geometric algebra
 gac;geometric algebra for conics
 dcga;double conformal geometric algebra
-ccga;cubic CGA
 qga;quantum bit geometric algebra
+qra6; quatum register algebra with 6 quantum bits

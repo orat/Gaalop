@@ -6,9 +6,11 @@ import de.gaalop.dfg.Expression;
 import de.gaalop.dfg.ExpressionFactory;
 import de.gaalop.dfg.FloatConstant;
 import de.gaalop.visitors.DFGTraversalVisitor;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.Vector;
+import java.util.List;
+//import java.util.Vector;
 
 /**
  * Defines a blade with a sign and a coefficient
@@ -16,31 +18,31 @@ import java.util.Vector;
  */
 public class Blade {
 
-    private Vector<String> bases;
+    private List<String> bases;
 
     public Blade() {
-        bases = new Vector<String>();
+        bases = new ArrayList<>();
     }
 
     public Blade(String[] bases) {
-        this.bases = new Vector<String>(Arrays.asList(bases));
+        this.bases = new ArrayList<>(Arrays.asList(bases));
     }
 
-    public Blade(Vector<String> bases) {
+    public Blade(List<String> bases) {
         this.bases = bases;
     }
 
     public Blade(TCBlade b) {
-        this.bases = new Vector<String>(Arrays.asList(b.getBase()));
+        this.bases = new ArrayList<String>(Arrays.asList(b.getBase()));
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (String b : bases) {
-            sb.append("^" + b);
+            sb.append("^").append(b);
         }
-        if (bases.size() > 0) {
+        if (!bases.isEmpty()) {
             return sb.substring(1);
         } else {
             return "1.0";
@@ -59,8 +61,7 @@ public class Blade {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Blade) {
-            Blade comp = (Blade) obj;
+        if (obj instanceof Blade comp) {
             return bases.equals(comp.bases);
         }
         return false;
@@ -73,7 +74,7 @@ public class Blade {
         return hash;
     }
 
-    public Vector<String> getBases() {
+    public List<String> getBases() {
         return bases;
     }
 
@@ -108,7 +109,7 @@ public class Blade {
     }
 
     public static Blade createBladeFromExpression(Expression expr) {
-        final LinkedList<String> list = new LinkedList<String>();
+        final LinkedList<String> list = new LinkedList<>();
         DFGTraversalVisitor visitor = new DFGTraversalVisitor() {
             @Override
             public void visit(BaseVector node) {
@@ -117,6 +118,6 @@ public class Blade {
             }
         };
         expr.accept(visitor);
-        return new Blade(list.toArray(new String[0]));
+        return new Blade(list.toArray(String[]::new));
     }
 }
