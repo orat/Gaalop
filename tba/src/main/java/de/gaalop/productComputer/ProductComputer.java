@@ -3,8 +3,11 @@ package de.gaalop.productComputer;
 import de.gaalop.tba.Multivector;
 import java.util.HashMap;
 import java.util.LinkedList;
+import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.list.primitive.MutableIntList;
 
 import org.eclipse.collections.api.map.primitive.MutableIntObjectMap;
+import org.eclipse.collections.impl.list.mutable.primitive.IntArrayList;
 import org.eclipse.collections.impl.map.mutable.primitive.IntObjectHashMap;
 import org.eclipse.collections.impl.map.mutable.primitive.ObjectIntHashMap;
 
@@ -48,11 +51,13 @@ public class ProductComputer {
      */
     private SignedBlade bladeStrToSignedBlade(BladeStr bladeStr, String[] base) {
         SignedBlade sBlade = new SignedBlade(bitCount, bladeStr.getPrefactor());
-        Integer[] arr = new Integer[bladeStr.getBaseVectors().size()/*.length*/];
+        //Integer[] arr = new Integer[bladeStr.getBaseVectors().size()/*.length*/];
+        MutableIntList arr = new IntArrayList(bladeStr.getBaseVectors().size());
         int i=0;
         for (String baseVector: bladeStr.getBaseVectors()) {
             int index = getIndex(baseVector, base);
-            arr[i] = index;
+            arr.set(i, index);
+            //arr[i] = index;
             sBlade.set(index);
             i++;
         }
@@ -62,6 +67,7 @@ public class ProductComputer {
         return sBlade;
     }
 
+    
     /**
      * Initializes a transformation map
      * @param base The base of the underlying algebra

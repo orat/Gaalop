@@ -10,10 +10,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Vector;
+//import java.util.Vector;
 
 /**
- * Defines a blade with a sign and a coefficient
+ * Defines a blade with a sign and a coefficient as a mutable sorted list of
+ * basis blades.
  * @author Christian Steinmetz
  */
 public class Blade {
@@ -25,19 +26,21 @@ public class Blade {
     }
 
     public Blade(String[] bases) {
-        this.bases = new Vector<>(Arrays.asList(bases));
+        this.bases = new ArrayList<>(Arrays.asList(bases));
     }
 
-    public Blade(Vector<String> bases) {
+    /*public Blade(Vector<String> bases) {
         this.bases = bases;
-    }
+    }*/
+    // invoked from Parser.parseBlade(String parse)
     public Blade(List/*Vector*/<String> bases){
         this.bases = bases;
     }
 
     public Blade(TCBlade b) {
-        this.bases = new ArrayList(b.getBase().castToList());
+        // ImmutableList --> ArrayList bzw. besser hier alles auf MutableInt oder ImmutableInt umstellen
         //this.bases = new ArrayList/*Vector*/<String>(Arrays.asList(b.getBase()));
+        this.bases = new ArrayList(b.getBase().toList());
     }
 
     @Override
@@ -57,6 +60,10 @@ public class Blade {
     /**
      * Adds a basis to this blade
      * @param toAdd The basis to be added
+     * 
+     * Who needs this. If it is not needed, maybe impl auf Blade can be defined
+     * as a immutable sorted list.
+     * FIXME
      */
     public void addBasis(String toAdd) {
         bases.add(toAdd);

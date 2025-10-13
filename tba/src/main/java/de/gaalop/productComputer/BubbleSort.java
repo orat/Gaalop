@@ -15,7 +15,7 @@ public class BubbleSort {
      * @param arr The array to sort in place
      * @return The count of exchanges
      */
-    public static int doBubbleSort(Integer[] arr) {
+    /*public static int doBubbleSort(Integer[] arr) {
 
         boolean swapped = true;
         int count = 0;
@@ -33,9 +33,10 @@ public class BubbleSort {
         }
         return count;
 
-    }
+    }*/
     
     //FIXME test schreiben
+    // immutable does not allow to change/swap values
     public static int doBubbleSort(MutableIntList arr){
         boolean swapped = true;
         int count = 0;
@@ -53,5 +54,4 @@ public class BubbleSort {
         }
         return count;
     }
-
 }

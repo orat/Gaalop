@@ -155,13 +155,21 @@ public class BladeChanger {
         //HashMap<Integer, PrefactoredBladeIndex> result = new HashMap<Integer, PrefactoredBladeIndex>();
         MutableIntObjectMap<PrefactoredBladeIndex> result = new IntObjectHashMap<>();
         for (BladeStr b: cartesianResult) {
-            Integer index = baseVectorArrToIndex(new TCBlade(b.getBaseVectors()));
+            // null is possible --> -1 is possible
+            // [ERROR] de/gaalop/tba/baseChange/BladeChanger.java:[159,74] 
+            // Inkompatible Typen: org.eclipse.collections.api.list.ImmutableList<java.lang.String> 
+            // kann nicht in java.lang.String[] konvertiert werden
+            int index = baseVectorArrToIndex(new TCBlade(b.getBaseVectors()));
             
             PrefactoredBladeIndex p;
             if (result.containsKey(index)) {
                 p = result.get(index);
             } else {
+                //FIXME
+                // was passiert bei Integer=null --> int
                 p = new PrefactoredBladeIndex(0, index);
+                //FIXME
+                // wass passiert bei put(null, also bei einer HashMap
                 result.put(index, p);
             }
             
@@ -232,12 +240,24 @@ public class BladeChanger {
      * @param blade The TCBlade to search for
      * @return The index. Null, if the blades array does not contain such an element
      */
-    private Integer baseVectorArrToIndex(TCBlade blade) {
+    /*private Integer baseVectorArrToIndex(TCBlade blade) {
         for (int i=0;i<blades.length;i++)
             //if (Arrays.equals(blade.getBase(), blades[i].getBase())) 
             if (blade.getBase().equals(blades[i].getBase())) 
                 return i;
         return null;
+    }*/
+    /**
+     * Returns the index of a TCBlade in the blades array -> the bladeIndex
+     * @param blade The TCBlade to search for
+     * @return The index == -1, if the blades array does not contain such an element
+     */
+    private int baseVectorArrToIndex(TCBlade blade) {
+        for (int i=0;i<blades.length;i++)
+            //if (Arrays.equals(blade.getBase(), blades[i].getBase())) 
+            if (blade.getBase().equals(blades[i].getBase())) 
+                return i;
+        return -1;
     }
 
 }
