@@ -35,8 +35,11 @@ import de.gaalop.tba.Algebra;
 import de.gaalop.tba.Multivector;
 import de.gaalop.tba.Products;
 import de.gaalop.tba.UseAlgebra;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
+import org.eclipse.collections.api.map.primitive.MutableIntObjectMap;
+import org.eclipse.collections.api.tuple.primitive.IntObjectPair;
 
 /**
  * Build the mvExpressions for every variable and expression
@@ -44,8 +47,8 @@ import java.util.TreeMap;
  */
 public class MvExpressionsBuilder extends EmptyControlFlowVisitor implements ExpressionVisitor {
 
-    public HashMap<String, MvExpressions> variables;
-    public HashMap<Expression, MvExpressions> expressions;
+    public Map<String, MvExpressions> variables;
+    public Map<Expression, MvExpressions> expressions;
     private int counterMv;
     public int bladeCount;
     private UseAlgebra usedAlgebra;
@@ -56,13 +59,11 @@ public class MvExpressionsBuilder extends EmptyControlFlowVisitor implements Exp
     public MvExpressionsBuilder(UseAlgebra usedAlgebra, boolean scalarFunctions, AlgebraDefinitionFile alFile) {
         this.scalarFunctions = scalarFunctions;
         this.alFile = alFile;
-        variables = new HashMap<String, MvExpressions>();
+        variables = new HashMap<>();
         this.usedAlgebra = usedAlgebra;
         counterMv = 0;
-
         bladeCount = usedAlgebra.getBladeCount();
-
-        expressions = new HashMap<Expression, MvExpressions>();
+        expressions = new HashMap<>();
     }
 
     /**
@@ -128,19 +129,25 @@ public class MvExpressionsBuilder extends EmptyControlFlowVisitor implements Exp
         Algebra algebra = usedAlgebra.getAlgebra();
         boolean set = false;
         
-        for (Entry<Integer, Expression> l: left.bladeExpressions.entrySet()) {
-            for (Entry<Integer, Expression> r: right.bladeExpressions.entrySet()) {
+        MutableIntObjectMap<Expression> leftExpr = left.getBladeExpressions();
+        MutableIntObjectMap<Expression> rightExpr = right.getBladeExpressions();
+        for (IntObjectPair<Expression> l: leftExpr.keyValuesView()){
+            for (IntObjectPair<Expression> r: rightExpr.keyValuesView()){
             
-                Expression prodExpr = new Multiplication(l.getValue(), r.getValue());
-                Multivector prodMv = usedAlgebra.getProduct(typeProduct, l.getKey(), r.getKey());
+        //for (Entry<Integer, Expression> l: left.bladeExpressions.entrySet()) {
+        //    for (Entry<Integer, Expression> r: right.bladeExpressions.entrySet()) {
+            
+                Expression prodExpr = new Multiplication(l.getTwo()/*.getValue()*/, r.getTwo()/*getValue()*/);
+                Multivector prodMv = usedAlgebra.getProduct(typeProduct, l.getOne()/*getKey()*/, r.getOne()/*getKey()*/);
 
                 TreeMap<Integer, Byte> prod = prodMv.getValueArr(algebra);
 
                 for (Entry<Integer, Byte> blade: prod.entrySet()) {
                     Expression prodExpri = new Multiplication(prodExpr, new FloatConstant(blade.getValue()));
                         
-                    if (result.bladeExpressions.containsKey(blade.getKey())) {
-                        result.setExpression(blade.getKey(), new Addition(result.bladeExpressions.get(blade.getKey()), prodExpri));
+                    if (result.getBladeExpressions()/*bladeExpressions*/.containsKey(blade.getKey())) {
+                        result.setExpression(blade.getKey(), 
+                                new Addition(result.getBladeExpressions()/*.bladeExpressions*/.get(blade.getKey()), prodExpri));
                     } else {
                         set = true; 
                         result.setExpression(blade.getKey(), prodExpri);
@@ -192,14 +199,21 @@ public class MvExpressionsBuilder extends EmptyControlFlowVisitor implements Exp
         MvExpressions right = expressions.get(node.getRight());
 
         MvExpressions result = createNewMvExpressions();
-        result.bladeExpressions.putAll(left.bladeExpressions);
+        result.getBladeExpressions().putAll(left.getBladeExpressions());
         
-        right.bladeExpressions.entrySet().forEach(r -> { 
-            result.bladeExpressions.put(r.getKey(), (result.bladeExpressions.containsKey(r.getKey()))
-                    ? new Subtraction(result.bladeExpressions.get(r.getKey()), r.getValue())
-                    : new Negation(r.getValue())
+        right.getBladeExpressions().keyValuesView().forEach(r -> { 
+            result.getBladeExpressions().put(r.getOne(), (result.getBladeExpressions().containsKey(r.getOne()))
+                    ? new Subtraction(result.getBladeExpressions().get(r.getOne()/*getKey()*/), r.getTwo())
+                    : new Negation(r.getTwo())
             );
         });
+        
+        //right.getBladeExpressions().entrySet().forEach(r -> { 
+        //    result.getBladeExpressions().put(r.getKey(), (result./*bladeExpressions*/getBladeExpressions().containsKey(r.getKey()))
+        //            ? new Subtraction(result./*bladeExpressions*/getBladeExpressions().get(r.getKey()), r.getValue())
+        //            : new Negation(r.getValue())
+        //    );
+        //});
 
         expressions.put(node, result);
     }
@@ -207,14 +221,33 @@ public class MvExpressionsBuilder extends EmptyControlFlowVisitor implements Exp
     @Override
     public void visit(Addition node) {
         traverseBinary(node);
+        // expressions of type Map<Expression, MvExpressions>
         MvExpressions left = expressions.get(node.getLeft());
         MvExpressions right = expressions.get(node.getRight());
 
         MvExpressions result = createNewMvExpressions();
-        result.bladeExpressions.putAll(left.bladeExpressions);
-        right.bladeExpressions.forEach(
-            (bladeIndex, expr) -> result.bladeExpressions.merge(bladeIndex, expr, (vL, vR) -> new Addition(vL, vR))
+        // 1. add all left side basis-blade-expressions
+        result.getBladeExpressions().putAll(left.getBladeExpressions());
+        
+        // keyValuesView(), merge() comes from TreeMap
+        // 2. Iteration over all expressions (MutableIntObjectMap<Expression>)
+        // of the right side of the addition node, one expr for each coefficient 
+        // /basis-blade of a multivector, an int as bitset defines the basis-blade
+        // merge with the expressions from the left side by adding expressions of the 
+        // same basis-blade
+        // https://www.baeldung.com/java-merge-maps
+        right.getBladeExpressions().keyValuesView().forEach(
+            blade -> result.merge(blade.getOne(), 
+                    // vL left blade-expr, vR right blade-expr
+                    blade.getTwo(), (vL, vR) -> new Addition(vL, vR))
         );
+        
+        /*right.getBladeExpressions().forEach(
+            (bladeIndex, expr) -> result.getBladeExpressions().merge(bladeIndex, 
+                    // vL left blade-expr, vR right blade-expr
+                    expr, (vL, vR) -> new Addition(vL, vR))
+        );*/
+        
         expressions.put(node, result);
     }
 
@@ -226,13 +259,13 @@ public class MvExpressionsBuilder extends EmptyControlFlowVisitor implements Exp
     private MvExpressions getReverse(MvExpressions mv) {
         MvExpressions result = createNewMvExpressions();
         
-        mv.bladeExpressions.entrySet().forEach(blade -> {
-            int k = usedAlgebra.getGrade(blade.getKey());
+        mv.getBladeExpressions().keyValuesView().forEach(blade -> {
+            int k = usedAlgebra.getGrade(blade.getOne());
             if (((k * (k - 1)) / 2) % 2 == 0) {
-                result.bladeExpressions.put(blade.getKey(), blade.getValue());
+                result.getBladeExpressions().put(blade.getOne(), blade.getTwo());
             }
             else {
-                result.bladeExpressions.put(blade.getKey(), new Negation(blade.getValue()));
+                result.getBladeExpressions().put(blade.getOne(), new Negation(blade.getTwo()));
             }
         });
 
@@ -247,11 +280,12 @@ public class MvExpressionsBuilder extends EmptyControlFlowVisitor implements Exp
     private MvExpressions getInverse(MvExpressions mv) {
         MvExpressions revR = getReverse(mv);
         MvExpressions length = calculateUsingMultTable(Products.GEO, mv, revR);
-        Expression lengthScalar = length.bladeExpressions.get(0);
+        Expression lengthScalar = length.getBladeExpressions().get(0);
 
         MvExpressions result = createNewMvExpressions();
-        revR.bladeExpressions.entrySet().forEach(blade -> {
-            result.bladeExpressions.put(blade.getKey(), new Division(blade.getValue().copy(), lengthScalar));
+        revR.getBladeExpressions().keyValuesView().forEach(blade -> {
+            result.getBladeExpressions().put(blade.getOne(), 
+                    new Division(blade.getTwo().copy(), lengthScalar));
         });
 
         return result;
@@ -354,8 +388,9 @@ public class MvExpressionsBuilder extends EmptyControlFlowVisitor implements Exp
         if (variables.containsKey(key)) {
             MvExpressions variableValue = variables.get(key);
             String varName = node.getName();
-            variableValue.bladeExpressions.entrySet().forEach(blade -> {
-                result.bladeExpressions.put(blade.getKey(), new MultivectorComponent(varName, blade.getKey()));
+            variableValue.getBladeExpressions().keyValuesView().forEach(blade -> {
+                result.getBladeExpressions().put(blade.getOne(), 
+                        new MultivectorComponent(varName, blade.getOne()));
             });
         } else {
             //input variable!
@@ -394,13 +429,10 @@ public class MvExpressionsBuilder extends EmptyControlFlowVisitor implements Exp
     public void visit(Negation node) {
         traverseUnary(node);
         MvExpressions op = expressions.get(node.getOperand());
-
         MvExpressions result = createNewMvExpressions();
-        
-        op.bladeExpressions.entrySet().forEach(blade -> {
-            result.bladeExpressions.put(blade.getKey(), new Negation(blade.getValue()));
+        op.getBladeExpressions().keyValuesView().forEach(blade -> {
+            result.getBladeExpressions().put(blade.getOne(), new Negation(blade.getTwo()));
         });
-        
         expressions.put(node, result);
     }
 
@@ -502,9 +534,10 @@ public class MvExpressionsBuilder extends EmptyControlFlowVisitor implements Exp
             // Coefficient equals to the dot product of the two arrays l and r
             Expression sum = null;
             
-            for (Entry<Integer, Expression> blade: r.bladeExpressions.entrySet()) {
-                if (l.bladeExpressions.containsKey(blade.getKey())) {
-                    Expression summand = new Multiplication(l.bladeExpressions.get(blade.getKey()), blade.getValue());
+            for (IntObjectPair<Expression> blade: r.getBladeExpressions().keyValuesView()){
+            //for (Entry<Integer, Expression> blade: r.bladeExpressions.entrySet()) {
+                if (l.getBladeExpressions().containsKey(blade.getOne())) {
+                    Expression summand = new Multiplication(l.getBladeExpressions().get(blade.getOne()), blade.getTwo());
                     sum = (sum == null) ? summand : new Addition(sum, summand);
                 }
             }

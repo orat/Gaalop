@@ -51,7 +51,7 @@ public class CppVisitor extends DefaultCodeGeneratorVisitor {
         
         if (standalone) {
             appendIndentation();
-            code.append("void " + graph.getSource().getName().split("\\.")[0] + "(");
+            code.append("void ").append(graph.getSource().getName().split("\\.")[0]).append("(");
             
             // Print parameters
             StringList parameters = new StringList();
@@ -75,10 +75,10 @@ public class CppVisitor extends DefaultCodeGeneratorVisitor {
                 appendIndentation();
                 code.append(variableType).append(" ");
                 code.append(var);
-                code.append("[" + bladeCount + "] = { 0.0 };\n");
+                code.append("[").append(bladeCount).append("] = { 0.0 };\n");
             }
 
-        if (graph.getScalarVariables().size() > 0) {
+        if (!graph.getScalarVariables().isEmpty()) {
             appendIndentation();
             code.append(variableType).append(" ");
             code.append(graph.getScalars().join());
@@ -145,12 +145,7 @@ public class CppVisitor extends DefaultCodeGeneratorVisitor {
         
         if (!libraries.isEmpty()) {
             LinkedList<String> libs = new LinkedList<>(libraries);
-            libs.sort(new Comparator<String>() {
-                @Override
-                public int compare(String o1, String o2) {
-                    return o2.compareTo(o1);
-                }
-            });
+            libs.sort((String o1, String o2) -> o2.compareTo(o1));
             
             for (String lib: libs) {
                 code.insert(0, "#"+lib+"\n");

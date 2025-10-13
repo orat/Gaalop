@@ -8,6 +8,7 @@ import de.gaalop.dfg.Variable;
 import de.gaalop.tba.UseAlgebra;
 import de.gaalop.tba.cfgImport.optimization.UpdateLocalVariableSet;
 import java.util.Map;
+import org.eclipse.collections.api.tuple.primitive.IntObjectPair;
 
 /**
  * Changes the control flow graph by building the mvExpressions.
@@ -26,8 +27,10 @@ public class CFGImporter extends MvExpressionsBuilder {
         AssignmentNode lastNode = node;
 
         // At first, output all assignments
-        for (Map.Entry<Integer, Expression> blade: mvExpr.bladeExpressions.entrySet()) {
-            AssignmentNode insNode = new AssignmentNode(node.getGraph(), new MultivectorComponent(variable.getName(), blade.getKey()), blade.getValue());
+        for (IntObjectPair<Expression> blade: mvExpr.getBladeExpressions().keyValuesView()){
+        //for (Map.Entry<Integer, Expression> blade: mvExpr.bladeExpressions.entrySet()) {
+            AssignmentNode insNode = new AssignmentNode(node.getGraph(), 
+                    new MultivectorComponent(variable.getName(), blade.getOne()), blade.getTwo());
             lastNode.insertAfter(insNode);
             lastNode = insNode;
         }

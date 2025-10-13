@@ -13,7 +13,7 @@ public class OperatorPriority {
     private static final Map<Class<? extends Expression>, Integer> OPERATOR_PRIORITY;
 
     static {
-        OPERATOR_PRIORITY = new HashMap<Class<? extends Expression>, Integer>();
+        OPERATOR_PRIORITY = new HashMap<>();
 
         // Operator priority from high to low
         OPERATOR_PRIORITY.put(FloatConstant.class, 1000);
