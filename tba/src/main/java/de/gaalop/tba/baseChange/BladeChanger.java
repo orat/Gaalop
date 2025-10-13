@@ -54,7 +54,7 @@ public class BladeChanger {
             return list.getFirst();
         else {
             //complex case
-            LinkedList<BladeStr> result = new LinkedList<BladeStr>();
+            LinkedList<BladeStr> result = new LinkedList<>();
 
             // recursive call on sublist case
             LinkedList<LinkedList<BladeStr>> subList = new LinkedList<>(list);
@@ -65,11 +65,12 @@ public class BladeChanger {
             for (BladeStr comp: thisElement) {
                 for (BladeStr subResultComp: subResult) {
                     //concatenate arrays
-                    LinkedList<String> both = new LinkedList<String>();
+                    LinkedList<String> both = new LinkedList<>();
                     Collections.addAll(both, comp.getBaseVectors());
                     Collections.addAll(both, subResultComp.getBaseVectors());
                     
-                    BladeStr b = new BladeStr(comp.getPrefactor()*subResultComp.getPrefactor(), both.toArray(new String[both.size()]));
+                    BladeStr b = new BladeStr(comp.getPrefactor()*subResultComp.getPrefactor(), 
+                            both.toArray(String[]::new));
                     
                     //Look if the bladeStr is not zero (two equal base components in one blade results in zero)
                     if (!duplicates(b.getBaseVectors()))
@@ -88,7 +89,7 @@ public class BladeChanger {
      */
     public LinkedList<PrefactoredBladeIndex> transform(int fromIndex) {
         if (fromIndex == 0) {
-            LinkedList<PrefactoredBladeIndex> result = new LinkedList<PrefactoredBladeIndex>();
+            LinkedList<PrefactoredBladeIndex> result = new LinkedList<>();
             result.add(new PrefactoredBladeIndex(1, 0));
             return result;
         }
@@ -123,7 +124,7 @@ public class BladeChanger {
         
         
         // Transform
-        HashMap<Integer, PrefactoredBladeIndex> result = new HashMap<Integer, PrefactoredBladeIndex>();
+        HashMap<Integer, PrefactoredBladeIndex> result = new HashMap<>();
         for (BladeStr b: cartesianResult) {
             Integer index = baseVectorArrToIndex(new TCBlade(b.getBaseVectors()));
             
@@ -150,7 +151,7 @@ public class BladeChanger {
         LinkedList<Integer> result = new LinkedList<>();
         for (String baseVector: baseVectorArr)
             result.add(getIndexInArray(baseVector, algebraPC.base2));
-        return result.toArray(new Integer[0]);
+        return result.toArray(Integer[]::new);
     }
     
     /**
@@ -162,7 +163,7 @@ public class BladeChanger {
         LinkedList<String> result = new LinkedList<>();
         for (Integer i: intArr)
             result.add(algebraPC.base2[i]);
-        return result.toArray(new String[0]);
+        return result.toArray(String[]::new);
     }
     
     /**

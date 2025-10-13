@@ -33,7 +33,7 @@ public class Blade {
     }
 
     public Blade(TCBlade b) {
-        this.bases = new ArrayList<String>(Arrays.asList(b.getBase()));
+        this.bases = new ArrayList<>(Arrays.asList(b.getBase()));
     }
 
     @Override
@@ -56,8 +56,6 @@ public class Blade {
     public void addBasis(String toAdd) {
         bases.add(toAdd);
     }
-
-
 
     @Override
     public boolean equals(Object obj) {
