@@ -52,12 +52,12 @@ public class ProductComputer {
     private SignedBlade bladeStrToSignedBlade(BladeStr bladeStr, String[] base) {
         SignedBlade sBlade = new SignedBlade(bitCount, bladeStr.getPrefactor());
         //Integer[] arr = new Integer[bladeStr.getBaseVectors().size()/*.length*/];
-        MutableIntList arr = new IntArrayList(bladeStr.getBaseVectors().size());
+        //MutableIntList arr = new IntArrayList(bladeStr.getBaseVectors().size());
+        int[] arr = new int[bladeStr.getBaseVectors().size()];
         int i=0;
         for (String baseVector: bladeStr.getBaseVectors()) {
             int index = getIndex(baseVector, base);
-            arr.set(i, index);
-            //arr[i] = index;
+            arr[i] = index;
             sBlade.set(index);
             i++;
         }

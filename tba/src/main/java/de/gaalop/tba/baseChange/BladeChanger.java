@@ -139,14 +139,15 @@ public class BladeChanger {
         // Transform each blade into its canonical order
         for (BladeStr b: cartesianResult) {
             //Integer[] arr = baseVectorArrToIntArr(b.getBaseVectors());
-            MutableIntList arr = baseVectorToMutableIntList(b.getBaseVectors());
+            //MutableIntList arr = baseVectorToMutableIntList(b.getBaseVectors());
+            int[] arr = baseVectorArrToIntArr(b.getBaseVectors());
             // numExchanges is not available with arr.sortThis(), thats why own implementation is needed
             int numExchanges = BubbleSort.doBubbleSort(arr);
             if (numExchanges % 2 == 1)
                 b.setPrefactor(-b.getPrefactor());  // Change sign because of odd number of exchanges
             //FIXME warum wird hier erneut sortiert?
-            //Arrays.sort(arr);
-            arr.sortThis();
+            Arrays.sort(arr);
+            //arr.sortThis();
             b.setBaseVectors(intArrToBaseVectorArr(arr));
         }
         
@@ -191,6 +192,20 @@ public class BladeChanger {
             result.add(getIndexInArray(baseVector, algebraPC.base2));
         return result.toArray(new Integer[0]);
     }*/
+    /*private int[] baseVectorArrToIntArr(String[] baseVectorArr) {
+        //LinkedList<Integer> result = new LinkedList<>();
+        MutableIntList result = new IntArrayList();
+        for (String baseVector: baseVectorArr)
+            result.add(getIndexInArray(baseVector, algebraPC.base2));
+        return result.toArray(); //.toArray(new Integer[0]);
+    }*/
+    private int[] baseVectorArrToIntArr(ImmutableList<String> baseVectorArr) {
+        MutableIntList result = new IntArrayList();
+        for (String baseVector: baseVectorArr)
+            result.add(getIndexInArray(baseVector, algebraPC.base2));
+        return result.toArray(); //.toArray(new Integer[0]);
+    }
+    
     /*private MutableIntList baseVectorArrToMutableIntList(String[] baseVectorArr) {
         MutableIntList result = new IntArrayList();
         for (String baseVector: baseVectorArr)
@@ -219,6 +234,13 @@ public class BladeChanger {
     private ImmutableList<String> intArrToBaseVectorArr(MutableIntList intArr) {
         MutableList<String> result = new FastList<>();
         intArr.forEach(index -> result.add(algebraPC.base2[index]));
+        return result.toImmutableList();
+    }
+    private ImmutableList<String> intArrToBaseVectorArr(int[] intArr) {
+        MutableList<String> result = new FastList<>();
+        for (int i=0;i<intArr.length;i++){
+            result.add(algebraPC.base2[i]);
+        }
         return result.toImmutableList();
     }
     

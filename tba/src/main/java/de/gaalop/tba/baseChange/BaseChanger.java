@@ -149,10 +149,11 @@ public class BaseChanger {
             //Arrays.sort(indices);
 
             // MutableIntObjectMap
-            ImmutableIntList indices = bladeExpressionsPlusMinus.keySet().toSortedList().toImmutable(); // .asUnmodifiable()
+            //ImmutableIntList indices = bladeExpressionsPlusMinus.keySet().toSortedList().toImmutable(); // .asUnmodifiable()
+            int[] indices = bladeExpressionsPlusMinus.keySet().toSortedList().toArray();
             //indices.forEach(new ConstantFoldingProcedure(last, varName, bladeExpressionsPlusMinus, graph));
             
-            for (int bladeIndex: indices.toArray()){
+            for (int bladeIndex: indices/*.toArray()*/){
             // for (Integer index: indices){
             
                 Expression value = bladeExpressionsPlusMinus.get(bladeIndex);
