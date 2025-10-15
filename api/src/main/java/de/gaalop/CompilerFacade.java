@@ -3,6 +3,7 @@ package de.gaalop;
 import java.util.Observable;
 import java.util.Set;
 import de.gaalop.cfg.ControlFlowGraph;
+import org.openjdk.jol.info.GraphLayout;
 
 /**
  * Represents the high level compilation process.
@@ -102,6 +103,7 @@ public class CompilerFacade extends Observable {
      */
     protected void testGraph(ControlFlowGraph graph) {
         // This method is empty in the standard CompilerFacade.
+        System.out.println(GraphLayout.parseInstance(graph).toFootprint());
     }
 
 }
