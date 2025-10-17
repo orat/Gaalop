@@ -3,11 +3,12 @@ package de.gaalop.productComputer;
 import de.gaalop.tba.Multivector;
 import java.util.HashMap;
 import java.util.LinkedList;
-import org.eclipse.collections.api.list.ImmutableList;
-import org.eclipse.collections.api.list.primitive.MutableIntList;
+import org.eclipse.collections.api.map.primitive.IntObjectMap;
+//import org.eclipse.collections.api.list.ImmutableList;
+//import org.eclipse.collections.api.list.primitive.MutableIntList;
 
 import org.eclipse.collections.api.map.primitive.MutableIntObjectMap;
-import org.eclipse.collections.impl.list.mutable.primitive.IntArrayList;
+//import org.eclipse.collections.impl.list.mutable.primitive.IntArrayList;
 import org.eclipse.collections.impl.map.mutable.primitive.IntObjectHashMap;
 import org.eclipse.collections.impl.map.mutable.primitive.ObjectIntHashMap;
 

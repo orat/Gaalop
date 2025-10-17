@@ -62,9 +62,29 @@ public class CompilerFacade extends Observable {
     	return realCompile(input);
     }
     
+    
+    // https://www.javacodegeeks.com/using-the-netbeans-profiler-programmatically-in-java.html
+    private long usedMemory(){
+        //System.out.println("max used heap = "+
+        //        String.valueOf(Runtime.getRuntime().maxMemory()/1024/1024/1024)+" GByte");
+        
+        // Used memory may contain no longer referenced objects that will be 
+        // swept away by the next GC
+        Runtime.getRuntime().gc();
+        
+        // Get current size of heap in bytes
+        long heapSize = Runtime.getRuntime().totalMemory();
+        // Get amount of free memory within the heap in bytes. This size will increase
+        // after garbage collection and decrease as new objects are created.
+        long heapFreeSize = Runtime.getRuntime().freeMemory();
+        //System.out.println("diff="+String.valueOf((Runtime.getRuntime().maxMemory()-heapFreeSize)/1014));
+        return heapSize - heapFreeSize;
+    }
+    
     private Set<OutputFile> realCompile(InputFile input) throws CompilationException {
     	setChanged();
     	notifyObservers("Parsing...");
+        long usedMemory = usedMemory();
         ControlFlowGraph graph = codeParser.parseFile(input);
         setChanged();
         
@@ -76,17 +96,41 @@ public class CompilerFacade extends Observable {
         globalSettingsStrategy.transform(graph);
         setChanged();
 
+        long graphMemory = usedMemory()-usedMemory;
+        System.out.println("AST memory after parsing and global settings = "+
+                String.valueOf(graphMemory/1024)+" KBytes");
+        
+        
+        
         notifyObservers("Inserting code for visualization...");
         visualizerStrategy.transform(graph);
         setChanged();
 
+        //System.out.println("after global settings and inserting code for visualization:");
+        //System.out.println(GraphLayout.parseInstance(graph).toFootprint());
+        long graphMemory2 = usedMemory()-usedMemory;
+        System.out.println("AST memory after global settings and code inserting for visualization = "+
+                String.valueOf(graphMemory2/1024)+" KBytes");
+        
         notifyObservers("Algebra inserting...");  
         algebraStrategy.transform(graph);
         setChanged();
         
+        long graphMemory3 = usedMemory()-usedMemory;
+        System.out.println("AST memory after algebra inserting algebra = "+
+                String.valueOf(graphMemory3/1024/1024)+" MBytes");
+        
+        //System.out.println("after algebra inserting:");
+        //System.out.println(GraphLayout.parseInstance(graph).toFootprint());
+        
+        
         notifyObservers("Optimizing...");
         optimizationStrategy.transform(graph);
         setChanged();
+        
+        long graphMemory4 = usedMemory()-usedMemory;
+        System.out.println("AST memory after optimization = "+
+                String.valueOf(graphMemory4/1024/1024)+" MBytes");
         
         testGraph(graph);
         
@@ -103,7 +147,9 @@ public class CompilerFacade extends Observable {
      */
     protected void testGraph(ControlFlowGraph graph) {
         // This method is empty in the standard CompilerFacade.
-        System.out.println(GraphLayout.parseInstance(graph).toFootprint());
+        //System.out.println(GraphLayout.parseInstance(graph).toFootprint());
+        //long heapSize = Runtime.getRuntime().totalMemory();
+        //System.out.println("total memory = "+String.valueOf(heapSize));
     }
 
 }
