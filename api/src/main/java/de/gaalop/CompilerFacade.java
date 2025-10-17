@@ -65,8 +65,9 @@ public class CompilerFacade extends Observable {
     
     // https://www.javacodegeeks.com/using-the-netbeans-profiler-programmatically-in-java.html
     private long usedMemory(){
-        //System.out.println("max used heap = "+
-        //        String.valueOf(Runtime.getRuntime().maxMemory()/1024/1024/1024)+" GByte");
+        System.out.println("snapshot heap = "+
+                String.valueOf((Runtime.getRuntime().totalMemory()-
+                        Runtime.getRuntime().freeMemory())/1024/1024)+" MByte");
         
         // Used memory may contain no longer referenced objects that will be 
         // swept away by the next GC
@@ -109,7 +110,7 @@ public class CompilerFacade extends Observable {
         //System.out.println("after global settings and inserting code for visualization:");
         //System.out.println(GraphLayout.parseInstance(graph).toFootprint());
         long graphMemory2 = usedMemory()-usedMemory;
-        System.out.println("AST memory after global settings and code inserting for visualization = "+
+        System.out.println("AST memory after code inserting for visualization = "+
                 String.valueOf(graphMemory2/1024)+" KBytes");
         
         notifyObservers("Algebra inserting...");  
@@ -117,7 +118,7 @@ public class CompilerFacade extends Observable {
         setChanged();
         
         long graphMemory3 = usedMemory()-usedMemory;
-        System.out.println("AST memory after algebra inserting algebra = "+
+        System.out.println("AST memory after inserting algebra = "+
                 String.valueOf(graphMemory3/1024/1024)+" MBytes");
         
         //System.out.println("after algebra inserting:");
