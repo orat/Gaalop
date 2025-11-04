@@ -50,17 +50,22 @@ public class AlgebraPC {
      */
     private LinkedList<BladeStr> parseListBladeStr(String str) {
         int index;
-        LinkedList<BladeStr> result = new LinkedList<BladeStr>();
-        while ((index = suchenextIndex(str)) != Integer.MAX_VALUE) {
-            result.add(parseBladeStr(str.substring(0, index)));
-            if (str.charAt(index) == '-') {
-                str = str.substring(index);
-            } else {
-                str = str.substring(index + 1);
+        LinkedList<BladeStr> result = new LinkedList<>();
+        try {
+            while ((index = suchenextIndex(str)) != Integer.MAX_VALUE) {
+                result.add(parseBladeStr(str.substring(0, index)));
+                if (str.charAt(index) == '-') {
+                    str = str.substring(index);
+                } else {
+                    str = str.substring(index + 1);
+                }
             }
-        }
-        if (!str.isEmpty()) {
-            result.add(parseBladeStr(str));
+            if (!str.isEmpty()) {
+                result.add(parseBladeStr(str));
+            }
+        } catch (NumberFormatException ex){
+            System.out.println("Error during parsing of \""+str+"\"!");
+            throw ex;
         }
         return result;
     }
