@@ -97,10 +97,9 @@ public class AlgebraPC {
         // floating point can not be defined by exponential representation
         // if "f" added this produces new exception at other code position
         // additional line 131 "f" has to be added
-        } else if (str.contains("e") /*|| str.contains("f")*/) {
-        // name contains at least one character a-z after an optional "-"
-        // produces new erros on different position in the code
-        //} else if (str.matches("-*[a-z]+.*")){
+        //} else if (str.contains("e") /*|| str.contains("f")*/) {
+        // name contains at least one character a-z or A-Z after an optional "-"
+        } else if (str.matches(".*[a-zA-Z]+.*")){
             return parseBlade(str);
         } else {
             return new BladeStr(Float.parseFloat(str.trim()), "0");
@@ -129,7 +128,8 @@ public class AlgebraPC {
     private BladeStr parseProduct(String str) {
         String[] parts = str.split("\\*");
 
-        if (parts[0].contains("e") /*|| parts[0].contains("f")*/) {
+        //if (parts[0].contains("e") /*|| parts[0].contains("f")*/) {
+        if (parts[0].matches(".*[a-zA-Z]+.*")){
             //parts[0]: Blade
             //parts[1]: Constant
             BladeStr result = parseBlade(parts[0]);
