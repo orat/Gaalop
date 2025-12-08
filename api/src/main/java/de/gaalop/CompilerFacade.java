@@ -121,5 +121,4 @@ public class CompilerFacade extends Observable {
         long heapSize = Runtime.getRuntime().totalMemory();
         System.out.println("total memory = "+String.valueOf(heapSize));
     }
-
 }

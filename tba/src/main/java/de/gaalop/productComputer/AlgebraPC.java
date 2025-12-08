@@ -50,7 +50,7 @@ public class AlgebraPC {
      */
     private LinkedList<BladeStr> parseListBladeStr(String str) {
         int index;
-        LinkedList<BladeStr> result = new LinkedList<BladeStr>();
+        LinkedList<BladeStr> result = new LinkedList<>();
         while ((index = suchenextIndex(str)) != Integer.MAX_VALUE) {
             result.add(parseBladeStr(str.substring(0, index)));
             if (str.charAt(index) == '-') {
@@ -91,7 +91,16 @@ public class AlgebraPC {
         // Contains only Product, Blade or Constant!
         if (str.contains("*")) {
             return parseProduct(str);
-        } else if (str.contains("e")) {
+        // FIXME with usage of regular expressions
+        // name can start with a "-"
+        // name must contain "e", "f1" is not allowed
+        // floating point can not be defined by exponential representation
+        // if "f" added this produces new exception at other code position
+        // additional line 131 "f" has to be added
+        } else if (str.contains("e") /*|| str.contains("f")*/) {
+        // name contains at least one character a-z after an optional "-"
+        // produces new erros on different position in the code
+        //} else if (str.matches("-*[a-z]+.*")){
             return parseBlade(str);
         } else {
             return new BladeStr(Float.parseFloat(str.trim()), "0");
@@ -120,8 +129,7 @@ public class AlgebraPC {
     private BladeStr parseProduct(String str) {
         String[] parts = str.split("\\*");
 
-
-        if (parts[0].contains("e")) {
+        if (parts[0].contains("e") /*|| parts[0].contains("f")*/) {
             //parts[0]: Blade
             //parts[1]: Constant
             BladeStr result = parseBlade(parts[0]);

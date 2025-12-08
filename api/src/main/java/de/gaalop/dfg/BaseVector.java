@@ -13,9 +13,11 @@ public final class BaseVector extends Expression {
 	private String index;
 
 	/**
-	 * Constructs a new Base Vector with the given index. The index is not restricted to a subset of values but should
-	 * not be negative.
+	 * Constructs a new Base Vector with the given index. The index is not 
+         * restricted to a subset of values but should not be negative.
 	 * 
+         * scheint nur von Gaalet Plugin/GaaletBladeTable gebraucht zu werden
+         * 
 	 * @param index The index of this base vector.
 	 */
 	public BaseVector(int index) {

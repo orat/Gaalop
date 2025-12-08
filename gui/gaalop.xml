@@ -4,7 +4,7 @@
 <comment>Gaalop Configuration File</comment>
 <entry key="de.gaalop.csharp.Plugin.useDouble">false</entry>
 <entry key="de.gaalop.tba.Plugin.optGCSE">true</entry>
-<entry key="lastUsedAlgebra">QRA6</entry>
+<entry key="lastUsedAlgebra">cgatest</entry>
 <entry key="de.gaalop.tba.Plugin.optOneExpressionRemoval">true</entry>
 <entry key="de.gaalop.csharp.Plugin.standalone">true</entry>
 <entry key="lastUsedOptimization">de.gaalop.tba.Plugin</entry>
@@ -21,15 +21,15 @@
 <entry key="de.gaalop.csharp.Plugin.saveFileDirectory"></entry>
 <entry key="de.gaalop.python.Plugin.saveFileDirectory"></entry>
 <entry key="de.gaalop.python.Plugin.optimizeOnSave">true</entry>
-<entry key="lastUsedGenerator">de.gaalop.cpp.Plugin</entry>
+<entry key="lastUsedGenerator">de.gaalop.compressed.Plugin</entry>
 <entry key="de.gaalop.csharp.Plugin.useArrays">false</entry>
 <entry key="de.gaalop.globalSettings.Plugin.guiFontSize">12</entry>
 <entry key="de.gaalop.globalSettings.Plugin.editorFontSize">12</entry>
 <entry key="de.gaalop.matlab.Plugin.useDouble">true</entry>
 <entry key="de.gaalop.gappopencl.Plugin.standalone">true</entry>
 <entry key="de.gaalop.tba.Plugin.optInserting">true</entry>
+<entry key="de.gaalop.visualizer.Plugin.lwJglNativePath">/home/oliver/JAVA/PROJECTS/Gaalop/distribution/target/distribution-2.2.6.2-bin/nativeLibraries</entry>
 <entry key="de.gaalop.python.Plugin.useArrays">false</entry>
-<entry key="de.gaalop.visualizer.Plugin.lwJglNativePath">/usr/lib/jni/</entry>
 <entry key="de.gaalop.gapp.Plugin.maximaExpand">false</entry>
 <entry key="de.gaalop.tba.Plugin.numberOfRoundingDigits">6</entry>
 <entry key="de.gaalop.csharp.Plugin.optimizeOnSave">true</entry>
