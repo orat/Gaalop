@@ -28,10 +28,10 @@ public class Multivector {
      * Returns the values of all non-null blades in this multivector
      * @return The values of all non-null blades
      */
-    public TreeMap<Integer, Byte> getValueArr(Algebra algebra) {
-        TreeMap<Integer, Byte> result = new TreeMap<>();
+    public TreeMap<Integer, Float/*Byte*/> getValueArr(Algebra algebra) {
+        TreeMap<Integer, Float /*Byte*/> result = new TreeMap<>();
         blades.forEach(cur -> {
-            result.merge(cur.getIndex(), cur.getPrefactor(), (pL, pR) -> (byte) (pL+pR));
+            result.merge(cur.getIndex(), cur.getPrefactor(), (pL, pR) -> /*(byte)*/ (float) (pL+pR));
         });
         
         // Remove 0 values
@@ -60,7 +60,7 @@ public class Multivector {
         StringBuilder sb = new StringBuilder();
         for (BladeRef ref: blades) {
 
-            switch (ref.getPrefactor()) {
+            /*switch (ref.getPrefactor()) {
                 case -1:
                     sb.append("-E"+ref.getIndex());
                     break;
@@ -72,9 +72,16 @@ public class Multivector {
                 default:
                     System.err.println("Only -1,0,1 allowed as prefactors in multivectors");
                     break;
+            }*/
+            if ((Float.valueOf(-1)).equals(ref.getPrefactor()))
+                sb.append("-E").append(ref.getIndex());
+            else if ((Float.valueOf(1f)).equals(ref.getPrefactor()))
+                sb.append("+E").append(ref.getIndex());
+            // beliebiges anderes float aber nicht 0
+            else if (!(Float.valueOf(0f)).equals(ref.getPrefactor())){
+                if (ref.getPrefactor()>0) sb.append("+");
+                sb.append(Float.toString(ref.getPrefactor())).append("E").append(ref.getIndex());
             }
-
-
         }
         if (sb.length()==0) return "";
         if (sb.charAt(0) == '+')

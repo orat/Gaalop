@@ -1,6 +1,7 @@
 2d;imaginary numbers
 3d;euclidean geometric algebra
 6d;G6 for screw axis in robotics
+qra1f;quantum register algebra with 1 quantum bits with Witt-Basis
 2dpga;2D projective geometric algebra
 3dpga;3D projective geometric algebra
 cra;compass ruler algebra
@@ -9,4 +10,4 @@ cga;conformal geometric algebra
 gac;geometric algebra for conics
 dcga;double conformal geometric algebra
 qga;quantum bit geometric algebra
-qra6; quatum register algebra with 6 quantum bits
+qra6;quantum register algebra with 6 quantum bits

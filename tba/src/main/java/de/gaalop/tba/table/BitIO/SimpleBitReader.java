@@ -23,5 +23,9 @@ public class SimpleBitReader extends AbsBitReader {
             else
                 return in.readInt();
     }
+    
+    public float readFloat() throws IOException {
+        return in.readFloat();
+    }
 
 }

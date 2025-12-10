@@ -4,7 +4,8 @@ import java.io.DataInputStream;
 import java.io.IOException;
 
 /**
- * Defines an abstract bit reader, that read bits from a file
+ * Defines an abstract bit reader, that read bits from a file.
+ * 
  * @author Christian Steinmetz
  */
 public abstract class AbsBitReader {
@@ -22,5 +23,7 @@ public abstract class AbsBitReader {
      * @throws IOException
      */
     public abstract int read(int bitCount) throws IOException;
+    
+    public abstract float readFloat() throws IOException;
 
 }

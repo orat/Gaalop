@@ -22,5 +22,9 @@ public class SimpleBitWriter extends AbsBitWriter {
             else
                 out.writeInt(data);
     }
+    
+    public void writeFloat(float value) throws IOException {
+        out.writeFloat(value);
+    }
 
 }

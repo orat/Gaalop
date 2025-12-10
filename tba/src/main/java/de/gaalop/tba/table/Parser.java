@@ -3,7 +3,8 @@ package de.gaalop.tba.table;
 import de.gaalop.tba.Blade;
 import de.gaalop.tba.BladeRef;
 import de.gaalop.tba.Multivector;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Provides methods for parsing blades, blades references and multivectors
@@ -12,23 +13,23 @@ import java.util.Vector;
 public class Parser {
 
     /**
-     * Parses a blade refrence from a string
+     * Parses a blade reference from a string
      * @param parse The string to parse
      * @return The parsed blade reference
      */
     public static BladeRef parseBladeRef(String parse) {
 
-        byte prefactor = 1;
+        float/*byte*/ prefactor = 1f;
         int index = 0;
 
         String trimmed = parse.trim();
         if (trimmed.isEmpty() || trimmed.equals("0")) {
-            prefactor = 0;
+            prefactor = 0f;
         } else {
 
             if (trimmed.startsWith("-E")) {
                 // for instance -E10
-                prefactor = -1;
+                prefactor = -1f;
                 index = Integer.parseInt(trimmed.substring(2));
             } else {
                 if (trimmed.startsWith("E")) {
@@ -37,7 +38,7 @@ public class Parser {
                 } else {
                     // for instance -1E10
                     String[] parts = trimmed.split("E");
-                    prefactor = (byte) Integer.parseInt(parts[0]);
+                    prefactor = /*(byte)*/ Float.parseFloat(parts[0]);
                     index = Integer.parseInt(parts[1]);
                 }
             }
@@ -53,7 +54,7 @@ public class Parser {
      * @return The parsed blade
      */
     public static Blade parseBlade(String parse) {
-        Vector<String> bases = new Vector<String>();
+        List<String> bases = new ArrayList<>();
         String[] parts = parse.split("\\^");
         for (String part : parts) {
             bases.add(part.trim());

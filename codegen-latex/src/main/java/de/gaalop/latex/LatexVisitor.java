@@ -203,9 +203,15 @@ public class LatexVisitor extends DefaultCodeGeneratorVisitor {
 
     @Override
     public void visit(BaseVector baseVector) {
-        code.append("e_{");
-        code.append(baseVector.getIndex());
-        code.append('}');
+        String name = baseVector.getName();
+        if (name.matches("[a-zA-Z]?.?")){
+            name.
+            code.append("e_{");
+            code.append(baseVector.getIndex());
+            code.append('}');
+        } else {
+        
+        }
     }
 
     @Override

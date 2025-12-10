@@ -56,7 +56,8 @@ public class Main {
                         geo.setProduct(i, j, geoLive.getProduct(i, j));
                     }
 
-                TableFormat.writeToFile(bladeCount,algebraPC.base.length,inner,outer,geo,new FileOutputStream("products_"+definedAlgebra.id+".csv"),TableFormat.TABLE_COMPRESSED_MAX);
+                TableFormat.writeToFile(bladeCount,algebraPC.base.length,inner,outer,
+                        geo,new FileOutputStream("products_"+definedAlgebra.id+".csv"),TableFormat.TABLE_HUMAN_READABLE/*TABLE_COMPRESSED_MAX*/);
             } else {
                 System.out.println("Algebra definition file: \""+"algebra/"+definedAlgebra.id+"/definition.csv"+"\" not found!");
             }

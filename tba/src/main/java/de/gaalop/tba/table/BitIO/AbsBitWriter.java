@@ -24,6 +24,8 @@ public abstract class AbsBitWriter {
      */
     public abstract void write(int data, int bitCount) throws IOException;
 
+    public abstract void writeFloat(float value) throws IOException;
+    
     /**
      * Flush the cache
      * @throws IOException

@@ -29,4 +29,10 @@ public class MaxReader extends AbsBitReader {
         return (int) cacheD;
     }
 
+    @Override
+    public float readFloat() throws IOException {
+        int value = read(32);
+        return Float.intBitsToFloat(value);
+    }
+
 }

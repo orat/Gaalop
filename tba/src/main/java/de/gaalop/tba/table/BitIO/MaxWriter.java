@@ -5,6 +5,7 @@ import java.io.IOException;
 /**
  * Implements a bit writes which produces no padding bits,
  * except at the end of the file.
+ * 
  * @author Christian Steinmetz
  */
 public class MaxWriter extends AbsBitWriter {
@@ -37,5 +38,11 @@ public class MaxWriter extends AbsBitWriter {
         if (cachedBits != 16) 
             write(0,16-cachedBits);
         writeCharFromCache();
+    }
+
+    @Override
+    public void writeFloat(float value) throws IOException {
+        // float und int jeweils = 4 bytes
+        write(Float.floatToIntBits(value), 32);
     }
 }
