@@ -268,7 +268,7 @@ public class TableCompressed implements TableReaderIO {
             sb.append(value.toString());
             sb.append(", ");
         }
-        sb.deleteCharAt(sb.length()-1);
+        sb.deleteCharAt(sb.length()-2);
         sb.append("]");
         System.out.println(sb.toString());
     }
