@@ -58,7 +58,9 @@ public class Main {
         IMultTable geo = new MultTableAbsDirectComputer(alFile, new GeoProductCalculator());
         
         int dimension = alFile.base.length-1;
-        TableFormat.writeToFile((int) Math.pow(2,dimension), dimension, inner, outer, geo, new FileOutputStream(new File(dir, "products.csv")),format);
+        TableFormat.writeToFile((int) Math.pow(2,dimension), dimension, 
+                inner, outer, geo, 
+                new FileOutputStream(new File(dir, "products.csv")),format);
         
         System.out.println("Verify created file");
         
@@ -70,7 +72,8 @@ public class Main {
         outerStored.createTable(bladeCount);
         IMultTable geoStored = new MultTableImpl();
         geoStored.createTable(bladeCount);
-        TableFormat.readFromFile(new FileInputStream(new File(dir, "products.csv")), innerStored, outerStored, geoStored);
+        TableFormat.readFromFile(new FileInputStream(new File(dir, "products.csv")), 
+                innerStored, outerStored, geoStored);
         
         testEqual(innerStored, inner, dimension);
         testEqual(outerStored, outer, dimension);
@@ -109,7 +112,7 @@ public class Main {
                     });
         Arrays.sort(dirs);
         for (File dir: dirs)
-            createFromDir(dir,TableFormat.TABLE_HUMAN_READABLE/*TABLE_COMPRESSED_MAX*/);
+            createFromDir(dir,TableFormat./*TABLE_HUMAN_READABLE*/TABLE_COMPRESSED_MAX);
     }
     
     /**
@@ -131,8 +134,8 @@ public class Main {
     }
 
     private static boolean testEqual(Multivector m1, Multivector m2) {
-        Vector<BladeRef> v1 = new Vector<BladeRef>(m1.getBlades());
-        Vector<BladeRef> v2 = new Vector<BladeRef>(m2.getBlades());
+        Vector<BladeRef> v1 = new Vector<>(m1.getBlades());
+        Vector<BladeRef> v2 = new Vector<>(m2.getBlades());
         
         if (v1.size() != v2.size())
             return false;

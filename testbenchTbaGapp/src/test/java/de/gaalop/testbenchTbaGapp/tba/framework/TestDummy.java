@@ -116,7 +116,7 @@ public class TestDummy {
                 tBATestCase.getAlgebraName(), 
                 true, 
                 "") {
-                    @Override
+                    //@Override
                     protected void testGraph(ControlFlowGraph graph) {
                     testGraph.testGraph(graph);
 

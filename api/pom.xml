@@ -12,10 +12,10 @@
     <packaging>jar</packaging>
     <name>Gaalop API</name>
     <dependencies>
-        <dependency>
+        <!--dependency>
             <groupId>org.openjdk.jol</groupId>
             <artifactId>jol-core</artifactId>
             <version>0.17</version>
-        </dependency>
+        </dependency-->
     </dependencies>
 </project>

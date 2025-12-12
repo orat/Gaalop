@@ -263,13 +263,14 @@ public class TableCompressed implements TableReaderIO {
     }
     private static void printPrefactorsList(List<Float> prefactors){
         StringBuilder sb = new StringBuilder();
-        sb.append("prefactors = [");
+        sb.append("prefactors = {");
         for (Float value: prefactors){
             sb.append(value.toString());
             sb.append(", ");
         }
         sb.deleteCharAt(sb.length()-1);
-        sb.append("]");
+        sb.deleteCharAt(sb.length()-1);
+        sb.append("}");
         System.out.println(sb.toString());
     }
     

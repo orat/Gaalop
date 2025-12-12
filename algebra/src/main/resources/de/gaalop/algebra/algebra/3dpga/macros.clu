@@ -17,16 +17,14 @@ createPointI = {
     _P(1)*(e0^e3^e2)+_P(2)*(e0^e1^e3)+_P(3)*(e0^e2^e1)
 }
 
-
 normalizeLineE = {
     _P(1)/
     sqrt(
         coefficient(_P(1),(e1^e2)) * coefficient(_P(1),(e1^e2))+
-        coefficient(_P(1),(e3^e1)) *coefficient(_P(1),(e3^e1))+
+        coefficient(_P(1),(e3^e1)) * coefficient(_P(1),(e3^e1))+
         coefficient(_P(1),(e2^e3))* coefficient(_P(1),(e2^e3))
     )
 }
-
 
 normalizeLineI = {
     _P(1)/
@@ -37,8 +35,6 @@ normalizeLineI = {
        )
 }
 
-
-
 normalizel = {
 
            (coefficient(_P(1),(e0^e1)) *coefficient(_P(1),(e0^e1)))+
@@ -46,7 +42,6 @@ normalizel = {
            (coefficient(_P(1),(e0^e3))*coefficient(_P(1),(e0^e3)))
            
 }
-
 
 //The dualization operator
 //args:

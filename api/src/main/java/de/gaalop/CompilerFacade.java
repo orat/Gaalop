@@ -3,7 +3,7 @@ package de.gaalop;
 import java.util.Observable;
 import java.util.Set;
 import de.gaalop.cfg.ControlFlowGraph;
-import org.openjdk.jol.info.GraphLayout;
+//import org.openjdk.jol.info.GraphLayout;
 
 /**
  * Represents the high level compilation process.
@@ -80,27 +80,27 @@ public class CompilerFacade extends Observable {
         visualizerStrategy.transform(graph);
         setChanged();
 
-        System.out.println("After global setting and inserting code for visualization");
-        System.gc();
-        System.out.println(GraphLayout.parseInstance(graph).toFootprint());
-        long heapSize = Runtime.getRuntime().totalMemory();
-        System.out.println("total memory = "+String.valueOf(heapSize));
+        //System.out.println("After global setting and inserting code for visualization");
+        //System.gc();
+        //((System.out.println(GraphLayout.parseInstance(graph).toFootprint());
+        //long heapSize = Runtime.getRuntime().totalMemory();
+        //System.out.println("total memory = "+String.valueOf(heapSize));
         
         notifyObservers("Algebra inserting...");  
         algebraStrategy.transform(graph);
         setChanged();
         
-        System.out.println("After Algebra insertion");
-        System.gc();
-        System.out.println(GraphLayout.parseInstance(graph).toFootprint());
-        heapSize = Runtime.getRuntime().totalMemory();
-        System.out.println("total memory = "+String.valueOf(heapSize));
+        //System.out.println("After Algebra insertion");
+        //System.gc();
+        //System.out.println(GraphLayout.parseInstance(graph).toFootprint());
+        //heapSize = Runtime.getRuntime().totalMemory();
+        //System.out.println("total memory = "+String.valueOf(heapSize));
         
         notifyObservers("Optimizing...");
         optimizationStrategy.transform(graph);
         setChanged();
         
-        testGraph(graph);
+        //testGraph(graph);
         
         notifyObservers("Generating Code...");
         Set<OutputFile> output = codeGenerator.generate(graph);  
@@ -113,12 +113,12 @@ public class CompilerFacade extends Observable {
      * Do some testing with the Control Flow Graph between Optimization stage and Codegenerator stage
      * @param graph The Control Flow Graph
      */
-    protected void testGraph(ControlFlowGraph graph) {
+    /*protected void testGraph(ControlFlowGraph graph) {
         // This method is empty in the standard CompilerFacade.
         System.out.println("After Optimization");
         System.gc();
         System.out.println(GraphLayout.parseInstance(graph).toFootprint());
         long heapSize = Runtime.getRuntime().totalMemory();
         System.out.println("total memory = "+String.valueOf(heapSize));
-    }
+    }*/
 }

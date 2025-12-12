@@ -1,7 +1,90 @@
 //The dualization operator
+// todo is the sign in the implementation correct?
 //args:
 //m
 Dual = {
-    _P(1)*(-e1^e2^e3)
+    _P(1)*(-e1^e2^e3^e4^e5^e6)
 }
 
+
+
+// transform a 3d euclidean vector based on DH parameters
+//args:
+//alpha: angle [rad]
+//a: scalar distance [mm]
+//theta: angle [rad]
+//d: scalar distance [mm]
+//vec: euclidean vector
+tDHVec = {
+    alpha = _P(1);
+    a = _P(2);
+    theta = _P(3);
+    d = _P(4);
+    (cos(theta)*coefficient(_P(5),(e1))
+      -sin(theta)*cos(alpha)*coefficient(_P(5), (e2))
+      +sin(theta)*sin(alpha)*coefficient(_P(5), (e3)))*(e1)
+    +
+    (sin(theta)*coefficient(_P(5),(e1))
+      -cos(theta)*cos(alpha)*coefficient(_P(5), (e2))
+      -cos(theta)*sin(alpha)*coefficient(_P(5), (e3)))*(e2)
+    +
+     (sin(alpha)*coefficient(_P(5), (e2))
+     +cos(alpha)*coefficient(_P(5), (e3)))*(e3)
+}
+
+// transform a 3d euclicdean point based on DH parameters
+// e.g. https://automaticaddison.com/homogeneous-transformation-matrices-using-denavit-hartenberg/
+//args:
+//alpha: angle [rad]
+//a: scalar distance [mm]
+//theta: angle [rad]
+//d: scalar distance [mm]
+//vec: euclidean vector
+tDHPnt = {
+    alpha = _P(1);
+    a = _P(2);
+    theta = _P(3);
+    d = _P(4);
+    (cos(theta)*coefficient(_P(5),(e1))
+      -sin(theta)*cos(alpha)*coefficient(_P(5), (e2))
+      +sin(theta)*sin(alpha)*coefficient(_P(5), (e3))
+      +a*cos(theta))*(e1)
+    +
+    (sin(theta)*coefficient(_P(5),(e1))
+      -cos(theta)*cos(alpha)*coefficient(_P(5), (e2))
+      -cos(theta)*sin(alpha)*coefficient(_P(5), (e3))
+      +a*sin(theta))*(e2)
+    +
+     (sin(alpha)*coefficient(_P(5), (e2))
+     +cos(alpha)*coefficient(_P(5), (e3))
+     +d)*(e3)
+}
+
+// create a screw
+//args:
+//zi: joint axis/direction as 3d euclidean vector
+//oi: joint position as 3d euclidean vector
+//on: end effector position as 3d euclidean vector
+cScrew = {
+    cr = cross(_P(1), (_P(3) - _P(2)));
+    zi + coefficient(cr,(e1))*e4 + coefficient(cr,(e2))*e5 +
+       coefficient(cr,(e3))*e6
+}
+
+// cross product of 3d euclidean vectors a,b
+// e.g. https://de.wikipedia.org/wiki/Kreuzprodukt
+//TODO substitution of this function impl by outer-product and euclidean dual
+//
+//args:
+//a: first argument, 3d euclidean vector
+//b: second argument, 3d euclidean vector
+cross = {
+    (coefficient(_P(1),(e2))*coefficient(_P(2),(e3))
+        -coefficient(_P(1),(e3))*coefficient(_P(2),(e2)))*e1
+    +
+    (coefficient(_P(1),(e3))*coefficient(_P(2),(e1))
+        -coefficient(_P(1),(e1))*coefficient(_P(2),(e3)))*e2
+    +
+    (coefficient(_P(1),(e1))*coefficient(_P(2),(e2))
+        -coefficient(_P(1),(e2))*coefficient(_P(2),(e1)))*e3
+}
