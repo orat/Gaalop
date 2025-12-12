@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 /**
  * Stores the product tables in a compressed format.
  * 
- * @author Christian Steinmetz
+ * @author Christian Steinmetz, Oliver Rettig
  */
 public class TableCompressed implements TableReaderIO {
 
@@ -44,7 +44,7 @@ public class TableCompressed implements TableReaderIO {
         try {
             int dimension = in.readByte(); // dimension of the algebra
             int bladeCount = (int) Math.pow(2,dimension); // number of basis blades of the algebra
-            int bitCount = in.readByte(); // numer of bits to save the number of blades the MV consists of 
+            int bladesBitCount = in.readByte(); // numer of bits to save the number of blades the MV consists of 
 
             // Liste von prefactors !=0 laden und eine List aufbauen, die von
             // readMultivector() verwendet werden kann, um den prefactor zu bestimmen
@@ -58,9 +58,9 @@ public class TableCompressed implements TableReaderIO {
 
             for (int i=0;i<bladeCount;i++)
                 for (int j=0;j<bladeCount;j++) {
-                    innerTable.setProduct(i, j, readMultivector(reader, dimension, bitCount, prefactors));
-                    outerTable.setProduct(i, j, readMultivector(reader, dimension, bitCount, prefactors));
-                    geoTable.setProduct(i, j, readMultivector(reader, dimension, bitCount, prefactors));
+                    innerTable.setProduct(i, j, readMultivector(reader, dimension, bladesBitCount, prefactors));
+                    outerTable.setProduct(i, j, readMultivector(reader, dimension, bladesBitCount, prefactors));
+                    geoTable.setProduct(i, j, readMultivector(reader, dimension, bladesBitCount, prefactors));
                 }
 
             in.close();
@@ -107,17 +107,17 @@ public class TableCompressed implements TableReaderIO {
      * @param productTblEntry The multivector to be written (can be a sum of several blades)
      * @param dimension The dimension of the algebra
      * @param out The writer to be used
-     * @param bitCount The bit count used to save the number of blades
+     * @param bladesBitCount The bit count used to save the number of blades
      * @param prefactors if is empty each prefactor is saved as a float, 
      *                   instead only save the the index in the list
      * @throws IOException
      */
     private void writeMultivector(Multivector productTblEntry, int dimension, 
-            AbsBitWriter out, int bitCount, List<Float> prefactors) throws IOException {
+            AbsBitWriter out, int bladesBitCount, List<Float> prefactors) throws IOException {
         
         // save the number of summed basis blades per multivector
         int size = productTblEntry.getBlades().size();
-        out.write(size, bitCount);
+        out.write(size, bladesBitCount);
         int prefactorsBitCount = neededBits(prefactors.size());
         // save the prefactor and the index of each blade
         // a multivector can be a sum of more than one blades
@@ -152,11 +152,10 @@ public class TableCompressed implements TableReaderIO {
         
         try {
             // Calculate the tble and write tbl temporary, non optimized, 
-            // maximum of 2 blades in each table entry assumed
             // do not save parameters e.g. count of blades of each tbl-entry
             
             AbsBitWriter w = new SimpleBitWriter();
-            int bitCount = 32; // number of bits to save temporary the count of blades
+            int bladesBitCount = 32; // number of bits to save temporary the count of blades
             File tempFile = File.createTempFile("TableCreator", "txt");
             DataOutputStream out1 = new DataOutputStream(new FileOutputStream(tempFile));
             w.setDataOutputStream(out1);
@@ -181,9 +180,9 @@ public class TableCompressed implements TableReaderIO {
                     addPrefactors(prefactors, outerM);
                     addPrefactors(prefactors, geoM);
                     
-                    writeMultivector(innerM, dimension, w, bitCount, prefactors);
-                    writeMultivector(outerM, dimension, w, bitCount, prefactors);
-                    writeMultivector(geoM, dimension, w, bitCount, prefactors);
+                    writeMultivector(innerM, dimension, w, bladesBitCount, prefactors);
+                    writeMultivector(outerM, dimension, w, bladesBitCount, prefactors);
+                    writeMultivector(geoM, dimension, w, bladesBitCount, prefactors);
                 }
 
             w.finish();
@@ -208,21 +207,26 @@ public class TableCompressed implements TableReaderIO {
                 bitCount2++;
                 number *= 2;
             }*/
-            int bitCount2 = neededBits(maxNumberOfBlades);
-
-            out.writeByte(dimension); // dimension
-            out.writeByte(bitCount2); // count of bits needed to save compressed the blade structure
-
+            int bladesBitCount2 = neededBits(maxNumberOfBlades);
             writer.setDataOutputStream(out);
 
+            out.writeByte(dimension); // dimension
+            out.writeByte(bladesBitCount2); // count of bits needed to save compressed the blade structure
+
+            // save prefactors
+            out.writeInt(prefactors.size());
+            for (Float prefactor: prefactors){
+                out.writeFloat(prefactor);
+            }
+            
             for (int i=0;i<bladeCount;i++)
                 for (int j=0;j<bladeCount;j++) {
                     writeMultivector(readMultivector(r, dimension, 
-                            bitCount, prefactors), dimension, writer, bitCount2, prefactors);
+                            bladesBitCount, prefactors), dimension, writer, bladesBitCount2, prefactors);
                     writeMultivector(readMultivector(r, dimension, 
-                            bitCount, prefactors), dimension, writer, bitCount2, prefactors);
+                            bladesBitCount, prefactors), dimension, writer, bladesBitCount2, prefactors);
                     writeMultivector(readMultivector(r, dimension,
-                            bitCount, prefactors), dimension, writer, bitCount2, prefactors);
+                            bladesBitCount, prefactors), dimension, writer, bladesBitCount2, prefactors);
                 }
 
             writer.finish();
