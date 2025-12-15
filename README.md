@@ -3,6 +3,10 @@ Gaalop (Geometic Algebra Algorithms Optimizer) is a software to compile and opti
 
 <img width="712" height="161" alt="HeapView" src="https://github.com/user-attachments/assets/b774d748-ecf1-4001-8e3f-4e579aafc52a" />
 
+# Java Configuration
+- To use this version of Gaalop install a current version of Java, e.g. V25
+- Check if the current version is configured: 1. The system environment variable JAVA_HOME has to be set to the folder of the current Java version. 2. The user environment variable Path must include the path the the subfolder "bin" this Java version.
+
 # Whats new in this fork
 - UI to visualize product tables
 - Some bug fixes in the context of precalculation tables/algebra definition reader from file
