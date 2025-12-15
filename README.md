@@ -6,6 +6,7 @@ Gaalop (Geometic Algebra Algorithms Optimizer) is a software to compile and opti
 # Java Configuration
 - To use this version of Gaalop install a current version of Java, e.g. V25
 - Check if the current version is configured: 1. The system environment variable JAVA_HOME has to be set to the folder of the current Java version. 2. The user environment variable Path must include the path the the subfolder "bin" this Java version.
+- Your can open a shell and with the command "java -version" you can test if Java is well configured.
 
 # Whats new in this fork
 - UI to visualize product tables
