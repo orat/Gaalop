@@ -8,7 +8,7 @@ Gaalop (Geometic Algebra Algorithms Optimizer) is a software to compile and opti
 - Some bug fixes in the context of precalculation tables/algebra definition reader from file
 - UI to visualize heap-size, max heap-size  (textual/graphically) and an action to execute garbage collection
 - Extention of the algebra-definition which allows to use names which do not start with "e" (Useful in the context of quantum computing simulation)
-- Extention of multiplication tables (inclusive its precomputation file formats) which allows to work with entries or arbitrary floating point numbers
+- Extention of multiplication tables (inclusive its precomputation file formats) which allows to work with entries of arbitrary floating point numbers (no limitation to 0, -1, 1 any more)
 - Additional Wiki pages
   
 # What is Geometric Algebra?
