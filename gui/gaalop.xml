@@ -3,7 +3,7 @@
 <properties>
 <comment>Gaalop Configuration File</comment>
 <entry key="de.gaalop.csharp.Plugin.useDouble">false</entry>
-<entry key="de.gaalop.tba.Plugin.optGCSE">true</entry>
+<entry key="de.gaalop.tba.Plugin.optGCSE">false</entry>
 <entry key="lastUsedAlgebra">6d</entry>
 <entry key="de.gaalop.tba.Plugin.optOneExpressionRemoval">true</entry>
 <entry key="de.gaalop.csharp.Plugin.standalone">true</entry>

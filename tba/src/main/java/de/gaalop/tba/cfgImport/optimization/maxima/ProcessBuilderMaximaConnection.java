@@ -111,6 +111,7 @@ public class ProcessBuilderMaximaConnection implements MaximaConnection {
 
             b.close();
 
+            //WORKAROUND not delete to be able to look into the file in /tmp/tbaMaxima<number>.txt
             tmpFile.delete();
 
 

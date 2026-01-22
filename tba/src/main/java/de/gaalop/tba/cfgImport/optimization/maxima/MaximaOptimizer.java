@@ -39,10 +39,17 @@ public class MaximaOptimizer {
         graph.accept(collector);
 
         MaximaInput input = new MaximaInput();
+        // the console display is a string (1-dimensional) form rather than a display
+        // (2-dimensional) form
         input.add("display2d:false;"); // very important!
+        // remove "rat:replaced ... by ... = ..." output from ratsimp() invocations
+        // using $ instead of ; at the end of the line
         input.add("ratprint:false;"); // very important!
+        
         input.add("keepfloat:true;");
+        
         fillMaximaInput(graph, input);
+        
         input.add("quit();"); // very important!
 
         connection.setProgressListeners(progressLoggers);
@@ -50,7 +57,7 @@ public class MaximaOptimizer {
         if (output == null) return;
 
         //connect in and output
-        LinkedList<String> connected = new LinkedList<String>();
+        LinkedList<String> connected = new LinkedList<>();
         MaximaRoutines.groupMaximaInAndOutputs(connected, output);
 
         connected.removeFirst(); // remove display2d
@@ -91,9 +98,11 @@ public class MaximaOptimizer {
 
             //using the store result nodes for marking to evaluate immediately is not possible in all cases,
             //reason: consider a large cluscript with only one StoreResultNode add the end
-            //all non-marked assignments were inserted in the assignment with the StoreResultNode.getValue() as desitination variable
+            //all non-marked assignments were inserted in the assignment with the StoreResultNode.getValue() 
+            // as destination variable
             //this expression can be very long. Possible too long for the java code limit per method (65535 bytes)
-            //Splitting isn't trivial except of splitting the methods between two assignments, so the using of store result nodes can be expensive to compile time.
+            //Splitting isn't trivial except of splitting the methods between 
+            // two assignments, so the using of store result nodes can be expensive to compile time.
 
             dfg = new DFGToMaximaCode();
             node.getValue().accept(dfg);
