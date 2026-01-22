@@ -55,7 +55,7 @@ public class LatexVisitor extends DefaultCodeGeneratorVisitor {
         node.getValue().accept(this);
         
         if (node.getVariable() instanceof MultivectorComponent) {
-            //code.append(" \\\\ ");
+            // add a latex comment
             code.append(" % ");
             code.append(graph.getBladeString((MultivectorComponent) 
                     (node.getVariable())));
@@ -187,7 +187,6 @@ public class LatexVisitor extends DefaultCodeGeneratorVisitor {
 
     // variable
     private void addIdentifier(String name) {
-        // result: z_{1}_{3}&= 1 // e3 \\
         Matcher matcher = INDEXED_NAME.matcher(name);
         if (matcher.matches()) {
             //code.append(matcher.group(1).replace("_", "\\_"));
@@ -218,6 +217,8 @@ public class LatexVisitor extends DefaultCodeGeneratorVisitor {
         code.append('}');
     }
 
+    //TODO
+    // implement better exponential respresentation ...*10
     @Override
     public void visit(FloatConstant floatConstant) {
         if (Double.isNaN(floatConstant.getValue())) {
@@ -234,7 +235,7 @@ public class LatexVisitor extends DefaultCodeGeneratorVisitor {
         addBinaryInfix(outerProduct, "\\wedge");
     }
 
-    //TODO 
+    // Wann wird das aufgerufen?
     @Override
     public void visit(BaseVector baseVector) {
         String name = baseVector.getBaseName();
@@ -242,7 +243,7 @@ public class LatexVisitor extends DefaultCodeGeneratorVisitor {
             code.append(name);
             code.append("_{");
             code.append(baseVector.getIndexName());
-            code.append(')');
+            code.append('}');
         //} else {}
     }
 

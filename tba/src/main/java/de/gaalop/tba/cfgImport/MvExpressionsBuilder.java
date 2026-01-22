@@ -284,6 +284,30 @@ public class MvExpressionsBuilder extends EmptyControlFlowVisitor implements Exp
         calculateUsingMultTable(Products.GEO, node);
     }
 
+    // new to test for trigometric functions defined only for scalars
+    private boolean isScalar(Expression operand){
+        MvExpressions op = expressions.get(operand);
+                    
+        // test, if the operand is only a scalar
+        if (op.getExpression(0) != null) {
+            boolean allOthersAreNull = true;
+            boolean firstElement = true;
+            for (Expression bladeExpr: op.getAllExpressions()) {
+                if (firstElement) {
+                    firstElement = false;
+                } else if (bladeExpr != null){
+                    allOthersAreNull = false;
+                    //TODO break?
+                }
+            }
+
+            if (allOthersAreNull) {
+                return true;
+            }
+        } 
+        return false;
+    }
+    
     @Override
     public void visit(MathFunctionCall node) {
         MvExpressions result = createNewMvExpressions();
@@ -299,12 +323,14 @@ public class MvExpressionsBuilder extends EmptyControlFlowVisitor implements Exp
                     if (op.getExpression(0) != null) {
                         boolean allOthersAreNull = true;
                         boolean firstElement = true;
-                        for (Expression expr: op.getAllExpressions()) {
+                        for (Expression bladeExpr: op.getAllExpressions()) {
                             if (firstElement) {
                                 firstElement = false;
                             } else 
-                                if (expr != null)
+                                if (bladeExpr != null){
                                     allOthersAreNull = false;
+                                    //TODO break?
+                                }
                         }
                         
                         if (allOthersAreNull) {
@@ -332,8 +358,11 @@ public class MvExpressionsBuilder extends EmptyControlFlowVisitor implements Exp
                     result.setExpression(0, new MathFunctionCall(expressions.get(node.getOperand()).getExpression(0), MathFunction.SQRT));
                     break;
                 default:
-                    result.setExpression(0, new MathFunctionCall(expressions.get(node.getOperand()).getExpression(0), node.getFunction()));
-                    System.err.println("Warning: " + node.getFunction().toString() + " is only implemented for scalar inputs!");
+                    Expression operand = node.getOperand();
+                    result.setExpression(0, new MathFunctionCall(expressions.get(operand).getExpression(0), node.getFunction()));
+                    if (!isScalar(operand)){
+                        System.err.println("Error: " + node.getFunction().toString() + " is only implemented for scalar inputs!");
+                    }
                     break;
             }
 
