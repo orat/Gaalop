@@ -145,10 +145,9 @@ public class CompileAction extends AbstractAction {
 		compiler.start();
     }
 
-    private void displayOutputOrSaveNearSource(Set<OutputFile> outputFiles)
-    {
+    private void displayOutputOrSaveNearSource(Set<OutputFile> outputFiles){
         if (plugin instanceof OptimizeOnSaveCodeGeneratorPlugin) {
-            OptimizeOnSaveCodeGeneratorPlugin savePlugin = (OptimizeOnSaveCodeGeneratorPlugin)plugin;
+            OptimizeOnSaveCodeGeneratorPlugin savePlugin = (OptimizeOnSaveCodeGeneratorPlugin) plugin;
             if (savePlugin.getOptimizeOnSave()){
                 OutputFile outputFile = outputFiles.iterator().next();
                 String gaalopFileName = outputFile.getName();
@@ -165,15 +164,15 @@ public class CompileAction extends AbstractAction {
                     // Save file
                     File generatedFile = new File(directory, gaalopFileName);
                     saveToFile(generatedFile, outputFile.getContent());       
-                }
-                else
-                {
-                    print("Save directory not existing: " + directory);
+                } else {
+                    if (directory != null && !directory.toString().isEmpty()){
+                        print("Directory \""+directory+"\" to save, defined in the code generator does not exist!");
+                    } else {
+                        print("No directory set in the codegenerator to save to generated code into a file!");
+                    }
                 }
             }
-        }
-        else
-        {
+        } else {
             displayOutput(outputFiles);
         }
     }

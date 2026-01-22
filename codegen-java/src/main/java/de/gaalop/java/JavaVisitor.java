@@ -24,8 +24,8 @@ public class JavaVisitor implements ControlFlowVisitor, ExpressionVisitor {
     protected int indentation = 0;
     protected OperatorPriority operatorPriority = new OperatorPriority();
 
-    protected Set<String> declaredLocal = new HashSet<String>();
-    protected Set<String> outputtedMultivectors = new HashSet<String>();
+    protected Set<String> declaredLocal = new HashSet<>();
+    protected Set<String> outputtedMultivectors = new HashSet<>();
     
     private final int JAVALIMIT = 65500; // let space for indentation!
     private byte curSection = 0;
@@ -117,7 +117,7 @@ public class JavaVisitor implements ControlFlowVisitor, ExpressionVisitor {
      * @return
      */
     protected List<Variable> sortVariables(Set<Variable> inputVariables) {
-        List<Variable> variables = new ArrayList<Variable>(inputVariables);
+        List<Variable> variables = new ArrayList<>(inputVariables);
         Comparator<Variable> comparator = new Comparator<Variable>() {
 
             @Override
@@ -298,8 +298,8 @@ public class JavaVisitor implements ControlFlowVisitor, ExpressionVisitor {
         
         //outputtedMultivectors
         //declaredLocal
-        LinkedList<String> locals = new LinkedList<String>();
-        LinkedList<String> outputs = new LinkedList<String>();
+        LinkedList<String> locals = new LinkedList<>();
+        LinkedList<String> outputs = new LinkedList<>();
         
         for (String l: declaredLocal) {
             String name = l.split("\\$")[0];
@@ -616,7 +616,7 @@ public class JavaVisitor implements ControlFlowVisitor, ExpressionVisitor {
                 for (int i = 0; i < indentation; ++i) {
                     result.append('\t');
                 }
-                result.append("calculate" + curProcCounter + "();\n");
+                result.append("calculate").append(curProcCounter).append("();\n");
 
                 //end procedure and begin new procedure
                 indentation--;
@@ -628,7 +628,7 @@ public class JavaVisitor implements ControlFlowVisitor, ExpressionVisitor {
                 for (int i = 0; i < indentation; ++i) {
                     result.append('\t');
                 }
-                result.append("public void calculate" + curProcCounter + "() {\n");
+                result.append("public void calculate").append(curProcCounter).append("() {\n");
                 indentation++;
 
 

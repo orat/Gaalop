@@ -20,7 +20,7 @@ public interface OptimizeOnSaveCodeGeneratorPlugin extends CodeGeneratorPlugin {
         return "";
     }
 
-     default String getSaveFileDirectory() {
+    default String getSaveFileDirectory() {
         return "";
     }
 }
