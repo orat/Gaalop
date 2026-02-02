@@ -23,6 +23,8 @@ GPC integrates Gaalop directly into CMake-generated C/C++-toolchains.
 Gaalop Precompiler reuses most of the code of Gaalop
 which is why merges from Gaalop are required quite often.
 
+Be careful: This part of the codebase is not maintained at the moment. Especially merges from the main branch are not done.
+
 # License
 The code of both projects is licensed under the LGPL 3.0.
 
