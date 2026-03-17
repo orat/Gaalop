@@ -9,6 +9,7 @@ Dual = {
 
 
 // transform a 3d euclidean vector based on DH parameters
+// to the previous frame
 //args:
 //alpha: angle [rad]
 //a: scalar distance [mm]
@@ -20,19 +21,23 @@ tDHVec = {
     a = _P(2);
     theta = _P(3);
     d = _P(4);
-    (cos(theta)*coefficient(_P(5),(e1))
-      -sin(theta)*cos(alpha)*coefficient(_P(5), (e2))
-      +sin(theta)*sin(alpha)*coefficient(_P(5), (e3)))*(e1)
+    x = coefficient(_P(5), (e1));
+    y = coefficient(_P(5), (e2));
+    z = coefficient(_P(5), (e3));
+    (cos(theta)*x
+      +sin(theta)*y)*e1
     +
-    (sin(theta)*coefficient(_P(5),(e1))
-      -cos(theta)*cos(alpha)*coefficient(_P(5), (e2))
-      -cos(theta)*sin(alpha)*coefficient(_P(5), (e3)))*(e2)
+    (-sin(theta)*cos(alpha)*x
+      +cos(theta)*cos(alpha)*y
+      +sin(alpha)*z)*e2
     +
-     (sin(alpha)*coefficient(_P(5), (e2))
-     +cos(alpha)*coefficient(_P(5), (e3)))*(e3)
+     (sin(alpha)*sin(theta)*x
+     -cos(theta)*sin(alpha)*y
+     +cos(alpha)*z)*e3
 }
 
 // transform a 3d euclicdean point based on DH parameters
+// to the previous frame
 // e.g. https://automaticaddison.com/homogeneous-transformation-matrices-using-denavit-hartenberg/
 //args:
 //alpha: angle [rad]
@@ -45,27 +50,30 @@ tDHPnt = {
     a = _P(2);
     theta = _P(3);
     d = _P(4);
-    (cos(theta)*coefficient(_P(5),(e1))
-      -sin(theta)*cos(alpha)*coefficient(_P(5), (e2))
-      +sin(theta)*sin(alpha)*coefficient(_P(5), (e3))
-      +a*cos(theta))*(e1)
+    x = coefficient(_P(5), (e1));
+    y = coefficient(_P(5), (e2));
+    z = coefficient(_P(5), (e3));
+    (cos(theta)*x
+      +sin(theta)*y
+      -a)*e1
     +
-    (sin(theta)*coefficient(_P(5),(e1))
-      -cos(theta)*cos(alpha)*coefficient(_P(5), (e2))
-      -cos(theta)*sin(alpha)*coefficient(_P(5), (e3))
-      +a*sin(theta))*(e2)
+    (-sin(theta)*cos(alpha)*x
+      +cos(theta)*cos(alpha)*y
+      +sin(alpha)*z
+      -d*sin(alpha))*e2
     +
-     (sin(alpha)*coefficient(_P(5), (e2))
-     +cos(alpha)*coefficient(_P(5), (e3))
-     +d)*(e3)
+     (sin(alpha)*sin(theta)*x
+     -cos(theta)*sin(alpha)*y
+     +cos(alpha)*z
+     -d*cos(alpha))*e3
 }
 
-// create a screw
+// create a twist
 //args:
 //zi: joint axis/direction as 3d euclidean vector
 //oi: joint position as 3d euclidean vector
 //on: end effector position as 3d euclidean vector
-cScrew = {
+cTwist = {
     cr = cross(_P(1), (_P(3) - _P(2)));
     zi + coefficient(cr,(e1))*e4 + coefficient(cr,(e2))*e5 +
        coefficient(cr,(e3))*e6
