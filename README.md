@@ -7,6 +7,9 @@ Gaalop (Geometic Algebra Algorithms Optimizer) is a software to compile and opti
 - UI to visualize product tables
 - Some bug fixes in the context of precalculation tables/algebra definition reader from file
 - UI to visualize heap-size, max heap-size  (textual/graphically) and an action to execute garbage collection
+- Extention of the algebra-definition which allows to use names which do not start with "e" (Useful in the context of quantum computing simulation)
+- Extention of multiplication tables (inclusive its precomputation file formats) which allows to work with entries of arbitrary floating point numbers (no limitation to 0, -1, 1 any more)
+- Bugfixes in the Latex code-generator and a new codegenerator to create Maxima-Input for further processing of the gaalop symbolic expressions (e.g. using zero-finding functionality of Maxima to find robot singularities)
 - Additional Wiki pages
   
 # What is Geometric Algebra?
@@ -19,6 +22,8 @@ in the branch gaalop_precompiler.
 GPC integrates Gaalop directly into CMake-generated C/C++-toolchains.
 Gaalop Precompiler reuses most of the code of Gaalop
 which is why merges from Gaalop are required quite often.
+
+Be careful: This part of the codebase is not maintained at the moment. Especially merges from the main branch are not done.
 
 # License
 The code of both projects is licensed under the LGPL 3.0.
