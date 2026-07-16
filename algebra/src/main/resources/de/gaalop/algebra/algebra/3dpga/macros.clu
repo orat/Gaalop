@@ -1,4 +1,3 @@
-
 //Creates a point in N3 of three coordinates x,y,z
 //args:
 //x
@@ -17,30 +16,85 @@ createPointI = {
     _P(1)*(e0^e3^e2)+_P(2)*(e0^e1^e3)+_P(3)*(e0^e2^e1)
 }
 
+//Normalize a point 
+//args:
+//m
+normalizePoint = {
+    w = coefficient(_P(1),e1^e2^e3);
+    e1^e2^e3 + coefficient(_P(1),e0^e3^e3)/w*(e0^e3^e2)
+             + coefficient(_P(1),e0^e1^e3)/w*(e0^e1^e3)
+             + coefficient(_P(1),e0^e2^e1)/w*(e0^e2^e1)
+}
+
+//Decompose a point into three euclidean coordinates (OK)
+//args:
+//m
+decomposePoint = {
+    nMv = normalizePoint(_P(1));
+     coefficient(nMv,e0^e3^e3)*(e1)
+     + coefficient(nMv,e0^e1^e3)*(e2)
+     + coefficient(nMv,e0^e2^e1)*(e3)
+}
+
+//Creates an euclidean multivector from euclidean coordinates x,y,z
+//args:
+//x
+//y
+//z
+euclidMV = {
+    _P(1)*e1+_P(2)*e2+_P(3)*e3
+}
+
+//Get the euclidean part of a multivector
+//args:
+//m
+euclid = {
+    coefficient(_P(1),1)*(1) + coefficient(_P(1),e1)*(e1)
+    + coefficient(_P(1),e2)*(e2) + coefficient(_P(1),e3)*(e3)
+    + coefficient(_P(1),e1^e2)*(e1^e2) + coefficient(_P(1),e3^e1)*(e3^e1)
+    + coefficient(_P(1),e2^e3)*(e2^e3) + coefficient(_P(1),e1^e2^e3)*(e1^e2^e3)
+}
+
+//Get the non-euclidean part of a multivector
+//args:
+//m
+noneuclid = {
+    coefficient(_P(1),e0)*(e0) + coefficient(_P(1),e0^e1)*(e0^e1)
+    + coefficient(_P(1),e0^e2)*(e0^e2) + coefficient(_P(1),e0^e3)*(e0^e3)
+    + coefficient(_P(1),e0^e2^e1)*(e0^e2^e1) + coefficient(_P(1),e0^e1^e3)*(e0^e1^e3)
+    + coefficient(_P(1),e0^e3^e2)*(e0^e3^e2) + coefficient(_P(1),e0^e1^e2^e3)*(e0^e1^e2^e3)
+}
+
+//Creates a line (ipns) from a point p and a direction u
+//args:
+//p
+//u
+createLine = {
+    (_P(2)-e0*(_P(1)^_P(2)))*(e1^e2^e3)
+}
+
+//Normalize euclid line
+//args:
+//m
 normalizeLineE = {
     _P(1)/
     sqrt(
         coefficient(_P(1),(e1^e2)) * coefficient(_P(1),(e1^e2))+
         coefficient(_P(1),(e3^e1)) * coefficient(_P(1),(e3^e1))+
-        coefficient(_P(1),(e2^e3))* coefficient(_P(1),(e2^e3))
+        coefficient(_P(1),(e2^e3)) * coefficient(_P(1),(e2^e3))
     )
 }
 
+//Normalize idle line
+//args:
+//m
 normalizeLineI = {
     _P(1)/
     sqrt(
            (coefficient(_P(1),(e0^e1)) *coefficient(_P(1),(e0^e1)))+
            (coefficient(_P(1),(e0^e2)) *coefficient(_P(1),(e0^e2)))+
-           (coefficient(_P(1),(e0^e3))*coefficient(_P(1),(e0^e3)))
+           (coefficient(_P(1),(e0^e3)) *coefficient(_P(1),(e0^e3)))
        )
-}
-
-normalizel = {
-
-           (coefficient(_P(1),(e0^e1)) *coefficient(_P(1),(e0^e1)))+
-           (coefficient(_P(1),(e0^e2)) *coefficient(_P(1),(e0^e2)))+
-           (coefficient(_P(1),(e0^e3))*coefficient(_P(1),(e0^e3)))
-           
 }
 
 //The dualization operator
@@ -69,41 +123,169 @@ Dual = {
 //args:
 //m
 reverse = {
+    // scalar
     coefficient(_P(1),1)*(1)
+    // grade 1
     + coefficient(_P(1),e0)*(e0)
     + coefficient(_P(1),e1)*(e1)
     + coefficient(_P(1),e2)*(e2)
     + coefficient(_P(1),e3)*(e3)
+    // grade 2
     - coefficient(_P(1),e0^e1)*(e0^e1)
     - coefficient(_P(1),e0^e2)*(e0^e2)
     - coefficient(_P(1),e0^e3)*(e0^e3)
     - coefficient(_P(1),e1^e2)*(e1^e2)
     - coefficient(_P(1),e3^e1)*(e3^e1)
     - coefficient(_P(1),e2^e3)*(e2^e3)
+    // grade 3
     - coefficient(_P(1),e0^e2^e1)*(e0^e2^e1)
     - coefficient(_P(1),e0^e1^e3)*(e0^e1^e3)
     - coefficient(_P(1),e0^e3^e2)*(e0^e3^e2)
     - coefficient(_P(1),e1^e2^e3)*(e1^e2^e3)
+    // grade 4
     + coefficient(_P(1),e0^e1^e2^e3)*(e0^e1^e2^e3)
 }
 
-// Normalizes a given multivector
+//Regressive Product of two given multivectors
 //args:
-//mv: The multivector
-Normalize = {
-    _P(1)/sqrt(_P(1)*(reverse(_P(1))))
-}
-
-
-// Regressive Product of two given multivectors
-//args:
-//mv1: The first multivector
-//mv2: The second multivector
+//m1: The first multivector
+//m2: The second multivector
 regProd = {
     *(*_P(1)^*_P(2))
 }
 
-// CreatesRotor
+//Normalizes a given multivector
+//args:
+//m: an arbitrary multivector
+normalize = {
+    _P(1)/sqrt(_P(1)*(reverse(_P(1))))
+}
+
+//Normalize a motor (general rotor) - not for normalization of a screw
+// This is comparable with the Gram-Schmidt orthogonalization, as the resulting motor is
+// guaranteed to be an orthonormal transformation. When dealing with a pur translation
+// or pure rotation more efficient versions of this normalisation are possible
+//args:
+//m: motor: R0, R4, R5, R6, R3, R2, R1, R7
+// R=R0​+R4​e01​+R5​e02​+R6​e03​+R3​e12​+R2​e31​+R1​e23​+R7​e0123
+normalizem = {
+    // var s = 1/Math.sqrt((R[0]*R[0] + R[4]*R[4] + R[5]*R[5] + R[6]*R[6]));
+    s = 1/sqrt(coefficient(_P(1), 1)*coefficient(_P(1), 1) 
+             + coefficient(_P(1), e1^e2)*coefficient(_P(1), e1^e2) 
+             + coefficient(_P(1), e3^e1)*coefficient(_P(1), e1^e1) 
+             + coefficient(_P(1), e2^e3)*coefficient(_P(1), e2^e3));
+    // var d = (R[7]*R[0] - (R[1]*R[6] + R[2]*R[5] + R[3]*R[4]))*s*s;
+    d = (coefficient(_P(1), e0^e1^e2^e3)*coefficient(_P(1), 1) 
+      - (coefficient(_P(1), e0^e1)*coefficient(_P(1), e2^e3) 
+       + coefficient(_P(1), e0^e2)*coefficient(_P(1), e1^e1) 
+       + coefficient(_P(1), e0^e3)*coefficient(_P(1), e1^e2)))*s*s;
+    // R = R*s; R[1] += R[6]*d; R[2] += R[5]*d; R[3] += R[4]*d; R[7] -= R[0]*d;
+    _P(1)*s + coefficient(_P(1),e2^e3)*d*(e0^e1) 
+            + coefficient(_P(1),e3^e1)*d*(e0^e2) 
+            + coefficient(_P(1),e1^e2)*d*(e0^e3)
+            - coefficient(_P(1), 1)*d*(e0^e1^e2^e3)
+}
+
+
+//Square root of a motor (general rotor)
+//args:
+//m: motor
+sqrtm = {
+    normalizem(1 + _P(1))
+}
+
+//Exponential of a bivector with idle only part (infinitesimal translation only)
+//args:
+//mv: bivector with idle only part
+expmi = {
+    expbi(coefficient(_P(1), e0^e1)*(1), coefficient(_P(1), e0^e2)*(1), coefficient(_P(1), e0^e3)*(1))
+}
+
+//Exponential of a bivector with non idle part not null (includes infinitesimal rotation)
+//args:
+//mv: bivector with includes infinitesimal rotation part
+expm = {
+    expb(coefficient(_P(1), e0^e1)*(1), coefficient(_P(1), e0^e2)*(1), coefficient(_P(1), e0^e3)*(1),
+         coefficient(_P(1), e1^e2)*(1), coefficient(_P(1), e3^e1)*(1), coefficient(_P(1), e2^e3)*(1))
+}
+
+//Exponential of a bivector with idle only part (B3, B4, B5)
+//args:
+//scalar: B3
+//scalar: B4
+//scalar: B5
+expbi = {
+    motor(1, _P(1), _P(2), _P(3), 0, 0, 0, 0)
+}
+//Exponential of a bivector with idle part not null
+//args:
+//scalar: B3
+//scalar: B4
+//scalar: B5
+//scalar: B2
+//scalar: B1
+//scalar: B0
+expb = {
+    l = _P(4)*_P(4) + _P(5)*_P(5) + _P(6)*_P(6);
+    m = _P(1)*_P(6) + _P(2)*_P(5) + _P(3)*_P(4);
+    a = sqrt(l);
+    c = cos(a);
+    s = sin(a)/a;
+    t = m/l*(c-s);
+    motor(c, s*_P(1) + t*_P(6), s*_P(2)+ t*_P(5), s*_P(3)+t*_P(4), s*_P(4), s*_P(5), s*_P(6), m*s)
+}
+
+//Logarithm of translation (only) motor
+//args:
+//m: motor - scalar part == 1 ((coefficient(_P(1), 1) == 1)
+// R0, R4, R5, R6, R3, R2, R1, R7
+// R=R0​+R4​e01​+R5​e02​+R6​e03​+R3​e12​+R2​e31​+R1​e23​+R7​e0123
+logmi = { 
+    bivector(coefficient(_P(1), e01), coefficient(_P(1), e0), coefficient(_P(1), e0^e3), 0.0, 0.0, 0.0, 0.0)
+}
+//Logarithm of motor (general rotor which includes rotation), that is a general bivector
+//args:
+//m: motor - scalar part != 1
+// R0, R4, R5, R6, R3, R2, R1, R7
+// R=R0​+R4​e01​+R5​e02​+R6​e03​+R3​e12​+R2​e31​+R1​e23​+R7​e0123
+logm = {
+    a = 1 / (1 - coefficient(_P(1), 1) * coefficient(_P(1), 1)); // invers squared length
+    b = acos(coefficient(_P(1), 1))*sqrt(a); // rotation scale
+    c = a*coefficient(_P(1), e0^e1^e2^e3)*(1 - coefficient(_P(1), 1)*b);
+    bivector(c*coefficient(_P(1), e2^e3) + b*coefficient(_P(1), e0^e1), 
+             c*coefficient(_P(1), e3^e1) + b*coefficient(_P(1), e0^e2),
+             c*coefficient(_P(1), e1^e2) + b*coefficient(_P(1), e0^e3),
+             b*coefficient(_P(1), e1^e2), b*coefficient(_P(1), e3^e1), 
+             b*coefficient(_P(1), e2^e3))
+}
+
+//Sets up a motor (general rotor) from its 8 coefficients
+//args:
+//scalar: R0
+//scalar: R4
+//scalar: R5
+//scalar: R6
+//scalar: R3
+//scalar: R2
+//scalar: R1
+//scalar: R7
+motor = {
+    _P(1) + _P(2)*e0^e1 + _P(3)*e0^e2 + _P(4)*e0^e3 + _P(5)*e1^e2 + _P(6)*e3^e1 + _P(7)*e2^e3 + _P(8)*e0^e1^e2^e3
+}
+
+//Sets up a general bivector from its 6 coefficients
+//args:
+//scalar: B3
+//scalar: B4
+//scalar: B5
+//scalar: B2
+//scalar: B1
+//scalar: B0
+bivector = {
+    _P(1)*e0^e1 + _P(2)*e0^e2 + _P(3)*e0^e3 + _P(4)*e1^e2 + _P(5)*e3^e1 + P(6)*e2^e3
+}
+
+//CreatesRotor
 //args:
 //mv1: Angle
 //mv2: x
@@ -118,7 +300,20 @@ createRotor = {
     cos(half)+_P(2)*scale*(e2^e3)+_P(3)*scale*(e3^e1)+_P(4)*scale*(e1^e2)
 }
 
-// CreatesTranslator
+//Create Denavit Hartenberg Rx Rotor
+//args:
+//mv: angle
+Rx = {
+    cos(0.5*_P(1)) - sin(0.5*_P(1))*e2^e3
+}
+//Create Denavit Hartenberg Rz Rotor
+//args:
+//m: angle
+Rz = {
+    cos(0.5*_P(1)) - sin(0.5*_P(1))*e1^e2
+}
+
+//CreatesTranslator
 //args:
 //mv1: Distance
 //mv2: x
@@ -132,3 +327,172 @@ createTranslator = {
     1+_P(2)*scale*(e0^e1)+_P(3)*scale*(e0^e2)+_P(4)*scale*(e0^e3)
 }
 
+//Create Denavit Hartenberg Tx Translator
+//args:
+//m: distance
+Tx = {
+    1 - 0.5*_P(1)*e0^e1
+}
+// Create Denavit Hartenberg Tz Translator
+//args:
+//m: distance
+Tz = {
+    1 - 0.5*_P(1)*e0^e3
+}
+
+//Create Denavit Hartenberg Mz Motor
+//args:
+//m1: theta
+//m2: distance
+Mz = {
+    (cos(0.5*_P(1)) - sin(0.5*_P(1))*e1^e2) * (1 - 0.5*_P(2)*e0^e3)
+}
+//Create Denavit Hartenberg MzW Motor with Wirestraß-Substitution
+/args:
+//m1: thetaW
+//m2: distance
+MzW = {
+    thalf = 0.5*coefficient(_P(1), 1);
+    ((1-thalf*thalf)/(1+thalf*thalf) - 2*thalf/(1+thalf*thalf)*e1^e2) * (1 - 0.5*coefficient(_P(2), 1)*e0^e3)
+}
+//Create Denavit Hartenberg Mx Motor
+//args:
+//scalar: alpha
+//scalar: distance
+Mx = {
+    (cos(0.5*_P(1)) - sin(0.5*_P(1))*e2^e3) * (1 - 0.5*_P(2)*e0^e1)
+}
+//Create Denavit Hartenberg MxW Motor with Wirestraß-Substitution
+//args:
+//scalar: alphaW
+//scalar: distance
+MxW = {
+    ahalf = 0.5*coefficient(_P(1), 1);
+    ((1-ahalf*ahalf)/(1+ahalf+ahalf) - 2*ahalf/(ahalf*ahalf)*e2^e3) * (1 - 0.5*coefficient(_P(2), 1)_P(2)*e0^e1)
+}
+
+//Create Denavit Hartenberg Motor (Rz(theta_1) * Tz(d_1) * Tx(a_1) * Rx(alpha_1))
+//args:
+//scalar: alpha
+//scalar: a
+//scalar: theta
+//scalar: d
+Mdh = {
+    (cos(0.5*_P(3)) - sin(0.5*_P(3))*e1^e2) * (1 - 0.5*_P(4)*e0^e3) 
+    * (1 - 0.5*_P(2)*e0^e1) * (cos(0.5*_P(1)) - sin(0.5*_P(1))*e2^e3) 
+}
+
+//Create Denavit Hartenberg Motor with Weierstraß-Substitution (Rz(theta_1) * Tz(d_1) * Tx(a_1) * Rx(alpha_1))
+//args:
+//scalar: alphaW
+//scalar: a
+//scalar: thetaW
+//scalar: d
+MdhW = {
+    ahalf = 0.5*coefficient(_P(1), 1);
+    thalf = 0.5*coefficient(_P(3), 1);
+    ((1-thalf*thalf)/(1+thalf*thalf) - 2*thalf/(1+thalf*thalf)*e1^e2) * (1 - 0.5*_P(4)*e0^e3) * (1 - 0.5*_P(2)*e0^e1) * ((1-ahalf*ahalf)/(1+ahalf*ahalf) - 2*ahalf/(1+ahalf*ahalf)*e2^e3) 
+}
+
+//Create Denavit Hartenberg Screws (SRz(theta_1) + STz(d_1) + STx(a_1) + SRx(alpha_1)
+//args:
+//scalar: alpha
+//scalar: a
+//scalar: theta
+//scalar: d
+Sdh = {
+    //SMz(_P(3), _P(4)) + SMx(_P(1), _P(2)) // FIXME muss hier normiert werden?
+    c = sqrt(2)/2; // Faktor c führt zu einer Normalisierung
+    c*_P(3)*e1^e2 +c*_P(4)*e0^e3 + c*_P(2)*e0^e1 + c*_P(1)*e2^e3
+    //normalize(e1^e2 + e0^e3 + e0^e1 + e2^e3)
+}
+//Create Denavit Hartenberg Screw (Rz(theta) + Tz(d)
+//args:
+//scalar: theta - rotation rate around the z-axis
+//scalar: d - translation rate along the z-axis
+SMz = {
+    _P(1)*e1^e2 +_P(2)*e0^e3
+}
+//Create Denavit Hartenberg Screw (Tx(a) + Rx(alpha)
+//args:
+//scalar: alpha - rotation rate around the x-axis
+//scalar: a - translation rate along the x-axis
+SMx = {
+    _P(2)*e0^e1 + _P(1)*e2^e3
+}
+
+
+// Test code only
+// creates Jacobians based on homogenious matrices and Denavit Hartenberg parameters
+// code is independend from the geometric algebra
+
+// transform a 3d euclidean vector (based on DH parameters) into the next frame
+//Rot(z_(n-1), theta_n)T(z_(n-1),dn)T(x_n, a_n)Rot(x_n, alpha_n)
+//args:
+//alpha: angle [rad]
+//a: scalar distance [mm] - not needed
+//theta: angle [rad]
+//d: scalar distance [mm]
+//vec: euclidean vector
+tDHVec = {
+    alpha = _P(1);
+    a = _P(2);
+    theta = _P(3);
+    d = _P(4);
+    (cos(theta)*coefficient(_P(5),(e1))
+      -sin(theta)*cos(alpha)*coefficient(_P(5), (e2))
+      +sin(theta)*sin(alpha)*coefficient(_P(5), (e3)))*(e1)
+    +
+    (sin(theta)*coefficient(_P(5),(e1))
+      +cos(theta)*cos(alpha)*coefficient(_P(5), (e2))
+      -cos(theta)*sin(alpha)*coefficient(_P(5), (e3)))*(e2)
+    +
+     (sin(alpha)*coefficient(_P(5), (e2))
+     +cos(alpha)*coefficient(_P(5), (e3)))*(e3)
+}
+
+// transform a 3d euclicdean point based on DH parameters
+// e.g. https://automaticaddison.com/homogeneous-transformation-matrices-using-denavit-hartenberg/
+// Rot(z_(n-1), theta_n)T(z_(n-1),dn)T(x_n, a_n)Rot(x_n, alpha_n)
+//args:
+//alpha: angle [rad]
+//a: (signed) scalar distance [mm]
+//theta: angle [rad]
+//d: (signed) scalar distance [mm]
+//vec: euclidean vector
+tDHPnt = {
+    alpha = _P(1);
+    a = _P(2);
+    theta = _P(3);
+    d = _P(4);
+    (cos(theta)*coefficient(_P(5),(e1))
+      -sin(theta)*cos(alpha)*coefficient(_P(5), (e2))
+      +sin(theta)*sin(alpha)*coefficient(_P(5), (e3))
+      +a*cos(theta))*(e1)
+    +
+    (sin(theta)*coefficient(_P(5),(e1))
+      +cos(theta)*cos(alpha)*coefficient(_P(5), (e2))
+      -cos(theta)*sin(alpha)*coefficient(_P(5), (e3))
+      +a*sin(theta))*(e2)
+    +
+     (sin(alpha)*coefficient(_P(5), (e2))
+     +cos(alpha)*coefficient(_P(5), (e3))
+     +d)*(e3)
+}
+
+// create a twist - coefficients ordered corresponding to [Zaplana]. 
+// corresponding to conventional Jacobian (reference point is the origin of the
+// end-effector)
+// That is different to [Villalobos2022]
+//args:
+//z_(i-1): joint axis/direction as 3d euclidean vector
+//         can be optained from the DK, third column of the rotation (product-) matrix which rotates from 0 to i-1
+//o_(i-1): joint position (in global coordinates/robot base frame) as 3d euclidean vector
+//         can be optained from the DK: translation vector (forth column) of the (product-) matrix ...
+//o_n: end effector position (in global coordinates/robot base frame) as 3d euclidean vector
+cTwist = {
+    // _P(3) - _P(2) is the end-effector position in coordinates of the previous joint
+    cr = cross(_P(1), (_P(3) - _P(2)));
+    _P(1) + coefficient(cr,(e1))*e4 + coefficient(cr,(e2))*e5 +
+       coefficient(cr,(e3))*e6
+}

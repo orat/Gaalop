@@ -3,10 +3,24 @@
 //args:
 //m
 Dual = {
-    _P(1)*(-e1^e2^e3^e4^e5^e6)
+    _P(1)*(e6^e5^e4^e3^e2^e1)
+}
+//The elliptic polar operator
+//args:
+//m
+Delta = {
+    coefficient(_P(1),(e1))*e4 + coefficient(_P(1),(e2))*e5 + coefficient(_P(1),(e3))*e6
+    + coefficient(_P(1),(e4))*e1 + coefficient(_P(1),(e5))*e2 + coefficient(_P(1),(e6))*e3
 }
 
-
+//Create a line
+//args:
+//m: euclidean direction
+//m: euclidean point 
+createLine = {
+    C = _P(2)^_P(1)*e1^e2^e3; //cross(_P(1),-_P(2));
+    _P(1) + coefficient(C,(e1))*e4 + coefficient(C,(e2))*e5 + coefficient(C,(e3))*e6
+}
 
 // transform a 3d euclidean vector based on DH parameters
 // to the previous frame
@@ -75,7 +89,7 @@ tDHPnt = {
 //on: end effector position as 3d euclidean vector
 cTwist = {
     cr = cross(_P(1), (_P(3) - _P(2)));
-    zi + coefficient(cr,(e1))*e4 + coefficient(cr,(e2))*e5 +
+    _P(1) + coefficient(cr,(e1))*e4 + coefficient(cr,(e2))*e5 +
        coefficient(cr,(e3))*e6
 }
 
