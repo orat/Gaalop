@@ -4,7 +4,7 @@
 <comment>Gaalop Configuration File</comment>
 <entry key="de.gaalop.csharp.Plugin.useDouble">false</entry>
 <entry key="de.gaalop.tba.Plugin.optGCSE">false</entry>
-<entry key="lastUsedAlgebra">G6</entry>
+<entry key="lastUsedAlgebra">qca1</entry>
 <entry key="de.gaalop.tba.Plugin.optOneExpressionRemoval">true</entry>
 <entry key="de.gaalop.csharp.Plugin.standalone">true</entry>
 <entry key="lastUsedOptimization">de.gaalop.tba.Plugin</entry>
@@ -24,10 +24,10 @@
 <entry key="lastUsedGenerator">de.gaalop.latex.Plugin</entry>
 <entry key="de.gaalop.csharp.Plugin.useArrays">false</entry>
 <entry key="de.gaalop.globalSettings.Plugin.guiFontSize">12</entry>
-<entry key="de.gaalop.globalSettings.Plugin.editorFontSize">12</entry>
+<entry key="de.gaalop.globalSettings.Plugin.editorFontSize">16</entry>
 <entry key="de.gaalop.matlab.Plugin.useDouble">true</entry>
 <entry key="de.gaalop.gappopencl.Plugin.standalone">true</entry>
-<entry key="de.gaalop.tba.Plugin.optInserting">false</entry>
+<entry key="de.gaalop.tba.Plugin.optInserting">true</entry>
 <entry key="de.gaalop.python.Plugin.useArrays">false</entry>
 <entry key="de.gaalop.visualizer.Plugin.lwJglNativePath">/home/oliver/JAVA/PROJECTS/Gaalop/distribution/target/distribution-2.2.6.2-bin/nativeLibraries</entry>
 <entry key="de.gaalop.gapp.Plugin.maximaExpand">false</entry>
@@ -44,5 +44,5 @@
 <entry key="de.gaalop.algebra.Plugin.additionalBaseDirectory">/home/oliver/algebras</entry>
 <entry key="de.gaalop.tba.Plugin.doRoundingAfterOptimization">true</entry>
 <entry key="de.gaalop.compressed.Plugin.standalone">false</entry>
-<entry key="lastUsedAlgebraRessource">false</entry>
+<entry key="lastUsedAlgebraRessource">true</entry>
 </properties>

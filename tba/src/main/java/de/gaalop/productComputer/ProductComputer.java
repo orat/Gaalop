@@ -3,6 +3,7 @@ package de.gaalop.productComputer;
 import de.gaalop.tba.Multivector;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 /**
  * Computes the product of two blades
@@ -78,7 +79,8 @@ public class ProductComputer {
     * @param startPos The start position in the base array
     * @param k The number of base elements to be inserted
     */
-    private void createBladesHelp(Blade arrTrailing, int startPos, int k, LinkedList<SumOfBlades> bladelist) {
+    private void createBladesHelp(Blade arrTrailing, int startPos, 
+                                 int k, LinkedList<SumOfBlades> bladelist) {
         if (k == 1) {
             for (int s=startPos;s<bitCount;++s) {
                 Blade nbase = new Blade(bitCount, arrTrailing);

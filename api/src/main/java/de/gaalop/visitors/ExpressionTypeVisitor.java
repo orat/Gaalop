@@ -163,6 +163,6 @@ public abstract class ExpressionTypeVisitor implements ExpressionVisitor {
 
     @Override
     public void visit(MacroCall node) {
-        throw new IllegalStateException("Macro "+ node.getName() +" should have been inlined!");
+        throw new IllegalStateException("Macro \""+ node.getName() +"\" should have been inlined!");
     }
 }

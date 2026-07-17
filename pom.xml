@@ -61,6 +61,7 @@
 
         <!-- distribution -->
         <module>distribution</module>
+        <module>codegen-gappc</module>
     </modules>
 
     <!--

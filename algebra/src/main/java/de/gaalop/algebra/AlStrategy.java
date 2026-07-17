@@ -15,6 +15,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
@@ -66,8 +67,11 @@ public class AlStrategy implements AlgebraStrategy {
 
             if (plugin.algebraDefinitionString == null) {
                 alFile.setProductsFilePath(baseDir+"products.csv");
+                InputStream is = getClass().getResourceAsStream(baseDir+"definition.csv");
+                if (is == null) System.out.println("The algebra definition \""+baseDir+"definition.csv"+"\" not found!");
+                
                 reader = (graph.asRessource)
-                        ? new InputStreamReader(getClass().getResourceAsStream(baseDir+"definition.csv"))
+                        ? new InputStreamReader(is)
                         : new FileReader(new File(baseDir+"definition.csv"));
             } else
                 reader = new StringReader(plugin.algebraDefinitionString);

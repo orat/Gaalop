@@ -201,6 +201,7 @@
                    repository is moved
                    Downloading the files can be a long step due to rate limited API calls -->
               <version>12.1.5</version>
+              <!--version>latest</version-->
               <!-- https://github.com/DependencyTrack/dependency-track/issues/5286
                    Authentification is needed since 8.9.25 
                    https://ossindex.sonatype.org/doc/auth-required
@@ -220,6 +221,8 @@
                 <ossindexAnalyzerEnabled>false</ossindexAnalyzerEnabled>
                 <retireJsAnalyzerEnabled>false</retireJsAnalyzerEnabled>
                 <nuspecAnalyzerEnabled>false</nuspecAnalyzerEnabled>
+                <!-- This reads from the system environment variable named NVD_API_KEY -->
+                <nvdApiKey>${env.NVD_API_KEY}</nvdApiKey>
               </configuration>
               <executions>
                   <execution>
