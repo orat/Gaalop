@@ -16,17 +16,20 @@ import javax.swing.*;
 import org.apache.commons.beanutils.BeanUtils;
 
 /**
- *
+ * Right side of the user interface - mainly with a list of comoboboxe to choose
+ * main functionality of the code generation process.
+ * 
  * @author Christian Steinmetz
  */
 public class PanelPluginSelection extends JPanel {
     
     
     private JComboBox globalSettings; 
-    private JComboBox visualCodeInserter; 
-    private JComboBox algebra; 
-    private JComboBox optimization;
-    private JComboBox generator;
+    
+    private JComboBox algebra;              // algebra
+    private JComboBox visualCodeInserter;   // visual code inserter
+    private JComboBox optimization;         // optimization
+    private JComboBox generator;            // code generator
     
     private String errorMessage;
     private String errorPlugin1;
@@ -90,6 +93,7 @@ public class PanelPluginSelection extends JPanel {
         final Font font = new Font("Arial", Font.PLAIN, FontSize.getGuiFontSize());
         setLayout(new GridLayout(7,1,5,5));
         
+        // cell renderer for the combobox entries
         ListCellRenderer c = new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -103,14 +107,42 @@ public class PanelPluginSelection extends JPanel {
                 return label ;
             }
         };
+        
+        //Why?
         add(new JPanel());
 
+        // 1. algebra chooser
         algebraChooser.setFont(font);
-        addLabeledComponent("Algebra to use:", algebraChooser);
+        
+        JPanel algebraChooser2 = new JPanel();
+        GridBagLayout gbl = new GridBagLayout();
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbl.setConstraints(algebraChooser2, gbc);
+        algebraChooser2.setLayout(gbl);
+    
+        // create a JSpinner to input the optional algebra dimension
+        // Nummern-Spinner für Werte von 1 to 10, in 1 Schritte
+        int maxdim = 10; //TODO where to define this, depending from the algebra
+        SpinnerNumberModel spinnerModel = new SpinnerNumberModel( 2, 0, maxdim, 1 );
+        JSpinner dimensionSpinner = new JSpinner(spinnerModel);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        algebraChooser2.add(algebraChooser, gbc);
+        
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.NONE;
+        algebraChooser2.add(dimensionSpinner);
+                
+        addLabeledComponent("Algebra to use:", algebraChooser2);
+        
         
         PluginSorter comparator = new PluginSorter();
         
-        
+        // 2. global settings strategy plugins (is there more than one at the moment?)
         GlobalSettingsStrategyPlugin[] globalPlugins = Plugins.getGlobalSettingsStrategyPlugins().toArray(new GlobalSettingsStrategyPlugin[0]);
         Arrays.sort(globalPlugins, comparator);
         globalSettings = new JComboBox(globalPlugins);
@@ -121,6 +153,7 @@ public class PanelPluginSelection extends JPanel {
         if (Plugins.getGlobalSettingsStrategyPlugins().size() > 1)
             addLabeledComponent("Global Settings Plugin:", globalSettings);
         
+        // 3. visual code inserter plugins
         VisualCodeInserterStrategyPlugin[] visPlugins = Plugins.getVisualizerStrategyPlugins().toArray(new VisualCodeInserterStrategyPlugin[0]);
         Arrays.sort(visPlugins, comparator);
         visualCodeInserter = new JComboBox(visPlugins);
@@ -131,6 +164,7 @@ public class PanelPluginSelection extends JPanel {
         if (Plugins.getVisualizerStrategyPlugins().size() > 1)
             addLabeledComponent("VisualCodeInserter:", visualCodeInserter);
         
+        // 4. algebra stategy plugins (is there more than one at the moment?)
         AlgebraStrategyPlugin[] algPlugins = Plugins.getAlgebraStrategyPlugins().toArray(new AlgebraStrategyPlugin[0]);
         Arrays.sort(algPlugins, comparator);
         algebra = new JComboBox(algPlugins);
@@ -141,6 +175,7 @@ public class PanelPluginSelection extends JPanel {
         if (Plugins.getAlgebraStrategyPlugins().size() > 1)
             addLabeledComponent("Algebra:", algebra);
         
+        // 5. optimization
         OptimizationStrategyPlugin[] optPlugins = Plugins.getOptimizationStrategyPlugins().toArray(new OptimizationStrategyPlugin[0]);
         Arrays.sort(optPlugins, comparator);
         optimization = new JComboBox(optPlugins);
@@ -151,6 +186,7 @@ public class PanelPluginSelection extends JPanel {
         if (Plugins.getOptimizationStrategyPlugins().size() > 1)
             addLabeledComponent("Optimization:", optimization);
         
+        // 6. code generator plugins
         CodeGeneratorPlugin[] codegenPlugins = Plugins.getCodeGeneratorPlugins().toArray(new CodeGeneratorPlugin[0]);
         Arrays.sort(codegenPlugins, comparator);
         generator = new JComboBox(codegenPlugins);
@@ -160,6 +196,7 @@ public class PanelPluginSelection extends JPanel {
         if (Plugins.getCodeGeneratorPlugins().size() > 1)
             addLabeledComponent("CodeGenerator:", generator);
         
+        // 7. error text area 
         errorTextArea.setLineWrap(true);
         errorTextArea.setWrapStyleWord(true);
         errorTextArea.setBackground(getBackground());
@@ -167,7 +204,7 @@ public class PanelPluginSelection extends JPanel {
         defaultColor = generator.getBackground();
     }
     
-    private void addLabeledComponent(String label, JComboBox c) {
+    private void addLabeledComponent(String label, JComponent /*JComboBox*/ c) {
         Font font = new Font("Arial", Font.PLAIN, FontSize.getGuiFontSize());
         JPanel panel = new JPanel(new GridLayout(2,1));
         JLabel l = new JLabel(label);
@@ -176,6 +213,9 @@ public class PanelPluginSelection extends JPanel {
         panel.add(c);
         add(panel);
     }
+    
+    
+    // API to get the chooses plugins 
     
     public GlobalSettingsStrategyPlugin getGlobalSettingsStrategyPlugin() {
         return (GlobalSettingsStrategyPlugin) globalSettings.getSelectedItem();
@@ -197,6 +237,7 @@ public class PanelPluginSelection extends JPanel {
         return (CodeGeneratorPlugin) generator.getSelectedItem();
     }
 
+    
     private Object search(Plugin[] plugins, String search) {
         for (Plugin p: plugins) 
             if (p.getClass().getCanonicalName().equals(search))

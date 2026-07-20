@@ -18,7 +18,7 @@ public class PluginModel<T extends Plugin> implements ComboBoxModel {
     private Class<T> clazz;
 
     public PluginModel(Class<T> clazz, Set<T> pluginSet) {
-        plugins = new ArrayList<T>(pluginSet);
+        plugins = new ArrayList<>(pluginSet);
         Collections.sort(plugins, PluginComparator.INSTANCE);
         this.clazz = clazz;
     }
