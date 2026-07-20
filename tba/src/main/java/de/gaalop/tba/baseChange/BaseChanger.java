@@ -105,7 +105,7 @@ public class BaseChanger {
         BladeChanger bladeChanger = new BladeChanger(alPC, alFile);
         
         for (String varName: relevantNodes.keySet()) {
-            HashMap<Integer, Expression> bladeExpressionsPlusMinus = new HashMap<Integer, Expression>();  
+            HashMap<Integer, Expression> bladeExpressionsPlusMinus = new HashMap<>();  
             LinkedList<AssignmentNode> nodes = relevantNodes.get(varName);
             
             // Do transformation of single variable

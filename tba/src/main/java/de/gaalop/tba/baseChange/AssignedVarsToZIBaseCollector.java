@@ -8,7 +8,8 @@ import de.gaalop.productComputer.AlgebraPC;
 import java.util.HashSet;
 
 /**
- * Filters all vars from a given variableNames set, that has at least on base element, that is mapped to the plus-minus-base,
+ * Filters all vars from a given variableNames set, that has at least on base 
+ * element, that is mapped to the plus-minus-base,
  * e.g in CGA einf or e0.
  * The filtered set is stored in  the member "relevantVars".
  * @author Christian Steinmetz

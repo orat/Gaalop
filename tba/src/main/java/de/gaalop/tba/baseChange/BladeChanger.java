@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
 
 /**
  * Implements methods to change one blade of the zero-inf-base to the plus-minus-base
@@ -34,7 +35,7 @@ public class BladeChanger {
      * @return <value>true</value>, if the array contains at least one duplicate element, <value>false</value> otherwise
      */
     private static boolean duplicates(final String[] array) {
-        HashSet<String> set = new HashSet<>();
+        Set<String> set = new HashSet<>();
         for (String i : array) {
             if (set.contains(i)) {
                 return true;
