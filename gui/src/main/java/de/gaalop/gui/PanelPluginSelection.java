@@ -23,11 +23,11 @@ import org.apache.commons.beanutils.BeanUtils;
  */
 public class PanelPluginSelection extends JPanel {
     
-    
-    private JComboBox globalSettings; 
-    
-    private JComboBox algebra;              // algebra
-    private JComboBox visualCodeInserter;   // visual code inserter
+    private JComboBox algebraChooser = new JComboBox();
+    private JSpinner dimensionSpinner;
+    private JComboBox globalSettings;       // only if more than one
+    private JComboBox visualCodeInserter;   // visual code inserter       
+    private JComboBox algebra;              // algebra strategy onle if more than one
     private JComboBox optimization;         // optimization
     private JComboBox generator;            // code generator
     
@@ -39,27 +39,33 @@ public class PanelPluginSelection extends JPanel {
     
     private JTextArea errorTextArea = new JTextArea();
     
-    private JComboBox algebraChooser = new JComboBox();
     
     public static String lastUsedAlgebra;
     public static boolean lastUsedAlgebraRessource;
+    public static int lastUsedAlgebraDimension;
     
     public static String lastUsedGenerator;
     public static String lastUsedVisualCodeInserter;
     public static String lastUsedOptimization;
     
-    
-    private ItemListener itemListener = new ItemListener() {
-        @Override
-        public void itemStateChanged(ItemEvent e) {
-            if (areConstraintsFulfilled()) {
-                errorTextArea.setText("");
-                setColorOnAllComboBoxes();
-            } else {
-                errorTextArea.setText(errorMessage);
-                setColorOnAllComboBoxes();
-            }
+     
+    private void updateErrorMessage(){
+        if (areConstraintsFulfilled()) {
+            errorTextArea.setText("");
+            setColorOnAllComboBoxes();
+        } else {
+            errorTextArea.setText(errorMessage);
+            setColorOnAllComboBoxes();
         }
+    }
+    
+    private ItemListener itemListener = (ItemEvent e) -> {
+        updateErrorMessage();
+    };
+   
+    private ItemListener algebraItemListener = (ItemEvent e) -> {
+        updateDimensionSpinner();
+        //updateErrorMessage();
     };
     
     private boolean isErrorPlugin(JComboBox comboBox) {
@@ -113,7 +119,7 @@ public class PanelPluginSelection extends JPanel {
 
         // 1. algebra chooser
         algebraChooser.setFont(font);
-        
+        algebraChooser.addItemListener(algebraItemListener);
         JPanel algebraChooser2 = new JPanel();
         GridBagLayout gbl = new GridBagLayout();
         GridBagConstraints gbc = new GridBagConstraints();
@@ -124,7 +130,8 @@ public class PanelPluginSelection extends JPanel {
         // Nummern-Spinner für Werte von 1 to 10, in 1 Schritte
         int maxdim = 10; //TODO where to define this, depending from the algebra
         SpinnerNumberModel spinnerModel = new SpinnerNumberModel( 2, 0, maxdim, 1 );
-        JSpinner dimensionSpinner = new JSpinner(spinnerModel);
+        dimensionSpinner = new JSpinner(spinnerModel);
+        dimensionSpinner.setEnabled(false);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 1;
@@ -176,7 +183,8 @@ public class PanelPluginSelection extends JPanel {
             addLabeledComponent("Algebra:", algebra);
         
         // 5. optimization
-        OptimizationStrategyPlugin[] optPlugins = Plugins.getOptimizationStrategyPlugins().toArray(new OptimizationStrategyPlugin[0]);
+        OptimizationStrategyPlugin[] optPlugins = Plugins.getOptimizationStrategyPlugins().
+                toArray(new OptimizationStrategyPlugin[0]);
         Arrays.sort(optPlugins, comparator);
         optimization = new JComboBox(optPlugins);
         optimization.setFont(font);
@@ -187,7 +195,8 @@ public class PanelPluginSelection extends JPanel {
             addLabeledComponent("Optimization:", optimization);
         
         // 6. code generator plugins
-        CodeGeneratorPlugin[] codegenPlugins = Plugins.getCodeGeneratorPlugins().toArray(new CodeGeneratorPlugin[0]);
+        CodeGeneratorPlugin[] codegenPlugins = Plugins.getCodeGeneratorPlugins().
+                toArray(new CodeGeneratorPlugin[0]);
         Arrays.sort(codegenPlugins, comparator);
         generator = new JComboBox(codegenPlugins);
         generator.setFont(font);
@@ -316,76 +325,125 @@ public class PanelPluginSelection extends JPanel {
     }
 
     public void refreshAlgebras() {
-        VisualCodeInserterStrategyPlugin[] visualCodeInserterStrategyPlugins = Plugins.getVisualizerStrategyPlugins().toArray(new VisualCodeInserterStrategyPlugin[0]);
+        
+        // visual code inserter
+        VisualCodeInserterStrategyPlugin[] visualCodeInserterStrategyPlugins = 
+                Plugins.getVisualizerStrategyPlugins().toArray(new VisualCodeInserterStrategyPlugin[0]);
         visualCodeInserter.setSelectedItem(search(visualCodeInserterStrategyPlugins, lastUsedVisualCodeInserter));
         
-        OptimizationStrategyPlugin[] optimizationPlugins = Plugins.getOptimizationStrategyPlugins().toArray(new OptimizationStrategyPlugin[0]);
+        // optimization
+        OptimizationStrategyPlugin[] optimizationPlugins = 
+                Plugins.getOptimizationStrategyPlugins().toArray(new OptimizationStrategyPlugin[0]);
         optimization.setSelectedItem(search(optimizationPlugins, lastUsedOptimization));
         
+        // codegenerator
         CodeGeneratorPlugin[] codegenPlugins = Plugins.getCodeGeneratorPlugins().toArray(new CodeGeneratorPlugin[0]);
         generator.setSelectedItem(search(codegenPlugins, lastUsedGenerator));
         
+         
+        // algebras
+        
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         
-        for (DefinedAlgebra definedAlgebra: de.gaalop.algebra.Plugin.getDefinedAlgebras())
-            model.addElement(new AlgebraChooserItem(true, definedAlgebra.id, definedAlgebra.id+" - "+definedAlgebra.name));
-
+        // only ids of the algebras, definition file must not exist
+        for (DefinedAlgebra definedAlgebra: de.gaalop.algebra.Plugin.getDefinedAlgebras()){
+            boolean hasDimension = definedAlgebra.definesDimensions();
+            model.addElement(new AlgebraChooserItem(true, definedAlgebra.id, hasDimension,
+                    definedAlgebra.id+" - "+definedAlgebra.name));
+        }
+        
+        // algebra strategy
+        
         AlgebraStrategyPlugin algebra = Plugins.getAlgebraStrategyPlugins().iterator().next();
         
+        // add user defined algebras, if there are any
         try {
              Field field = algebra.getClass().getField("additionalBaseDirectory");
              String value = BeanUtils.getProperty(algebra, field.getName()).trim();
              
              if (!value.isEmpty()) {
                 File file = new File(value);
-                File[] dirs = file.listFiles(new FileFilter() {
-                    @Override
-                    public boolean accept(File pathname) {
-                        return pathname.isDirectory();
-                    }
-                });
+                File[] dirs = file.listFiles((File pathname) -> pathname.isDirectory());
                 if (dirs != null)
                 for (File dir: dirs) 
-                    model.addElement(new AlgebraChooserItem(false, dir.getName(), "Own - "+dir.getName()));
+                    model.addElement(new AlgebraChooserItem(false, 
+                            dir.getName(), false, "Own - "+dir.getName()));
 
                 }
              
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(PanelPluginSelection.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvocationTargetException ex) {
-            Logger.getLogger(PanelPluginSelection.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NoSuchMethodException ex) {
-            Logger.getLogger(PanelPluginSelection.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NoSuchFieldException ex) {
-            Logger.getLogger(PanelPluginSelection.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SecurityException ex) {
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | NoSuchFieldException | SecurityException ex) {
             Logger.getLogger(PanelPluginSelection.class.getName()).log(Level.SEVERE, null, ex);
         }
         algebraChooser.setModel(model);
         
+        // default algebra is cga
         if (lastUsedAlgebra == null)  {
             lastUsedAlgebra = "cga";
             lastUsedAlgebraRessource = true;
+            lastUsedAlgebraDimension = -1;
         }
         
+        //TODO how to save a dimension for default item?
+        boolean hasDimension = false;
+        if (lastUsedAlgebraDimension > 0) hasDimension = true;
+        AlgebraChooserItem defaultItem = new AlgebraChooserItem(lastUsedAlgebraRessource, 
+                lastUsedAlgebra, hasDimension, "");
         
-
-        AlgebraChooserItem defaultItem = new AlgebraChooserItem(lastUsedAlgebraRessource, lastUsedAlgebra, "");
-        
+        // set the selection to the default item if the saved default item exist in the list of the combobox
         FOR:
         for (int i=0;i<model.getSize();i++) {
             AlgebraChooserItem iItem = (AlgebraChooserItem) model.getElementAt(i);
-            if (defaultItem.algebraName.equals(iItem.algebraName) && defaultItem.ressource == iItem.ressource) {
+            if (defaultItem.algebraName.equals(iItem.algebraName) && 
+                defaultItem.ressource == iItem.ressource) {
                 defaultItem = iItem;
                 break FOR;
             }
         }
-        
         algebraChooser.setSelectedItem(defaultItem);
+        try {
+            SwingUtilities.invokeAndWait(new Runnable(){
+                public void run(){
+                    updateDimensionSpinner();
+                }
+            });
+        } catch (InterruptedException ex) {
+            Logger.getLogger(PanelPluginSelection.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvocationTargetException ex) {
+            Logger.getLogger(PanelPluginSelection.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-
-    public AlgebraChooserItem getAlgebraToUse() {
-        return (AlgebraChooserItem) algebraChooser.getSelectedItem();
+    
+    //spinner updaten
+    private void updateDimensionSpinner(){
+        AlgebraChooserItem selectedAlgebraItem = (AlgebraChooserItem) algebraChooser.getSelectedItem();
+        //if (selectedAlgebraItem.dimension>0){
+            for (DefinedAlgebra definedAlgebra: de.gaalop.algebra.Plugin.getDefinedAlgebras()){
+                if (definedAlgebra.id.equals(selectedAlgebraItem.algebraName)){
+                    if (definedAlgebra.definesDimensions()){
+                        SpinnerNumberModel spinnerModel = 
+                                new SpinnerNumberModel( definedAlgebra.minDimension, 
+                                        definedAlgebra.minDimension, definedAlgebra.maxDimension, 1 );
+                        dimensionSpinner.setModel(spinnerModel);
+                        dimensionSpinner.setEnabled(true);
+            
+                    } else {
+                        dimensionSpinner.setEnabled(false);
+                        //System.out.println("Error: Selected algebra with dimension, but definedAlgebra has no dimension!");
+                    }
+                }
+            }
+        //} else {
+        //     dimensionSpinner.setEnabled(false);
+        //}
+    }
+    
+    ChoosenAlgebra /*AlgebraChooserItem*/ getAlgebraToUse() {
+        AlgebraChooserItem item = (AlgebraChooserItem) algebraChooser.getSelectedItem();
+        //return (AlgebraChooserItem) algebraChooser.getSelectedItem();
+        boolean resource = item.ressource;
+        String algebraName = item.algebraName; 
+        int dimension = 0; //TODO add dimension from the spinner UI if available
+        return new ChoosenAlgebra(resource, algebraName, dimension);
     }
 
     public void updateLastUsedPlugins() {

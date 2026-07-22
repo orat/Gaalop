@@ -12,3 +12,4 @@ dcga;double conformal geometric algebra (8,2,0)
 qga;quantum bit geometric algebra (6,3,0)
 qra6;quantum register geometric algebra with 6 quantum bits (14,0,0)
 qca1;quantum computing algebra with 1 quantum bits (2,2,0)
+qca;quantum computing algebra;1;10

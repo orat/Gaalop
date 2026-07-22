@@ -39,7 +39,10 @@ public class CompilerFacade extends Observable {
      * @param asRessource
      * @param algebraBaseDirectory
      */
-    public CompilerFacade(CodeParser codeParser, GlobalSettingsStrategy globalSettingsStrategy, VisualCodeInserterStrategy visualizerStrategy, AlgebraStrategy algebraStrategy, OptimizationStrategy optimizationStrategy, CodeGenerator codeGenerator, String algebraName, boolean asRessource, String algebraBaseDirectory) {
+    public CompilerFacade(CodeParser codeParser, GlobalSettingsStrategy globalSettingsStrategy, 
+            VisualCodeInserterStrategy visualizerStrategy, AlgebraStrategy algebraStrategy, 
+            OptimizationStrategy optimizationStrategy, CodeGenerator codeGenerator, 
+            String algebraName, boolean asRessource, String algebraBaseDirectory) {
         this.codeParser = codeParser;
         this.globalSettingsStrategy = globalSettingsStrategy;
         this.visualizerStrategy = visualizerStrategy;

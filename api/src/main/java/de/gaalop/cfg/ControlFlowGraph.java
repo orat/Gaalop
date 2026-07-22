@@ -38,9 +38,9 @@ public final class ControlFlowGraph {
 
 	private Log log = LogFactory.getLog(ControlFlowGraph.class);
 
-	private Set<Variable> localVariables = new HashSet<Variable>();
-	private Set<Variable> scalarVariables = new HashSet<Variable>();
-	private Set<Variable> inputVariables = new HashSet<Variable>();
+	private Set<Variable> localVariables = new HashSet<>();
+	private Set<Variable> scalarVariables = new HashSet<>();
+	private Set<Variable> inputVariables = new HashSet<>();
 
         private AlgebraDefinitionFile algebraDefinitionFile = new AlgebraDefinitionFile();
 
@@ -50,15 +50,15 @@ public final class ControlFlowGraph {
 
 	private InputFile source;
 
-	private Map<String, Macro> macros = new HashMap<String, Macro>();
-	private Set<Slider> sliders = new HashSet<Slider>();
+	private Map<String, Macro> macros = new HashMap<>();
+	private Set<Slider> sliders = new HashSet<>();
 
 	private ColorNode bgColor;
 
 	/* store information about the pragmas */
-	private Set<String> pragmaOutputVariables = new HashSet<String>();
-        private Set<String> pragmaOnlyEvaluateVariables = new HashSet<String>();
-        private LinkedList<AssignmentNode> onlyEvaluateNodes = new LinkedList<AssignmentNode>();
+	private Set<String> pragmaOutputVariables = new HashSet<>();
+        private Set<String> pragmaOnlyEvaluateVariables = new HashSet<>();
+        private LinkedList<AssignmentNode> onlyEvaluateNodes = new LinkedList<>();
 
 	private HashMap<String, String> pragmaMinValue = new HashMap<String, String>();
     private HashMap<String, String> pragmaMaxValue = new HashMap<String, String>();

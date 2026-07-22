@@ -50,10 +50,10 @@ public class CompileAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        AlgebraChooserItem algebraToUse = panelPluginSelection.getAlgebraToUse();
+        ChoosenAlgebra /*AlgebraChooserItem*/ algebraToUse = panelPluginSelection.getAlgebraToUse();
         PanelPluginSelection.lastUsedAlgebra = algebraToUse.algebraName;
         PanelPluginSelection.lastUsedAlgebraRessource = algebraToUse.ressource;
-        
+        PanelPluginSelection.lastUsedAlgebraDimension = algebraToUse.dimension;
     	statusBar.reset();
 
         GlobalSettingsStrategyPlugin globalSettingsPlugin = panelPluginSelection.getGlobalSettingsStrategyPlugin();

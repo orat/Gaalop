@@ -6,13 +6,18 @@ package de.gaalop.gui;
  */
 public class AlgebraChooserItem {
 
-    public boolean ressource;
+    public boolean ressource; // false == user defined
+    private boolean hasDimension = false;
     public String algebraName;
     public String showString;
-
-    public AlgebraChooserItem(boolean ressource, String algebraName, String showString) {
+    //public int dimension;
+    
+    //record ChoosenAlgebra(boolean ressource, String algebraName, int dimension){};
+    
+    AlgebraChooserItem(boolean ressource, String algebraName, boolean hasDimension, String showString) {
         this.ressource = ressource;
         this.algebraName = algebraName;
+        this.hasDimension = hasDimension;
         this.showString = showString;
     }
 

@@ -89,6 +89,9 @@ public class Plugin extends Observable implements AlgebraStrategyPlugin {
                 String[] parts = line.split(";");
                 if (parts.length == 2) {
                     result.add(new DefinedAlgebra(parts[0], parts[1]));
+                } else if (parts.length == 4){
+                    result.add(new DefinedAlgebra(parts[0], parts[1],
+                            Integer.valueOf(parts[2]), Integer.valueOf(parts[3])));
                 }
             }
             return result;
