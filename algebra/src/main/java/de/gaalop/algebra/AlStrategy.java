@@ -30,7 +30,6 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 /**
  * Sets the algebra on a Control Flow Graph
  * @author Christian Steinmetz
@@ -64,20 +63,39 @@ public class AlStrategy implements AlgebraStrategy {
             baseDir += graph.algebraName+"/";
 
             alFile.setProductsFilePath(baseDir+"products.csv");
-
+            // load definition.csv into alFile (AlgebraDefinitionFile)
             if (plugin.algebraDefinitionString == null) {
-                alFile.setProductsFilePath(baseDir+"products.csv");
-                InputStream is = getClass().getResourceAsStream(baseDir+"definition.csv");
-                if (is == null) System.out.println("The algebra definition \""+baseDir+"definition.csv"+"\" not found!");
+                //alFile.setProductsFilePath(baseDir+"products.csv");
+                if (graph.asRessource){
+                    InputStream is = getClass().getResourceAsStream(baseDir+"definition.csv");
+                    if (is != null) {
+                        reader = new InputStreamReader(is);
+                        alFile.loadFromFile(reader);
+                    } else {
+                        System.out.println("The algebra definition \""+baseDir+"definition.csv"+"\" not found as resource!");
+                    }
+                } 
+                if (reader == null){
+                    File f = new File(baseDir+"definition.csv");
+                    if (f.exists()){
+                        reader = new FileReader(f);
+                        alFile.loadFromFile(reader);
+                    } else {
+                        //passende Algebra erzeugen mit spezifischen Code der ein 
+                        // alFile Object aufbaut
+                        boolean result = alFile.create(graph.algebraName, graph.dimension);
+                        if (!result) System.out.println("The algebra \""+graph.algebraName+"\" is not found!");
+                    }
+                }
                 
-                reader = (graph.asRessource)
-                        ? new InputStreamReader(is)
-                        : new FileReader(new File(baseDir+"definition.csv"));
-            } else
+            // TODO find out how to use plugin.algebraDefinitionString to define an algebra
+            } else {
                 reader = new StringReader(plugin.algebraDefinitionString);
-            alFile.loadFromFile(reader);
-
-            createBlades(alFile);
+                alFile.loadFromFile(reader);
+            }
+            createBlades(alFile); //FIXME alFile == null for GAPPTest.testPaper3, PAPPTest.Java:80
+            
+            
 
             //replace all functions / macros
 
@@ -200,7 +218,7 @@ public class AlStrategy implements AlgebraStrategy {
             Logger.getLogger(AlStrategy.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
-                reader.close();
+                if (reader != null) reader.close();
             } catch (IOException ex) {
                 Logger.getLogger(AlStrategy.class.getName()).log(Level.SEVERE, null, ex);
             }

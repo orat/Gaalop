@@ -45,7 +45,7 @@ public class Plugin extends Observable implements AlgebraStrategyPlugin {
 
     @Override
     public String getDescription() {
-        return "This plugin sets the algebra for the graph and replaces all functions that are algebra-depend.";
+        return "This plugin sets the algebra for the graph and replaces all functions that are algebra-dependend.";
     }
 
     @Override
@@ -100,5 +100,4 @@ public class Plugin extends Observable implements AlgebraStrategyPlugin {
             return null;
         }
     }
-    
 }
