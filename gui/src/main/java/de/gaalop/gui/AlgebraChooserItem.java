@@ -56,7 +56,7 @@ public class AlgebraChooserItem {
    
     @Override
     public String toString() {
-        if (hasDimension && signatureString.length()>0){
+        if (hasDimension && signatureString != null && signatureString.length()>0){
             return showString + " "+signatureString;
         } else {
             return showString;

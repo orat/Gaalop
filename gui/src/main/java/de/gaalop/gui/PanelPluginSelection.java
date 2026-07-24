@@ -140,6 +140,7 @@ public class PanelPluginSelection extends JPanel {
             AlgebraChooserItem selectedItem = (AlgebraChooserItem) algebraChooser.getSelectedItem(); 
             String signatureString = AlgebraDefinitionFile.getSignatureString(selectedItem.algebraName, dimension);
             selectedItem.setSignature(signatureString);
+            algebraChooser.updateUI();
         });
         dimensionSpinner.setEnabled(false);
         gbc.gridx = 0;
@@ -385,6 +386,7 @@ public class PanelPluginSelection extends JPanel {
         }
         algebraChooser.setModel(model);
         
+        
         // default algebra is cga
         if (lastUsedAlgebra == null)  {
             lastUsedAlgebra = "cga";
@@ -408,11 +410,16 @@ public class PanelPluginSelection extends JPanel {
                 break FOR;
             }
         }
-        algebraChooser.setSelectedItem(defaultItem);
+        final AlgebraChooserItem finalDefaultItem = (AlgebraChooserItem) defaultItem;
+        algebraChooser.setSelectedItem(finalDefaultItem);
         try {
             SwingUtilities.invokeAndWait(new Runnable(){
                 public void run(){
                     updateDimensionSpinner();
+                    int dimension = (int) dimensionSpinner.getValue();
+                    String signatureString = AlgebraDefinitionFile.getSignatureString(finalDefaultItem.algebraName, dimension);
+                    finalDefaultItem.setSignature(signatureString);
+                    algebraChooser.updateUI();
                 }
             });
         } catch (InterruptedException ex) {
