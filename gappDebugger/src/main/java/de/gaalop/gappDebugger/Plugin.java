@@ -41,7 +41,7 @@ public class Plugin extends Observable implements CodeGeneratorPlugin {
 
     @Override
     public String getName() {
-        return "Gapp Debugger";
+        return "GAPP Debugger";
     }
 
     @Override

@@ -66,7 +66,7 @@ public class Plugin extends Observable implements CodeGeneratorPlugin {
 
     @Override
     public String getName() {
-        return "compressed C/C++";
+        return "C/C++ (compressed)";
     }
 
     @Override
