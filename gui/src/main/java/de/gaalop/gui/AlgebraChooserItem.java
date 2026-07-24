@@ -13,7 +13,8 @@ public class AlgebraChooserItem {
     
     //record ChoosenAlgebra(boolean ressource, String algebraName, int dimension){};
     
-    AlgebraChooserItem(boolean ressource, String algebraName, boolean hasDimension, String showString) {
+    AlgebraChooserItem(boolean ressource, String algebraName, 
+                       boolean hasDimension, String showString) {
         this.ressource = ressource;
         this.algebraName = algebraName;
         this.hasDimension = hasDimension;

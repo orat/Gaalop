@@ -222,7 +222,7 @@ public class AlgebraDefinitionFile {
         }
     }
     private static String getSignatureQCA(int dimension){
-        return "Cl("+String.valueOf(dimension*2+1) + String.valueOf(dimension*2+1) + "0)";
+        return "Cl("+String.valueOf(dimension*2+1) + "," + String.valueOf(dimension*2+1) + ",0)";
     }
     
     private void createQCA(int dimension){

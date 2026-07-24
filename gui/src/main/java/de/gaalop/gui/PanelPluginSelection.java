@@ -432,8 +432,10 @@ public class PanelPluginSelection extends JPanel {
     //spinner updaten
     private void updateDimensionSpinner(){
         AlgebraChooserItem selectedAlgebraItem = (AlgebraChooserItem) algebraChooser.getSelectedItem();
+        boolean found = false;
         for (DefinedAlgebra definedAlgebra: de.gaalop.algebra.Plugin.getDefinedAlgebras()){
             if (definedAlgebra.id.equals(selectedAlgebraItem.algebraName)){
+                found = true;
                 if (definedAlgebra.definesDimensions()){
                     SpinnerNumberModel spinnerModel = 
                                 new SpinnerNumberModel( definedAlgebra.minDimension, 
@@ -443,10 +445,11 @@ public class PanelPluginSelection extends JPanel {
 
                 } else {
                     dimensionSpinner.setEnabled(false);
-                    //System.out.println("Error: Selected algebra with dimension, but definedAlgebra has no dimension!");
+                    //System.out.println("Selected algebra with dimension, but definedAlgebra has no dimension!");
                 }
             }
         }
+        if (!found) dimensionSpinner.setEnabled(false);
     }
     
     ChoosenAlgebra getAlgebraToUse() {
