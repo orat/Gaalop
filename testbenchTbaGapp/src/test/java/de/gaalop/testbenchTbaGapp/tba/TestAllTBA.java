@@ -54,7 +54,7 @@ public class TestAllTBA {
                 algebraStrategy, 
                 optimizationStrategy, 
                 codeGenerator, 
-                testCase.getAlgebraName(), 
+                testCase.getAlgebraName(), -1,
                 true, 
                 "");
         

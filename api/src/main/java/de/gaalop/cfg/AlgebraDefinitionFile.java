@@ -27,9 +27,10 @@ public class AlgebraDefinitionFile {
     /**
      * The squares of the plusminus base
      */
-    public HashMap<String, Byte> baseSquares = new HashMap<String, Byte>();
+    public HashMap<String, Byte> baseSquares = new HashMap<>();
     /**
-     * The line contating the map to transform from the zeroinf base to the plusminus base
+     * The line contating the map to transform from the zeroinf base to the 
+     * plusminus base
      */
     public String lineMapZeroInfToPlusMinus;
     
@@ -66,7 +67,7 @@ public class AlgebraDefinitionFile {
     /**
      * The indices of the base vectors
      */
-    public HashMap<String, Integer> indices = new HashMap<String, Integer>();
+    public HashMap<String, Integer> indices = new HashMap<>();
 
     /**
      * Returns the string of blade with a given index
@@ -157,6 +158,125 @@ public class AlgebraDefinitionFile {
         createIndices();
     }
 
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        //The zeroinf base
+        for (int i=0;i<base.length;i++){
+            sb.append(base[i]);
+            sb.append(",");
+        }
+        sb.deleteCharAt(sb.length()-1);
+        sb.append("\n");
+        // The line contating the map to transform from the plusminus base to the zeroinf base
+        sb.append(lineMapPlusMinusToZeroInf);
+        sb.append("\n");
+        // The plusminus base
+        for (int i=0;i<base2.length;i++){
+            sb.append(base2[i]);
+            sb.append(",");
+        }
+        sb.deleteCharAt(sb.length()-1);
+        sb.append("\n");
+        // The squares of the plusminus base
+        for (String key: baseSquares.keySet()){
+            sb.append(key);
+            sb.append("=");
+            sb.append(String.valueOf(baseSquares.get(key)));
+            sb.append(",");
+        }
+        sb.deleteCharAt(sb.length()-1);
+        sb.append("\n");
+        // The line contating the map to transform from the zeroinf base to the 
+        // plusminus base
+        sb.append(lineMapZeroInfToPlusMinus);
+        sb.append("\n");
+        return sb.toString();
+    }
+    // return true, if the algebra with the given name and dimension was sucessfully created
+    public boolean create(String name, int dimension){
+        switch (name){
+            case "qca":
+                createQCA(dimension);
+                break;
+            case "qra":   
+                break;
+            default:
+                return false;
+        }
+        return true;
+    }
+    
+    public String getSignatureString(){
+        AlgebraSignature signature = getSignature();
+        return "Cl("+signature.toString()+")";
+    }
+    
+    public static String getSignatureString(String algebraName, int dimension){
+         switch (algebraName){
+            case "qca":
+                return getSignatureQCA(dimension);
+            case "qra":   
+                return null;
+            default:
+                return null;
+        }
+    }
+    private static String getSignatureQCA(int dimension){
+        return "Cl("+String.valueOf(dimension*2+1) + String.valueOf(dimension*2+1) + "0)";
+    }
+    
+    private void createQCA(int dimension){
+        // 1, e0p, e0m, f1, f1T
+        base = new String[2+2*dimension+1];
+        base[0] = "1"; base[1] = "e0p"; base[2] = "e0m";
+        for (int i=1;i<=dimension;i++){
+            base[1+2*i] = "f"+String.valueOf(i);
+            base[2+2*i] = "f"+String.valueOf(i)+"T";
+        }
+
+        // e1p=1.0*f1+1.0*f1T,e1m=1.0*f1-1.0*f1T
+        StringBuilder sb = new StringBuilder();
+        for (int i=1;i<=dimension;i++){
+            sb.append("e"); sb.append(String.valueOf(i)); sb.append("p=1.0*f");
+            sb.append(String.valueOf(i)); sb.append("+1.0*f"); sb.append(String.valueOf(i));
+            sb.append("T,e"); sb.append(String.valueOf(i)); sb.append("m=1.0*f");
+            sb.append(String.valueOf(i)); sb.append("-1.0*f"); sb.append(String.valueOf(i));
+            sb.append("T,");
+        }
+        sb.deleteCharAt(sb.length()-1);
+        lineMapPlusMinusToZeroInf = sb.toString();
+
+        // 1, e0p, e0m, e1p, e1m
+        base2 = new String[2+2*dimension+1];
+        base2[0] = "1"; base2[1] = "e0p"; base2[2] = "e0m";
+        for (int i=1;i<=dimension;i++){
+            base2[1+2*i] = "e"+String.valueOf(i) + "p";
+            base2[2+2*i] = "e"+String.valueOf(i) + "m";
+        }
+
+        // e0p=1, eom=-1, eqp=1, e1m=-1
+        // HashMap<String, Byte> baseSquares
+        baseSquares.put("e0p", (byte) 1);
+        baseSquares.put("e0m", (byte) -1);
+        for (int i=1;i<=dimension;i++){
+            baseSquares.put("e"+String.valueOf(i)+"p",(byte) 1);
+            baseSquares.put("e"+String.valueOf(i)+"m",(byte) -1);
+        }
+
+        // f1=0.5*e1p+0.5*e1m, f1T=0.5*e1p-0.5*e1m
+        sb = new StringBuilder();
+        for (int i=1;i<=dimension;i++){
+            sb.append("f"); sb.append(String.valueOf(i)); sb.append("=0.5*e");
+            sb.append(String.valueOf(i)); sb.append("p+0.5*e"); sb.append(String.valueOf(i));
+            sb.append("m,f"); sb.append(String.valueOf(i)); sb.append("T=0.5*e");
+            sb.append(String.valueOf(i)); sb.append("p-0.5*e"); sb.append(String.valueOf(i));
+            sb.append("m,");
+
+        }
+        sb.deleteCharAt(sb.length()-1);
+        lineMapZeroInfToPlusMinus = sb.toString();
+    }
+    
     /**
      * Parses a String array, splitet with commas
      * @param The string to be parsed
@@ -203,6 +323,4 @@ public class AlgebraDefinitionFile {
     public void setProductsFilePath(String productsFilePath) {
         this.productsFilePath = productsFilePath;
     }
-
-
 }

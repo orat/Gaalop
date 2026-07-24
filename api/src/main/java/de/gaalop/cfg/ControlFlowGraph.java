@@ -36,127 +36,128 @@ import java.util.Collection;
  */
 public final class ControlFlowGraph {
 
-	private Log log = LogFactory.getLog(ControlFlowGraph.class);
+    private Log log = LogFactory.getLog(ControlFlowGraph.class);
 
-	private Set<Variable> localVariables = new HashSet<>();
-	private Set<Variable> scalarVariables = new HashSet<>();
-	private Set<Variable> inputVariables = new HashSet<>();
+    private Set<Variable> localVariables = new HashSet<>();
+    private Set<Variable> scalarVariables = new HashSet<>();
+    private Set<Variable> inputVariables = new HashSet<>();
 
-        private AlgebraDefinitionFile algebraDefinitionFile = new AlgebraDefinitionFile();
+    private AlgebraDefinitionFile algebraDefinitionFile = new AlgebraDefinitionFile();
 
-	private final StartNode startNode;
+    private final StartNode startNode;
 
-	private final EndNode endNode;
+    private final EndNode endNode;
 
-	private InputFile source;
+    private InputFile source;
 
-	private Map<String, Macro> macros = new HashMap<>();
-	private Set<Slider> sliders = new HashSet<>();
+    private Map<String, Macro> macros = new HashMap<>();
+    private Set<Slider> sliders = new HashSet<>();
 
-	private ColorNode bgColor;
+    private ColorNode bgColor;
 
-	/* store information about the pragmas */
-	private Set<String> pragmaOutputVariables = new HashSet<>();
-        private Set<String> pragmaOnlyEvaluateVariables = new HashSet<>();
-        private LinkedList<AssignmentNode> onlyEvaluateNodes = new LinkedList<>();
+    /* store information about the pragmas */
+    private Set<String> pragmaOutputVariables = new HashSet<>();
+    private Set<String> pragmaOnlyEvaluateVariables = new HashSet<>();
+    private LinkedList<AssignmentNode> onlyEvaluateNodes = new LinkedList<>();
 
-	private HashMap<String, String> pragmaMinValue = new HashMap<String, String>();
-    private HashMap<String, String> pragmaMaxValue = new HashMap<String, String>();
+    private HashMap<String, String> pragmaMinValue = new HashMap<>();
+    private HashMap<String, String> pragmaMaxValue = new HashMap<>();
 
-    private Set<ReturnDefinition> pragmaReturns = new HashSet<ReturnDefinition>();
-    private Set<String> insertionTexts = new HashSet<String>();
+    private Set<ReturnDefinition> pragmaReturns = new HashSet<>();
+    private Set<String> insertionTexts = new HashSet<>();
 
-        public boolean syntaxSpecified = false;
-        public StringList syntaxInputs = new StringList();
-        public StringList syntaxOutputs = new StringList();
+    public boolean syntaxSpecified = false;
+    public StringList syntaxInputs = new StringList();
+    public StringList syntaxOutputs = new StringList();
 
-		public LinkedList<String[]> drawSegments;
-        public LinkedList<String[]> drawTriangles;
+    public LinkedList<String[]> drawSegments;
+    public LinkedList<String[]> drawTriangles;
 
-        public boolean tbaOptimized = true;
+    public boolean tbaOptimized = true;
 
-	public LinkedList<ExpressionStatement> visualizerExpressions = new LinkedList<ExpressionStatement>();
-        private HashMap<String, Expression> renderingExpressions = new HashMap<String, Expression>();
+    public LinkedList<ExpressionStatement> visualizerExpressions = new LinkedList<>();
+    private HashMap<String, Expression> renderingExpressions = new HashMap<>();
 
-        public GlobalSettings globalSettings = new GlobalSettings();
+    public GlobalSettings globalSettings = new GlobalSettings();
 
-        public LinkedList<UnknownMacroCall> unknownMacros = new LinkedList<UnknownMacroCall>();
+    public LinkedList<UnknownMacroCall> unknownMacros = new LinkedList<>();
 
-        public String algebraName;
-        public boolean asRessource;
-        public String algebraBaseDirectory;
+    public String algebraName;
+    public int dimension;
+    public boolean asRessource;
+    public String algebraBaseDirectory;
 
-        public HashMap<String, Expression> getRenderingExpressions() {
-            return renderingExpressions;
-        }
+    public HashMap<String, Expression> getRenderingExpressions() {
+        return renderingExpressions;
+    }
 
-        public void setRenderingExpressions(HashMap<String, Expression> renderingExpressions) {
-            this.renderingExpressions = renderingExpressions;
+    public void setRenderingExpressions(HashMap<String, Expression> renderingExpressions) {
+        this.renderingExpressions = renderingExpressions;
     }
 
     public Set<ReturnDefinition> getReturnDefinitions() {
         return pragmaReturns;
     }
 
-	public HashMap<String, String> getPragmaMaxValue() {
-		return pragmaMaxValue;
-	}
+    public HashMap<String, String> getPragmaMaxValue() {
+            return pragmaMaxValue;
+    }
 
-	public HashMap<String, String> getPragmaMinValue() {
-		return pragmaMinValue;
-	}
+    public HashMap<String, String> getPragmaMinValue() {
+            return pragmaMinValue;
+    }
 
-	public Set<String> getPragmaOutputVariables() {
-		return pragmaOutputVariables;
-	}
+    public Set<String> getPragmaOutputVariables() {
+            return pragmaOutputVariables;
+    }
 
     public Set<String> getInsertionTexts() {
         return insertionTexts;
     }
 
-        public LinkedList<AssignmentNode> getOnlyEvaluateNodes() {
-            return onlyEvaluateNodes;
-        }
+    public LinkedList<AssignmentNode> getOnlyEvaluateNodes() {
+        return onlyEvaluateNodes;
+    }
 
-        public Set<String> getPragmaOnlyEvaluateVariables() {
-            return pragmaOnlyEvaluateVariables;
-        }
+    public Set<String> getPragmaOnlyEvaluateVariables() {
+        return pragmaOnlyEvaluateVariables;
+    }
 
-	public void addPragmaOutputVariable(String name) {
-		pragmaOutputVariables.add(name);
-	}
+    public void addPragmaOutputVariable(String name) {
+            pragmaOutputVariables.add(name);
+    }
 
-        public void addPragmaOnlyEvaluateNode(AssignmentNode node) {
-                onlyEvaluateNodes.add(node);
-        }
+    public void addPragmaOnlyEvaluateNode(AssignmentNode node) {
+            onlyEvaluateNodes.add(node);
+    }
 
-        public void addPragmaOnlyEvaluateVariable(String var) {
-            pragmaOnlyEvaluateVariables.add(var);
-        }
+    public void addPragmaOnlyEvaluateVariable(String var) {
+        pragmaOnlyEvaluateVariables.add(var);
+    }
 
-	public void addScalarVariable(Variable tempVariable) {
-		scalarVariables.add(tempVariable);
-	}
+    public void addScalarVariable(Variable tempVariable) {
+            scalarVariables.add(tempVariable);
+    }
 
-	public void removeScalarVariable(Variable var) {
-		scalarVariables.remove(var);
-	}
+    public void removeScalarVariable(Variable var) {
+            scalarVariables.remove(var);
+    }
 
-	public void removeScalarVariable(String name) {
-		scalarVariables.remove(new Variable(name));
-	}
+    public void removeScalarVariable(String name) {
+            scalarVariables.remove(new Variable(name));
+    }
 
-	public Set<Variable> getScalarVariables() {
-		return scalarVariables;
-	}
+    public Set<Variable> getScalarVariables() {
+            return scalarVariables;
+    }
 
-	/**
-	 * Adds a pragma hint for a variable, which defines value range for it. The pragma must be set before the variable
-	 * is added to the input variables, i.e. the pragma must appear for the use of the variable
-	 */
-	public void addPragmaMinMaxValues(String variable, String min, String max) {
-		pragmaMaxValue.put(variable, max);
-		pragmaMinValue.put(variable, min);
+    /**
+     * Adds a pragma hint for a variable, which defines value range for it. The pragma must be set before the variable
+     * is added to the input variables, i.e. the pragma must appear for the use of the variable
+     */
+    public void addPragmaMinMaxValues(String variable, String min, String max) {
+            pragmaMaxValue.put(variable, max);
+            pragmaMinValue.put(variable, min);
     }
 
     public void addReturnDefinition(ReturnDefinition definition) {
@@ -167,383 +168,383 @@ public final class ControlFlowGraph {
         insertionTexts.add(text);
     }
 
-	/**
-	 * Adds a new macro definition.
-	 *
-	 * @param macro new macro definition
-	 */
-	public void addMacro(Macro macro) {
-		macros.put(macro.getName(), macro);
-	}
+    /**
+     * Adds a new macro definition.
+     *
+     * @param macro new macro definition
+     */
+    public void addMacro(Macro macro) {
+            macros.put(macro.getName(), macro);
+    }
 
-	public void addSlider(Slider slider) {
-		sliders .add(slider);
-	}
+    public void addSlider(Slider slider) {
+            sliders .add(slider);
+    }
 
-	public Set<Slider> getSliders() {
-		return sliders;
-	}
+    public Set<Slider> getSliders() {
+            return sliders;
+    }
 
-	public void setBGColor(ColorNode color) {
-		bgColor = color;
-	}
+    public void setBGColor(ColorNode color) {
+            bgColor = color;
+    }
 
-	public ColorNode getBGColor() {
-		return bgColor;
-	}
+    public ColorNode getBGColor() {
+            return bgColor;
+    }
 
-	/**
-	 * Returns the macro definition of a macro with given name, if available.
-	 *
-	 * @param name name of macro to be returned
-	 * @return macro definition according to name or null, if not found
-	 */
-	public Macro getMacro(String name) {
-		return macros.get(name);
-	}
+    /**
+     * Returns the macro definition of a macro with given name, if available.
+     *
+     * @param name name of macro to be returned
+     * @return macro definition according to name or null, if not found
+     */
+    public Macro getMacro(String name) {
+            return macros.get(name);
+    }
 
-	/**
-	 * Returns a list of macro definitions that are contained in this graph.
-	 *
-	 * @return list of macro definitions
-	 */
-	public Set<Macro> getMacros() {
-		return new HashSet<Macro>(macros.values());
-	}
+    /**
+     * Returns a list of macro definitions that are contained in this graph.
+     *
+     * @return list of macro definitions
+     */
+    public Set<Macro> getMacros() {
+            return new HashSet<>(macros.values());
+    }
 
-	/**
-	 * Constructs a new control flow graph.
-	 * <p/>
-	 * A new graph contains the start and end node and the connection between them.
-	 */
-	public ControlFlowGraph() {
-		startNode = new StartNode(this);
-		endNode = new EndNode(this);
-		startNode.setSuccessor(endNode);
-		endNode.addPredecessor(startNode);
-	}
+    /**
+     * Constructs a new control flow graph.
+     * <p/>
+     * A new graph contains the start and end node and the connection between them.
+     */
+    public ControlFlowGraph() {
+            startNode = new StartNode(this);
+            endNode = new EndNode(this);
+            startNode.setSuccessor(endNode);
+            endNode.addPredecessor(startNode);
+    }
 
-	/**
-	 * Gets the last node in this control flow graph.
-	 *
-	 * @return The last node in the graph.
-	 */
-	public EndNode getEndNode() {
-		return endNode;
-	}
+    /**
+     * Gets the last node in this control flow graph.
+     *
+     * @return The last node in the graph.
+     */
+    public EndNode getEndNode() {
+            return endNode;
+    }
 
-	/**
-	 * Gets the start node in this control flow graph.
-	 *
-	 * @return The first node of the control flow graph.
-	 */
-	public StartNode getStartNode() {
-		return startNode;
-	}
+    /**
+     * Gets the start node in this control flow graph.
+     *
+     * @return The first node of the control flow graph.
+     */
+    public StartNode getStartNode() {
+            return startNode;
+    }
 
-	/**
-	 * Gets the input file this graph was created from.
-	 *
-	 * @return The input file this graph was created from or null if it is unknown.
-	 */
-	public InputFile getSource() {
-		return source;
-	}
+    /**
+     * Gets the input file this graph was created from.
+     *
+     * @return The input file this graph was created from or null if it is unknown.
+     */
+    public InputFile getSource() {
+            return source;
+    }
 
-	/**
-	 * Sets the input file this graph was parsed from.
-	 *
-	 * @param source The input file this graph resulted from.
-	 */
-	public void setSource(InputFile source) {
-		this.source = source;
-	}
+    /**
+     * Sets the input file this graph was parsed from.
+     *
+     * @param source The input file this graph resulted from.
+     */
+    public void setSource(InputFile source) {
+            this.source = source;
+    }
 
-	/**
-	 * Gets the locally declared variables.
-	 *
-	 * @return An unmodifiable set containing the locally declared variables in this cfg.
-	 * @see #getInputVariables()
-	 */
-	public Set<Variable> getLocalVariables() {
-		return Collections.unmodifiableSet(localVariables);
-	}
+    /**
+     * Gets the locally declared variables.
+     *
+     * @return An unmodifiable set containing the locally declared variables in this cfg.
+     * @see #getInputVariables()
+     */
+    public Set<Variable> getLocalVariables() {
+            return Collections.unmodifiableSet(localVariables);
+    }
 
-        public Set<Variable> getLocalVariablesModifiable() {
-		return localVariables;
-	}
+    public Set<Variable> getLocalVariablesModifiable() {
+            return localVariables;
+    }
 
-	/**
-	 * Gets the set of variables that are expected as input parameters for the algorithm modeled by this graph.
-	 *
-	 * @return An unmodifiable set containing the input variables for this graph.
-	 */
-	public Set<Variable> getInputVariables() {
-		return Collections.unmodifiableSet(inputVariables);
-	}
+    /**
+     * Gets the set of variables that are expected as input parameters for the algorithm modeled by this graph.
+     *
+     * @return An unmodifiable set containing the input variables for this graph.
+     */
+    public Set<Variable> getInputVariables() {
+            return Collections.unmodifiableSet(inputVariables);
+    }
 
-	/**
-	 * Adds a new local variable.
-	 *
-	 * @param variable The new local variable.
-	 * @throws IllegalArgumentException If <code>variable</code> is an input variable in this graph.
-	 */
-	public void addLocalVariable(Variable variable) {
-		// Check that the given variable is not part of the inputVariables set
-		if (inputVariables.contains(variable)) {
-			throw new IllegalArgumentException("The Variable " + variable.getName()
-					+ " cannot be a local variable and an input variable at the same time.");
-		}
+    /**
+     * Adds a new local variable.
+     *
+     * @param variable The new local variable.
+     * @throws IllegalArgumentException If <code>variable</code> is an input variable in this graph.
+     */
+    public void addLocalVariable(Variable variable) {
+            // Check that the given variable is not part of the inputVariables set
+            if (inputVariables.contains(variable)) {
+                    throw new IllegalArgumentException("The Variable " + variable.getName()
+                                    + " cannot be a local variable and an input variable at the same time.");
+            }
 
-		localVariables.add(variable);
-	}
+            localVariables.add(variable);
+    }
 
-	/**
-	 * Removes a local variable from this graph.
-	 * <p/>
-	 * If <code>variable</code> is also an output variable, it is removed from that set as well.
-	 *
-	 * @param variable The variable that should be removed.
-	 */
-	public void removeLocalVariable(Variable variable) {
-		localVariables.remove(variable);
-	}
+    /**
+     * Removes a local variable from this graph.
+     * <p/>
+     * If <code>variable</code> is also an output variable, it is removed from that set as well.
+     *
+     * @param variable The variable that should be removed.
+     */
+    public void removeLocalVariable(Variable variable) {
+            localVariables.remove(variable);
+    }
 
-	/**
-	 * Determines whether there is a local variable with given name defined in this graph.
-	 *
-	 * @param name name of variable
-	 * @return true, if a local variable with given name exists, false otherwise
-	 */
-	public boolean containsLocalVariable(String name) {
-		for (Variable v : localVariables) {
-			if (v.getName().equals(name)) {
-				return true;
-			}
-		}
-		return false;
-	}
+    /**
+     * Determines whether there is a local variable with given name defined in this graph.
+     *
+     * @param name name of variable
+     * @return true, if a local variable with given name exists, false otherwise
+     */
+    public boolean containsLocalVariable(String name) {
+            for (Variable v : localVariables) {
+                    if (v.getName().equals(name)) {
+                            return true;
+                    }
+            }
+            return false;
+    }
 
-	/**
-	 * Adds an input parameter.
-	 *
-	 * @param variable The new input parameter.
-	 * @throws IllegalArgumentException If <code>variable</code> is a local variable in this graph.
-	 */
-	public void addInputVariable(Variable variable) {
-		String name = variable.getName();
-		if ("true".equals(name) || "false".equals(name)) {
-			// ignore these keywords
-			return;
-		}
+    /**
+     * Adds an input parameter.
+     *
+     * @param variable The new input parameter.
+     * @throws IllegalArgumentException If <code>variable</code> is a local variable in this graph.
+     */
+    public void addInputVariable(Variable variable) {
+            String name = variable.getName();
+            if ("true".equals(name) || "false".equals(name)) {
+                    // ignore these keywords
+                    return;
+            }
 
-		// Check that the given variable is not part of the localVariables set
-		if (localVariables.contains(variable)) {
-			throw new IllegalArgumentException("The Variable " + name
-					+ " cannot be a local variable and an input variable at the same time.");
-		}
+            // Check that the given variable is not part of the localVariables set
+            if (localVariables.contains(variable)) {
+                    throw new IllegalArgumentException("The Variable " + name
+                                    + " cannot be a local variable and an input variable at the same time.");
+            }
 
-		inputVariables.add(variable);
-	}
+            inputVariables.add(variable);
+    }
 
-	/**
-	 * Removes an input variable.
-	 *
-	 * @param variable The variable that should be removed.
-	 */
-	public void removeInputVariable(Variable variable) {
-		inputVariables.remove(variable);
-	}
+    /**
+     * Removes an input variable.
+     *
+     * @param variable The variable that should be removed.
+     */
+    public void removeInputVariable(Variable variable) {
+            inputVariables.remove(variable);
+    }
 
-	/**
-	 * Starts the traversal of this control flow graph using a visitor.
-	 * <p/>
-	 * Since the first node of the graph will always be a StartNode object, this method forwards the call to
-	 * {@link StartNode#accept(ControlFlowVisitor)}.
-	 *
-	 * @param visitor The visitor that provides the callback methods.
-	 */
-	public void accept(ControlFlowVisitor visitor) {
-		startNode.accept(visitor);
-	}
+    /**
+     * Starts the traversal of this control flow graph using a visitor.
+     * <p/>
+     * Since the first node of the graph will always be a StartNode object, this method forwards the call to
+     * {@link StartNode#accept(ControlFlowVisitor)}.
+     *
+     * @param visitor The visitor that provides the callback methods.
+     */
+    public void accept(ControlFlowVisitor visitor) {
+            startNode.accept(visitor);
+    }
 
-	/**
-	 * Removes the given node from the control flow graph. The graph will be traversed in order to find the node to be
-	 * removed. Once the desired node is found, its predecessors are rewired to have the old node's successor as direct
-	 * successors.
-	 *
-	 * @param node node to be removed
-	 */
-	public void removeNode(SequentialNode node) {
-		Node successor = node.getSuccessor();
-		successor.removePredecessor(node);
-		Set<Node> predecessors = new HashSet<Node>(node.getPredecessors());
-		for (Node predecessor : predecessors) {
-			successor.addPredecessor(predecessor);
-			predecessor.replaceSuccessor(node, successor);
-		}
-	}
+    /**
+     * Removes the given node from the control flow graph. The graph will be traversed in order to find the node to be
+     * removed. Once the desired node is found, its predecessors are rewired to have the old node's successor as direct
+     * successors.
+     *
+     * @param node node to be removed
+     */
+    public void removeNode(SequentialNode node) {
+            Node successor = node.getSuccessor();
+            successor.removePredecessor(node);
+            Set<Node> predecessors = new HashSet<>(node.getPredecessors());
+            for (Node predecessor : predecessors) {
+                    successor.addPredecessor(predecessor);
+                    predecessor.replaceSuccessor(node, successor);
+            }
+    }
 
-	@Override
-	public String toString() {
-		SequentialNode curr = startNode;
-		StringBuilder sb = new StringBuilder();
-		sb.append("CFG:\n");
-		sb.append(startNode);
-		do {
-			sb.append("\n--> ");
-			if (curr.getSuccessor() instanceof SequentialNode) {
-				curr = (SequentialNode) curr.getSuccessor();
-				sb.append(curr);
-			} else {
-				Node end = curr.getSuccessor();
-				sb.append(end);
-				break;
-			}
-		} while (true);
-		return sb.toString();
-	}
+    @Override
+    public String toString() {
+            SequentialNode curr = startNode;
+            StringBuilder sb = new StringBuilder();
+            sb.append("CFG:\n");
+            sb.append(startNode);
+            do {
+                    sb.append("\n--> ");
+                    if (curr.getSuccessor() instanceof SequentialNode) {
+                            curr = (SequentialNode) curr.getSuccessor();
+                            sb.append(curr);
+                    } else {
+                            Node end = curr.getSuccessor();
+                            sb.append(end);
+                            break;
+                    }
+            } while (true);
+            return sb.toString();
+    }
 
-	public String prettyPrint() {
-		Printer printer = new Printer();
-		accept(printer);
-		return printer.getCode();
-	}
+    public String prettyPrint() {
+            Printer printer = new Printer();
+            accept(printer);
+            return printer.getCode();
+    }
 
-        /**
-         * Returns the blade string representation of a given multivector component, respecting the output base (natural or zero-inf).
-         * @param multivectorComponent
-         * @return
-         */
-        public String getBladeString(MultivectorComponent multivectorComponent) {
-            return (globalSettings.outputToNormalBase)
-                ? getAlgebraDefinitionFile().getBladeStringNormalBase(multivectorComponent.getBladeIndex())
-                : getAlgebraDefinitionFile().getBladeString(multivectorComponent.getBladeIndex());
-        }
+    /**
+     * Returns the blade string representation of a given multivector component, respecting the output base (natural or zero-inf).
+     * @param multivectorComponent
+     * @return
+     */
+    public String getBladeString(MultivectorComponent multivectorComponent) {
+        return (globalSettings.outputToNormalBase)
+            ? getAlgebraDefinitionFile().getBladeStringNormalBase(multivectorComponent.getBladeIndex())
+            : getAlgebraDefinitionFile().getBladeString(multivectorComponent.getBladeIndex());
+    }
 
-	private static class Printer implements ControlFlowVisitor {
+    private static class Printer implements ControlFlowVisitor {
 
-		private int indent = 0;
-		private StringBuilder code = new StringBuilder();
+            private int indent = 0;
+            private StringBuilder code = new StringBuilder();
 
-		Printer() {
-			// empty non-private constructor
-		}
+            Printer() {
+                    // empty non-private constructor
+            }
 
-		String getCode() {
-			return code.toString();
-		}
+            String getCode() {
+                    return code.toString();
+            }
 
-		private void appendIndent() {
-			for (int i = 0; i < indent; i++) {
-				code.append('\t');
-			}
-		}
+            private void appendIndent() {
+                    for (int i = 0; i < indent; i++) {
+                            code.append('\t');
+                    }
+            }
 
-		@Override
-		public void visit(StartNode node) {
-			code.append("START\n");
-			node.getSuccessor().accept(this);
-		}
+            @Override
+            public void visit(StartNode node) {
+                    code.append("START\n");
+                    node.getSuccessor().accept(this);
+            }
 
-		@Override
-		public void visit(AssignmentNode node) {
-			appendIndent();
-			code.append(node.getVariable());
-			code.append(" = ");
-			code.append(node.getValue());
-			code.append(";\n");
-			node.getSuccessor().accept(this);
-		}
+            @Override
+            public void visit(AssignmentNode node) {
+                    appendIndent();
+                    code.append(node.getVariable());
+                    code.append(" = ");
+                    code.append(node.getValue());
+                    code.append(";\n");
+                    node.getSuccessor().accept(this);
+            }
 
-		@Override
-		public void visit(StoreResultNode node) {
-			appendIndent();
-			code.append(node);
-			code.append(";\n");
-			node.getSuccessor().accept(this);
-		}
+            @Override
+            public void visit(StoreResultNode node) {
+                    appendIndent();
+                    code.append(node);
+                    code.append(";\n");
+                    node.getSuccessor().accept(this);
+            }
 
-		@Override
-		public void visit(IfThenElseNode node) {
-			appendIndent();
-			code.append("if (");
-			code.append(node.getCondition());
-			code.append(") {\n");
-			indent++;
-			node.getPositive().accept(this);
-			indent--;
-			appendIndent();
-			code.append("} else {");
-			indent++;
-			node.getNegative().accept(this);
-			indent--;
-			appendIndent();
-			code.append("}\n");
-			node.getSuccessor().accept(this);
-		}
+            @Override
+            public void visit(IfThenElseNode node) {
+                    appendIndent();
+                    code.append("if (");
+                    code.append(node.getCondition());
+                    code.append(") {\n");
+                    indent++;
+                    node.getPositive().accept(this);
+                    indent--;
+                    appendIndent();
+                    code.append("} else {");
+                    indent++;
+                    node.getNegative().accept(this);
+                    indent--;
+                    appendIndent();
+                    code.append("}\n");
+                    node.getSuccessor().accept(this);
+            }
 
-		@Override
-		public void visit(BlockEndNode node) {
-		}
+            @Override
+            public void visit(BlockEndNode node) {
+            }
 
-		@Override
-		public void visit(LoopNode node) {
-			appendIndent();
-			code.append("loop {\n");
-			indent++;
-			node.getBody().accept(this);
-			indent--;
-			appendIndent();
-			code.append("}\n");
-			node.getSuccessor().accept(this);
-		}
+            @Override
+            public void visit(LoopNode node) {
+                    appendIndent();
+                    code.append("loop {\n");
+                    indent++;
+                    node.getBody().accept(this);
+                    indent--;
+                    appendIndent();
+                    code.append("}\n");
+                    node.getSuccessor().accept(this);
+            }
 
-		@Override
-		public void visit(BreakNode node) {
-			appendIndent();
-			code.append("break;\n");
-		}
+            @Override
+            public void visit(BreakNode node) {
+                    appendIndent();
+                    code.append("break;\n");
+            }
 
-		@Override
-		public void visit(Macro node) {
-			appendIndent();
-			code.append(node.getName());
-			code.append(" = {\n");
-			indent++;
-			if (node.getBody().size() > 0) {
-				node.getBody().get(0).accept(this);
-			}
-			if (node.getReturnValue() != null) {
-				appendIndent();
-				code.append(node.getReturnValue());
-			}
-			indent--;
-			appendIndent();
-			code.append("}\n");
-			node.getSuccessor().accept(this);
-		}
+            @Override
+            public void visit(Macro node) {
+                    appendIndent();
+                    code.append(node.getName());
+                    code.append(" = {\n");
+                    indent++;
+                    if (!node.getBody().isEmpty()) {
+                            node.getBody().get(0).accept(this);
+                    }
+                    if (node.getReturnValue() != null) {
+                            appendIndent();
+                            code.append(node.getReturnValue());
+                    }
+                    indent--;
+                    appendIndent();
+                    code.append("}\n");
+                    node.getSuccessor().accept(this);
+            }
 
-		@Override
-		public void visit(ExpressionStatement node) {
-			appendIndent();
-			code.append(node);
-			node.getSuccessor().accept(this);
-		}
+            @Override
+            public void visit(ExpressionStatement node) {
+                    appendIndent();
+                    code.append(node);
+                    node.getSuccessor().accept(this);
+            }
 
-		@Override
-		public void visit(EndNode node) {
-			code.append("END");
-		}
+            @Override
+            public void visit(EndNode node) {
+                    code.append("END");
+            }
 
-		@Override
-		public void visit(ColorNode node) {
-			appendIndent();
-			code.append(":");
-			code.append(node);
-		}
+            @Override
+            public void visit(ColorNode node) {
+                    appendIndent();
+                    code.append(":");
+                    code.append(node);
+            }
 
-	}
+    }
 
     public AlgebraDefinitionFile getAlgebraDefinitionFile() {
         return algebraDefinitionFile;
@@ -574,7 +575,7 @@ public final class ControlFlowGraph {
                     throw new IllegalStateException("Input "+syntaxInput+", specified in in2outPragma, is no input variable in the script!");
                 }
             }
-            if (inputVars.size() > 0) {
+            if (!inputVars.isEmpty()) {
                 throw new IllegalStateException("Input variables "+inputVars+", must be in in2outPragma!");
             }
         } else {

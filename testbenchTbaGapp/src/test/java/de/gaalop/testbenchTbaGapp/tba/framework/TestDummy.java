@@ -48,7 +48,7 @@ public class TestDummy {
                 algebraStrategy, 
                 optimizationStrategy, 
                 codeGenerator, 
-                tBATestCase.getAlgebraName(), 
+                tBATestCase.getAlgebraName(), -1,
                 true, 
                 "");
         
@@ -113,7 +113,7 @@ public class TestDummy {
                 algebraStrategy, 
                 optimizationStrategy, 
                 codeGenerator, 
-                tBATestCase.getAlgebraName(), 
+                tBATestCase.getAlgebraName(), -1,
                 true, 
                 "") {
                     //@Override
@@ -182,7 +182,7 @@ public class TestDummy {
                 algebraStrategy, 
                 optimizationStrategy, 
                 codeGenerator, 
-                tBATestCase.getAlgebraName(), 
+                tBATestCase.getAlgebraName(), -1,
                 true, 
                 "");
         
@@ -234,7 +234,7 @@ public class TestDummy {
                 algebraStrategy, 
                 optimizationStrategy, 
                 codeGenerator, 
-                tBATestCase.getAlgebraName(), 
+                tBATestCase.getAlgebraName(), -1,
                 true, 
                 "");
         
@@ -297,7 +297,7 @@ public class TestDummy {
                 algebraStrategy, 
                 optimizationStrategy, 
                 codeGenerator, 
-                tBATestCase.getAlgebraName(), 
+                tBATestCase.getAlgebraName(), -1,
                 true, 
                 "");
         
@@ -347,7 +347,7 @@ public class TestDummy {
                 algebraStrategy, 
                 optimizationStrategy, 
                 codeGenerator, 
-                tBATestCase.getAlgebraName(), 
+                tBATestCase.getAlgebraName(), -1,
                 true, 
                 "");
         

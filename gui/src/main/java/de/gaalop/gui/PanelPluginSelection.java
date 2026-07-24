@@ -2,6 +2,7 @@ package de.gaalop.gui;
 
 import de.gaalop.*;
 import de.gaalop.algebra.DefinedAlgebra;
+import de.gaalop.cfg.AlgebraDefinitionFile;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -13,12 +14,13 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
+import javax.swing.event.ChangeListener;
 import org.apache.commons.beanutils.BeanUtils;
 
 /**
  * Right side of the user interface - mainly with a list of comoboboxe to choose
  * main functionality of the code generation process.
- * 
+ *
  * @author Christian Steinmetz
  */
 public class PanelPluginSelection extends JPanel {
@@ -39,7 +41,6 @@ public class PanelPluginSelection extends JPanel {
     
     private JTextArea errorTextArea = new JTextArea();
     
-    
     public static String lastUsedAlgebra;
     public static boolean lastUsedAlgebraRessource;
     public static int lastUsedAlgebraDimension;
@@ -48,7 +49,7 @@ public class PanelPluginSelection extends JPanel {
     public static String lastUsedVisualCodeInserter;
     public static String lastUsedOptimization;
     
-     
+    
     private void updateErrorMessage(){
         if (areConstraintsFulfilled()) {
             errorTextArea.setText("");
@@ -65,7 +66,6 @@ public class PanelPluginSelection extends JPanel {
    
     private ItemListener algebraItemListener = (ItemEvent e) -> {
         updateDimensionSpinner();
-        //updateErrorMessage();
     };
     
     private boolean isErrorPlugin(JComboBox comboBox) {
@@ -125,12 +125,22 @@ public class PanelPluginSelection extends JPanel {
         GridBagConstraints gbc = new GridBagConstraints();
         gbl.setConstraints(algebraChooser2, gbc);
         algebraChooser2.setLayout(gbl);
-    
+        
         // create a JSpinner to input the optional algebra dimension
         // Nummern-Spinner für Werte von 1 to 10, in 1 Schritte
+        //TODO
         int maxdim = 10; //TODO where to define this, depending from the algebra
         SpinnerNumberModel spinnerModel = new SpinnerNumberModel( 2, 0, maxdim, 1 );
+        //spinnerModel = new SpinnerNumberModel( definedAlgebra.minDimension, 
+        //                            definedAlgebra.minDimension, definedAlgebra.maxDimension, 1 );
         dimensionSpinner = new JSpinner(spinnerModel);
+        //dimensionSpinner.addChangeListener(spinnerListener);
+        dimensionSpinner.addChangeListener(e -> {
+            int dimension = (Integer) dimensionSpinner.getValue();
+            AlgebraChooserItem selectedItem = (AlgebraChooserItem) algebraChooser.getSelectedItem(); 
+            String signatureString = AlgebraDefinitionFile.getSignatureString(selectedItem.algebraName, dimension);
+            selectedItem.setSignature(signatureString);
+        });
         dimensionSpinner.setEnabled(false);
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -150,7 +160,8 @@ public class PanelPluginSelection extends JPanel {
         PluginSorter comparator = new PluginSorter();
         
         // 2. global settings strategy plugins (is there more than one at the moment?)
-        GlobalSettingsStrategyPlugin[] globalPlugins = Plugins.getGlobalSettingsStrategyPlugins().toArray(new GlobalSettingsStrategyPlugin[0]);
+        GlobalSettingsStrategyPlugin[] globalPlugins = 
+                Plugins.getGlobalSettingsStrategyPlugins().toArray(new GlobalSettingsStrategyPlugin[0]);
         Arrays.sort(globalPlugins, comparator);
         globalSettings = new JComboBox(globalPlugins);
         globalSettings.setFont(font);
@@ -246,7 +257,6 @@ public class PanelPluginSelection extends JPanel {
         return (CodeGeneratorPlugin) generator.getSelectedItem();
     }
 
-    
     private Object search(Plugin[] plugins, String search) {
         for (Plugin p: plugins) 
             if (p.getClass().getCanonicalName().equals(search))
@@ -351,7 +361,7 @@ public class PanelPluginSelection extends JPanel {
             model.addElement(new AlgebraChooserItem(true, definedAlgebra.id, hasDimension,
                     definedAlgebra.id+" - "+definedAlgebra.name));
         }
-        
+
         // algebra strategy
         
         AlgebraStrategyPlugin algebra = Plugins.getAlgebraStrategyPlugins().iterator().next();
@@ -368,7 +378,6 @@ public class PanelPluginSelection extends JPanel {
                 for (File dir: dirs) 
                     model.addElement(new AlgebraChooserItem(false, 
                             dir.getName(), false, "Own - "+dir.getName()));
-
                 }
              
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | NoSuchFieldException | SecurityException ex) {
@@ -416,36 +425,31 @@ public class PanelPluginSelection extends JPanel {
     //spinner updaten
     private void updateDimensionSpinner(){
         AlgebraChooserItem selectedAlgebraItem = (AlgebraChooserItem) algebraChooser.getSelectedItem();
-        //if (selectedAlgebraItem.dimension>0){
-            for (DefinedAlgebra definedAlgebra: de.gaalop.algebra.Plugin.getDefinedAlgebras()){
-                if (definedAlgebra.id.equals(selectedAlgebraItem.algebraName)){
-                    if (definedAlgebra.definesDimensions()){
-                        SpinnerNumberModel spinnerModel = 
+        for (DefinedAlgebra definedAlgebra: de.gaalop.algebra.Plugin.getDefinedAlgebras()){
+            if (definedAlgebra.id.equals(selectedAlgebraItem.algebraName)){
+                if (definedAlgebra.definesDimensions()){
+                    SpinnerNumberModel spinnerModel = 
                                 new SpinnerNumberModel( definedAlgebra.minDimension, 
-                                        definedAlgebra.minDimension, definedAlgebra.maxDimension, 1 );
-                        dimensionSpinner.setModel(spinnerModel);
-                        dimensionSpinner.setEnabled(true);
-            
-                    } else {
-                        dimensionSpinner.setEnabled(false);
-                        //System.out.println("Error: Selected algebra with dimension, but definedAlgebra has no dimension!");
-                    }
+                                    definedAlgebra.minDimension, definedAlgebra.maxDimension, 1 );
+                    dimensionSpinner.setModel(spinnerModel);
+                    dimensionSpinner.setEnabled(true);
+
+                } else {
+                    dimensionSpinner.setEnabled(false);
+                    //System.out.println("Error: Selected algebra with dimension, but definedAlgebra has no dimension!");
                 }
             }
-        //} else {
-        //     dimensionSpinner.setEnabled(false);
-        //}
+        }
     }
     
-    ChoosenAlgebra /*AlgebraChooserItem*/ getAlgebraToUse() {
+    ChoosenAlgebra getAlgebraToUse() {
         AlgebraChooserItem item = (AlgebraChooserItem) algebraChooser.getSelectedItem();
-        //return (AlgebraChooserItem) algebraChooser.getSelectedItem();
         boolean resource = item.ressource;
         String algebraName = item.algebraName; 
-        int dimension = 0; //TODO add dimension from the spinner UI if available
+        int dimension = (Integer) dimensionSpinner.getValue();
         return new ChoosenAlgebra(resource, algebraName, dimension);
     }
-
+   
     public void updateLastUsedPlugins() {
         lastUsedGenerator = generator.getSelectedItem().getClass().getCanonicalName();
         lastUsedVisualCodeInserter = visualCodeInserter.getSelectedItem().getClass().getCanonicalName();

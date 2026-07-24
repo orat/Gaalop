@@ -4,7 +4,7 @@
 <comment>Gaalop Configuration File</comment>
 <entry key="de.gaalop.csharp.Plugin.useDouble">false</entry>
 <entry key="de.gaalop.tba.Plugin.optGCSE">false</entry>
-<entry key="lastUsedAlgebra">qca1</entry>
+<entry key="lastUsedAlgebra">qca</entry>
 <entry key="de.gaalop.tba.Plugin.optOneExpressionRemoval">true</entry>
 <entry key="de.gaalop.csharp.Plugin.standalone">true</entry>
 <entry key="lastUsedOptimization">de.gaalop.tba.Plugin</entry>
@@ -21,7 +21,7 @@
 <entry key="de.gaalop.csharp.Plugin.saveFileDirectory"></entry>
 <entry key="de.gaalop.python.Plugin.saveFileDirectory"></entry>
 <entry key="de.gaalop.python.Plugin.optimizeOnSave">true</entry>
-<entry key="lastUsedGenerator">de.gaalop.compressed.Plugin</entry>
+<entry key="lastUsedGenerator">de.gaalop.java.Plugin</entry>
 <entry key="de.gaalop.csharp.Plugin.useArrays">false</entry>
 <entry key="de.gaalop.globalSettings.Plugin.guiFontSize">12</entry>
 <entry key="de.gaalop.globalSettings.Plugin.editorFontSize">16</entry>

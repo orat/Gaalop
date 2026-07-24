@@ -83,6 +83,9 @@ public class AlStrategy implements AlgebraStrategy {
                     } else {
                         //passende Algebra erzeugen mit spezifischen Code der ein 
                         // alFile Object aufbaut
+                        System.out.println("Try to create algebra \""+graph.algebraName+
+                                "\" with dimension "+String.valueOf(graph.dimension));
+                        //FIXME graph.dimension?
                         boolean result = alFile.create(graph.algebraName, graph.dimension);
                         if (!result) System.out.println("The algebra \""+graph.algebraName+"\" is not found!");
                     }

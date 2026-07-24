@@ -161,7 +161,8 @@ public class Main {
         if (definedAlgebra.id.equals(algebraName.trim())) 
             asRessource = true;
    
-    return new CompilerFacade(codeParser, globalSettingsStrategy, visualizerStrategy, algebraStrategy, optimizationStrategy, codeGenerator, algebraName, asRessource, algebraBaseDirectory);
+    return new CompilerFacade(codeParser, globalSettingsStrategy, visualizerStrategy, 
+            algebraStrategy, optimizationStrategy, codeGenerator, algebraName, -1, asRessource, algebraBaseDirectory);
   }
   
   private void setSpecificOptionsForPlugin(Object plugin) {

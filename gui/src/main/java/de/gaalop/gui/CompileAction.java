@@ -118,7 +118,7 @@ public class CompileAction extends AbstractAction {
                 algebraPlugin.createAlgebraStrategy(),
                 optStrategy,
                 panelPluginSelection.getCodeGeneratorPlugin().createCodeGenerator(),
-                algebraToUse.algebraName,algebraToUse.ressource,algebraBaseDirectory
+                algebraToUse.algebraName, algebraToUse.dimension, algebraToUse.ressource,algebraBaseDirectory
                 );
         facade.addObserver(statusBar);
         

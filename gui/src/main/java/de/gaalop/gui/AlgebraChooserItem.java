@@ -1,7 +1,6 @@
 package de.gaalop.gui;
 
 /**
- *
  * @author Christian Steinmetz
  */
 public class AlgebraChooserItem {
@@ -10,7 +9,7 @@ public class AlgebraChooserItem {
     private boolean hasDimension = false;
     public String algebraName;
     public String showString;
-    //public int dimension;
+    private String signatureString;
     
     //record ChoosenAlgebra(boolean ressource, String algebraName, int dimension){};
     
@@ -21,6 +20,10 @@ public class AlgebraChooserItem {
         this.showString = showString;
     }
 
+    public void setSignature(String signatureString){
+        this.signatureString = signatureString;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 5;
@@ -50,12 +53,13 @@ public class AlgebraChooserItem {
         }
         return true;
     }
-    
-
-    
+   
     @Override
     public String toString() {
-        return showString;
+        if (hasDimension && signatureString.length()>0){
+            return showString + " "+signatureString;
+        } else {
+            return showString;
+        }
     }
-
 }
