@@ -198,7 +198,8 @@ public class AlgebraDefinitionFile {
             case "qca":
                 createQCA(dimension);
                 break;
-            case "qra":   
+            case "qra":  
+                 createQRA(dimension);
                 break;
             default:
                 return false;
@@ -216,13 +217,84 @@ public class AlgebraDefinitionFile {
             case "qca":
                 return getSignatureQCA(dimension);
             case "qra":   
-                return null;
+                return getSignatureQRA(dimension);
             default:
                 return null;
         }
     }
     private static String getSignatureQCA(int dimension){
         return "Cl("+String.valueOf(dimension*2+1) + "," + String.valueOf(dimension*2+1) + ",0)";
+    }
+    private static String getSignatureQRA(int dimension){
+        return "Cl("+String.valueOf(dimension+2) + "," + String.valueOf(dimension) + ",0)";
+    }
+    
+    //TODO createQGA?
+    
+    //TODO
+    private void createQRA(int dimension){
+        // example 1-dim
+        // 1,e1,e2,f1,f1T
+        // example 2-dim
+        // 1,e1,e2,e3,e4,f1,f1T,f2,f2T
+        base = new String[1+4*dimension];
+        base[0] = "1"; 
+        for (int i=1;i<=2*dimension;i++){
+            base[i] = "e"+String.valueOf(i);
+        }
+        for (int i=1;i<=dimension;i++){
+            base[2*dimension+(2*i-1)] = "f"+String.valueOf(i); // Bug index 7 out of bounds für dim = 2
+            base[2*dimension+(2*i)] = "f"+String.valueOf(i)+"T"; 
+        }
+        
+        // example 1-dim
+        //e3=1.0*f1+1.0*f1T,e4=1.0*f1-1.0*f1T
+        // example 2-dim
+        //e3=1.0*f1+1.0*f1T,e4=1.0*f1-1.0*f1T,
+        // e5=1.0*f2+1.0*f2T,e6=1.0*f2-1.0*f2T
+        StringBuilder sb = new StringBuilder();
+        for (int i=1;i<=dimension;i++){
+            sb.append("e"); sb.append(String.valueOf(2+i)); sb.append("=1.0*f");
+            sb.append(String.valueOf(i)); sb.append("+1.0*f"); sb.append(String.valueOf(i));
+            sb.append("T, ");
+            sb.append("e"); sb.append(String.valueOf(3+i)); sb.append("=1.0*f");
+            sb.append(String.valueOf(i)); sb.append("-1.0*f"); sb.append(String.valueOf(i));
+            sb.append("T,");
+        }
+        sb.deleteCharAt(sb.length()-1);
+        lineMapPlusMinusToZeroInf=sb.toString();
+        
+        //1,e1,e2,e3,e4
+        //1,e1,e2,e3,e4,e5,e6
+        base2 = new String[2+2*dimension+1];
+        base2[0] = "1"; base2[1] = "e1"; base2[2] = "e2"; 
+        for (int i=1;i<=dimension;i++){
+            base2[2+(2*i-1)] = "e"+String.valueOf(2+i);
+            base2[2+(2*i)] = "e"+String.valueOf(2+i+1);
+        }
+        
+        //e1=1,e2=1,e3=1,e4=-1
+        //e1=1,e2=1,e3=1,e4=-1,e5=1,e6=-1
+        // HashMap<String, Byte> baseSquares
+        baseSquares.put("e1", (byte) 1);
+        baseSquares.put("e2", (byte) 1);
+        for (int i=1;i<=dimension;i++){
+            baseSquares.put("e"+String.valueOf((2*i)+1),(byte) 1);
+            baseSquares.put("e"+String.valueOf((2*i)+2),(byte) -1);
+        } 
+        
+        //f1=0.5*e3+0.5*e4,f1T=0.5*e3-0.5*e4
+        //      f1=0.5*e3+0.5*e4, f1T=0.5*e3-0.5*e4,f2=0.5*e5+0.5*e6, f2T=0.5*e5-0.5*e6
+        sb = new StringBuilder();
+        for (int i=1;i<=dimension;i++){
+            sb.append("f"); sb.append(String.valueOf(i)); sb.append("=0.5*e");
+            sb.append(String.valueOf(2*i+1)); sb.append("+0.5*e"); sb.append(String.valueOf(2*i+2));
+            sb.append(", f"); sb.append(String.valueOf(i)); sb.append("T=0.5*e");
+            sb.append(String.valueOf(2*i+1)); sb.append("-0.5*e"); sb.append(String.valueOf(2*i+2));
+            sb.append(",");
+        }
+        sb.deleteCharAt(sb.length()-1);
+        lineMapZeroInfToPlusMinus = sb.toString();
     }
     
     private void createQCA(int dimension){

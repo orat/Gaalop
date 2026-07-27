@@ -12,4 +12,5 @@ dcga;double conformal geometric algebra Cl(8,2,0)
 qga;quantum bit geometric algebra Cl(6,3,0)
 qra6;quantum register geometric algebra with 6 quantum bits Cl(14,0,0)
 qca1;quantum computing algebra with 1 quantum bits Cl(2,2,0)
+qra;quantum register algebra (deprecated);1;10
 qca;quantum computing algebra;1;10

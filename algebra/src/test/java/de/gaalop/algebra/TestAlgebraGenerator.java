@@ -31,4 +31,23 @@ public class TestAlgebraGenerator {
         System.out.println(algebraDefinitionFile.getSignatureString());
     }
     
+    @Test
+    public void testQRA1() {
+        AlgebraDefinitionFile algebraDefinitionFile = new AlgebraDefinitionFile();
+        //algebraDefinitionFile.setUsePrecalculatedTable(true);
+        algebraDefinitionFile.setUseAsRessource(false);
+        algebraDefinitionFile.create("qra", 1);
+        System.out.println(algebraDefinitionFile.toString());
+        System.out.println(algebraDefinitionFile.getSignatureString());
+    }
+    
+    @Test
+    public void testQRA2() {
+        AlgebraDefinitionFile algebraDefinitionFile = new AlgebraDefinitionFile();
+        //algebraDefinitionFile.setUsePrecalculatedTable(true);
+        algebraDefinitionFile.setUseAsRessource(false);
+        algebraDefinitionFile.create("qra", 2);
+        System.out.println(algebraDefinitionFile.toString());
+        System.out.println(algebraDefinitionFile.getSignatureString());
+    }
 }
