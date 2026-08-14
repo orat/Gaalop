@@ -231,7 +231,6 @@ public class AlgebraDefinitionFile {
     
     //TODO createQGA?
     
-    //TODO
     private void createQRA(int dimension){
         // example 1-dim
         // 1,e1,e2,f1,f1T
@@ -326,7 +325,7 @@ public class AlgebraDefinitionFile {
             base2[2+2*i] = "e"+String.valueOf(i) + "m";
         }
 
-        // e0p=1, eom=-1, eqp=1, e1m=-1
+        // e0p=1, e0m=-1, e1p=1, e1m=-1
         // HashMap<String, Byte> baseSquares
         baseSquares.put("e0p", (byte) 1);
         baseSquares.put("e0m", (byte) -1);
