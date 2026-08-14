@@ -55,7 +55,7 @@ euclid = {
     + coefficient(_P(1),e2^e3)*(e2^e3) + coefficient(_P(1),e1^e2^e3)*(e1^e2^e3)
 }
 
-//Get the non-euclidean part of a multivector
+//Get the non-euclidean (ideal) part of a multivector
 //args:
 //m
 noneuclid = {
@@ -63,6 +63,17 @@ noneuclid = {
     + coefficient(_P(1),e0^e2)*(e0^e2) + coefficient(_P(1),e0^e3)*(e0^e3)
     + coefficient(_P(1),e0^e2^e1)*(e0^e2^e1) + coefficient(_P(1),e0^e1^e3)*(e0^e1^e3)
     + coefficient(_P(1),e0^e3^e2)*(e0^e3^e2) + coefficient(_P(1),e0^e1^e2^e3)*(e0^e1^e2^e3)
+}
+
+// Get the inversese of a multivector
+//args:
+//m
+inverse = {
+    Brev = reverse(_P(1);
+    B2 = _P(1)*Brev; // results in study number equivalent to dual number
+    a = coefficient(B2,1); // real part of the dual number
+    b = coefficient(B2,e0^e1^e2^e3); // idle part of the dual number
+    (1/a-(b/(a*a)*e0^e1^e2^e3))*Brev // use of known dual number inverse mulitplyed with the reverse
 }
 
 //Creates a line (ipns) from a point p and a direction u
