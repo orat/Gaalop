@@ -65,10 +65,10 @@ noneuclid = {
     + coefficient(_P(1),e0^e3^e2)*(e0^e3^e2) + coefficient(_P(1),e0^e1^e2^e3)*(e0^e1^e2^e3)
 }
 
-// Get the inversese of a multivector
+// Get the inversese of a general bivector
 //args:
 //m
-inverse = {
+bivectorInverse = {
     Brev = reverse(_P(1);
     B2 = _P(1)*Brev; // results in study number equivalent to dual number
     a = coefficient(B2,1); // real part of the dual number

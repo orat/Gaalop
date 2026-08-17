@@ -223,7 +223,7 @@ public class AlgebraDefinitionFile {
         }
     }
     private static String getSignatureQCA(int dimension){
-        return "Cl("+String.valueOf(dimension*2+1) + "," + String.valueOf(dimension*2+1) + ",0)";
+        return "Cl("+String.valueOf(dimension+2) + "," + String.valueOf(dimension) + ",0)";
     }
     private static String getSignatureQRA(int dimension){
         return "Cl("+String.valueOf(dimension+2) + "," + String.valueOf(dimension) + ",0)";
@@ -297,9 +297,10 @@ public class AlgebraDefinitionFile {
     }
     
     private void createQCA(int dimension){
-        // 1, e0p, e0m, f1, f1T
+        // old: 1, e0p, e0m, f1, f1T
+        // new: 1, ei1, ei2, f1, f1T
         base = new String[2+2*dimension+1];
-        base[0] = "1"; base[1] = "e0p"; base[2] = "e0m";
+        base[0] = "1"; base[1] = "ei1"; base[2] = "ei2";
         for (int i=1;i<=dimension;i++){
             base[1+2*i] = "f"+String.valueOf(i);
             base[2+2*i] = "f"+String.valueOf(i)+"T";
@@ -317,18 +318,20 @@ public class AlgebraDefinitionFile {
         sb.deleteCharAt(sb.length()-1);
         lineMapPlusMinusToZeroInf = sb.toString();
 
-        // 1, e0p, e0m, e1p, e1m
+        // old: 1, e0p, e0m, e1p, e1m
+        // new: 1, ei1, ei2, e1p, e1m
         base2 = new String[2+2*dimension+1];
-        base2[0] = "1"; base2[1] = "e0p"; base2[2] = "e0m";
+        base2[0] = "1"; base2[1] = "ei1"; base2[2] = "ei2";
         for (int i=1;i<=dimension;i++){
             base2[1+2*i] = "e"+String.valueOf(i) + "p";
             base2[2+2*i] = "e"+String.valueOf(i) + "m";
         }
 
-        // e0p=1, e0m=-1, e1p=1, e1m=-1
+        // old: e0p=1, e0m=-1, e1p=1, e1m=-1
+        // new: ei1=1, ei2=1, e1p=1, e1m=-1
         // HashMap<String, Byte> baseSquares
-        baseSquares.put("e0p", (byte) 1);
-        baseSquares.put("e0m", (byte) -1);
+        baseSquares.put("ei1", (byte) 1);
+        baseSquares.put("ei2", (byte) -1);
         for (int i=1;i<=dimension;i++){
             baseSquares.put("e"+String.valueOf(i)+"p",(byte) 1);
             baseSquares.put("e"+String.valueOf(i)+"m",(byte) -1);
@@ -342,7 +345,6 @@ public class AlgebraDefinitionFile {
             sb.append("m,f"); sb.append(String.valueOf(i)); sb.append("T=0.5*e");
             sb.append(String.valueOf(i)); sb.append("p-0.5*e"); sb.append(String.valueOf(i));
             sb.append("m,");
-
         }
         sb.deleteCharAt(sb.length()-1);
         lineMapZeroInfToPlusMinus = sb.toString();
